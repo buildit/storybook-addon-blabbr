@@ -4,7 +4,11 @@
   "description": "React Storybook Addon Component Reviewer",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src --ext .js,.jsx"
+    "lint": "eslint src --ext .js,.jsx",
+    "test": "echo *** no tests",
+    "start": "echo *** no start",
+    "prepublish": "echo *** no prepublish",
+    "storybook": "start-storybook -p 9001"
   },
   "repository": {
     "type": "git",
@@ -15,9 +19,31 @@
     "storybook"
   ],
   "author": "Buildit",
+  "contributors": [
+    {
+      "name": "Panos Voudouris",
+      "url": "https://github.com/panosvoudouris"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/buildit/storybook-addon-reviewer/issues"
   },
-  "homepage": "https://github.com/buildit/storybook-addon-reviewer#readme"
+  "homepage": "https://github.com/buildit/storybook-addon-reviewer#readme",
+  "devDependencies": {
+    "@kadira/storybook": "^2.35.2",
+    "babel-cli": "^6.18.0",
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
+    "react": "^15.4.2",
+    "webpack": "^1.14.0"
+  },
+  "peerDependencies": {
+    "react": "^0.14.7 || ^15.0.0",
+    "react-dom": "^0.14.7 || ^15.0.0",
+    "@kadira/storybook-addons": "^1.6.1"
+  }
 }
