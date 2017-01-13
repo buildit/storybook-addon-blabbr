@@ -1,0 +1,23 @@
+{
+  "name": "@buildit/storybook-addon-reviewer",
+  "version": "0.0.1",
+  "description": "React Storybook Addon Component Reviewer",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint src --ext .js,.jsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buildit/storybook-addon-reviewer.git"
+  },
+  "keywords": [
+    "react",
+    "storybook"
+  ],
+  "author": "Buildit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buildit/storybook-addon-reviewer/issues"
+  },
+  "homepage": "https://github.com/buildit/storybook-addon-reviewer#readme"
+}
