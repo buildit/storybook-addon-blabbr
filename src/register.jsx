@@ -1,6 +1,6 @@
 import React from 'react';
 import addons from '@kadira/storybook-addons';
-import Panel from './components/Panel';
+import { Panel } from './components';
 
 addons.register('buildit/reviewer', (api) => {
   const channel = addons.getChannel();
