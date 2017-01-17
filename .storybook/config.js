@@ -6,6 +6,11 @@ import ReviewerAddon from '../src/';
 setAddon(ReviewerAddon);
 
 addDecorator(withKnobs);
+addDecorator((story) => (
+	<div style={{padding: '10px'}}>
+		{story()}
+	</div>
+));
 
 // Now go through all the stories in the src tree
 function requireAll(context) {
