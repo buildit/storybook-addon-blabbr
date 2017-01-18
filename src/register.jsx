@@ -7,6 +7,6 @@ addons.register('buildit/reviewer', (api) => {
 
   addons.addPanel('buildit/reviewer', {
     title: 'Reviewer',
-    render: () => <Panel channel={channel} api={api} inline key="knobs-panel" />,
+    render: () => <Panel channel={channel} storybook={api} inline key="knobs-panel" />,
   });
 });
