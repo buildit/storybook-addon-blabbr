@@ -1,0 +1,1 @@
+export { hasStorage } from './webStorage';
