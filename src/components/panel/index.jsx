@@ -11,18 +11,18 @@ export default class Panel extends Component {
   constructor(...args) {
     super(...args);
     this.onStoryChangeHandler = this.onStoryChangeHandler.bind(this);
+    this.fetchComments = this.fetchComments.bind(this);
     this.onUserNickNameChange = this.onUserNickNameChange.bind(this);
     this.onUserEmailChange = this.onUserEmailChange.bind(this);
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
 
-    if (this.props.api) {
-      this.props.api.onStory(this.onStoryChangeHandler);
-    }
-
     this.state = {
+      activeComponent: null,
+      activeStory: null,
+      activeVersion: null,
       user: {
-          isUserAuthenticated: null,
+	      isUserAuthenticated: null,
           userNickName: null,
           userEmail: null,
       },
@@ -33,21 +33,16 @@ export default class Panel extends Component {
   componentWillMount() {
     hasStorage('localStorage') && this.verifyUser();
   }
-  // Handle change of story
+  componentDidMount() {
+    const { storybook } = this.props;
+    storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
+  }
   onStoryChangeHandler(kind, story) {
-    // Request comments for this component
-    getComments('component123', 'version0.0.1')
-      .then((response) => {
-        console.log('ze response', response);
-      })
-      .catch((error) => {
-        console.log('ze error', error);
-      });
-
-    // Render components
     this.setState({
-      comments: null,
+        activeComponent: kind,
+        activeStory: story
     });
+    this.fetchComments(kind, story);
   }
   verifyUser() {
     const userNickName = localStorage.getItem('blabbr_userNickName');
@@ -72,6 +67,12 @@ export default class Panel extends Component {
     const { user: { userNickName, userEmail } } =  this.state;
     e.preventDefault();
     this.registerUser(userNickName, userEmail);
+  }
+  fetchComments(kind, story, version) {
+    getComments(kind, story, version)
+      .then(data => {
+        this.setState({ comments: data.comments });
+	  });
   }
   render() {
     const { user: { userNickName, userEmail, isUserAuthenticated } } = this.state;
@@ -99,11 +100,11 @@ export default class Panel extends Component {
 }
 
 Panel.propTypes = {
-  api: PropTypes.object,
+  storybook: PropTypes.object,
   inline: PropTypes.bool,
 };
 
 Panel.defaultProps = {
-  api: null,
+  storybook: null,
   inline: true,
 };
