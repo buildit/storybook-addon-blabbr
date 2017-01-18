@@ -18,11 +18,11 @@ export default class Panel extends Component {
     this.verifyUser = this.verifyUser.bind(this);
 
     this.state = {
+      activeComponent: null,
+      activeStory: null,
+      activeVersion: null,
       user: {
-	      activeComponent: null,
-	      activeStory: null,
-	      activeVersion: null,
-          isUserAuthenticated: null,
+	      isUserAuthenticated: null,
           userNickName: null,
           userEmail: null,
       },
