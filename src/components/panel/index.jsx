@@ -22,9 +22,9 @@ export default class Panel extends Component {
       activeStory: null,
       activeVersion: null,
       user: {
-	      isUserAuthenticated: null,
-          userNickName: null,
-          userEmail: null,
+        isUserAuthenticated: null,
+        userNickName: null,
+        userEmail: null,
       },
       userComment: null,
       comments: null,
@@ -75,11 +75,17 @@ export default class Panel extends Component {
 	  });
   }
   render() {
-    const { user: { userNickName, userEmail, isUserAuthenticated } } = this.state;
-	  return (
+    const {
+      user: { userNickName, userEmail, isUserAuthenticated },
+      comments
+    } = this.state;
+
+    return (
           <section className="panel-container">
 
-            <Comments />
+	          { !!comments &&
+                <Comments comments={comments} />
+	          }
 
 			  { !isUserAuthenticated &&
                 <Register
