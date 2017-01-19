@@ -4,11 +4,12 @@ const Comment = ({
   username,
   emailId,
   date,
+  time,
   comment,
   approved
 }) => {
   const panelHeader = (
-    <h3>{date}</h3>
+    <h3>{`${date}, ${time}`}</h3>
   );
   return (
     <Panel header={panelHeader}>
@@ -34,6 +35,7 @@ Comment.propTypes = {
   emailId: PropTypes.string.isRequired,
   username: PropTypes.string,
   date: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
   approved: PropTypes.bool,
 };

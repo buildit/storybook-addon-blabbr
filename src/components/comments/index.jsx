@@ -22,7 +22,7 @@ const Comments = ({comments}) => {
 		const date = _date.getDate();
 		const month = months[_date.getMonth()];
 		const year = _date.getFullYear();
-		const time = `${_date.getHours()}:${_date.getMinutes()}`;
+		const time = `${_date.getHours()}:${('0'+ _date.getMinutes()).slice(-2)}`;
 		return (
 			<Comment key={i}
 		         username={comment.userName}
@@ -35,7 +35,6 @@ const Comments = ({comments}) => {
 	});
 	return 	(
 		<ListGroup componentClass="ul">
-			<h2>Comments</h2>
 			{ commentsComponents.length ? commentsComponents : <p>No comments to show for this story</p> }
 		</ListGroup>
 	);

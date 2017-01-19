@@ -120,10 +120,7 @@ export default class Panel extends Component {
 
     return (
       <section className="panel-container">
-
-        { !!comments &&
-          <Comments comments={comments} />
-        }
+        <h2>Comments</h2>
 
         { !isUserAuthenticated &&
           <Register
@@ -140,6 +137,10 @@ export default class Panel extends Component {
             onUserCommentChange={this.onUserCommentChange}
             onCommentSubmit={this.onCommentSubmit}
           />
+        }
+
+        { !!comments &&
+          <Comments comments={comments} />
         }
 
       </section>
