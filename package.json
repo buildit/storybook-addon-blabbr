@@ -47,8 +47,7 @@
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
     "style-loader": "^0.13.1",
-    "webpack": "^1.14.0",
-    "whatwg-fetch": "^2.0.1"
+    "webpack": "^1.14.0"
   },
   "dependencies": {
     "@kadira/storybook": "^2.35.2",
