@@ -72,7 +72,8 @@ export default class Panel extends Component {
     getComments(kind, story, version)
       .then(data => {
         this.setState({ comments: data.comments });
-	  });
+	  })
+      .catch((e) => {});
   }
   render() {
     const {

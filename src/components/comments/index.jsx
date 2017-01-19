@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
+import { ListGroup } from 'react-bootstrap';
 import Comment from '../comment';
 
 const Comments = ({comments}) => {
@@ -21,20 +22,22 @@ const Comments = ({comments}) => {
 		const date = _date.getDate();
 		const month = months[_date.getMonth()];
 		const year = _date.getFullYear();
+		const time = `${_date.getHours()}:${_date.getMinutes()}`;
 		return (
 			<Comment key={i}
 		         nickname={comment.userName}
 		         emailId={comment.userEmail}
 		         date={`${date} ${month} ${year}`}
+	             time={time}
 		         comment={ comment.comment}
 		         approved={comment.approved} />
 		)
 	});
 	return 	(
-		<div>
-			<h3>Comments</h3>
-			{ commentsComponents }
-		</div>
+		<ListGroup componentClass="ul">
+			<h2>Comments</h2>
+			{ commentsComponents.length ? commentsComponents : <p>No comments to show for this story</p> }
+		</ListGroup>
 	);
 };
 

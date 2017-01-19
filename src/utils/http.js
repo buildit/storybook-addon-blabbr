@@ -15,7 +15,7 @@ export const parseJSON = response => {
 };
 
 export const makeRequest = (url, options = {}) => {
-	fetch(url, options)
+	return fetch(url, options)
 		.then(verifyStatus)
 		.then(parseJSON);
 };

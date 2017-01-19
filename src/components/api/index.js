@@ -1,15 +1,14 @@
-import { makeRequest } from '../../utils';
-import stubComments from '../../../stub/comments.Button';
+import { makeRequest, cleanComponentId } from '../../utils';
 
 const config = {
-	endpoint: 'http://localhost:3000',
+  endpoint: 'http://localhost:3001',
 };
 
 export const getComments = (component, story, version) => {
-	// const endPoint = `${config.endpoint}/${component}/${story}/${version || ''}`;
-	// console.log(config.endpoint);
-	// return makeRequest(config.endpoint);
-	return Promise.resolve(stubComments());
+  const componentId = cleanComponentId(component);
+  const endPoint = `${config.endpoint}${componentId ? '/' + componentId : ''}${story ? '/' + story : ''}${version ? '/' + version : ''}`;
+  return makeRequest(endPoint);
+
 };
 
 export const  postComment = (component, story, version, comment) => {

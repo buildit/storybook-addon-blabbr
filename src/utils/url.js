@@ -1,0 +1,1 @@
+export const cleanComponentId = (componentId) => componentId.toLowerCase();
