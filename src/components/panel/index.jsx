@@ -6,6 +6,8 @@ import { hasStorage } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
+import db from '../api/db';
+import { cleanComponentId } from '../../utils';
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -13,6 +15,7 @@ export default class Panel extends Component {
     this.onStoryChangeHandler = this.onStoryChangeHandler.bind(this);
     this.fetchComments = this.fetchComments.bind(this);
     this.onUserNameChange = this.onUserNameChange.bind(this);
+    this.listenForCommentChanges = this.listenForCommentChanges.bind(this);
     this.onUserEmailChange = this.onUserEmailChange.bind(this);
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
@@ -32,6 +35,9 @@ export default class Panel extends Component {
         userComment: '',
         comments: [],
 	  };
+
+    this.commentChannelListener = null;
+    this.channelListening = false;
   }
   componentWillMount() {
     hasStorage('localStorage') && this.verifyUser();
@@ -40,6 +46,12 @@ export default class Panel extends Component {
     const { storybook } = this.props;
     storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
   }
+  componentWillUnmount() {
+    if (this.commentChannelListener) {
+      this.commentChannelListener.off();
+      this.commentChannelListener = null;
+    }
+  }
   onStoryChangeHandler(kind, story) {
     this.setState({
         activeComponent: kind,
@@ -47,6 +59,51 @@ export default class Panel extends Component {
     });
     this.fetchComments(kind, story);
     this.setState({ userComment: '' });
+    this.listenForCommentChanges();
+  }
+  listenForCommentChanges() {
+    const { activeComponent } = this.state;
+    var componentId;
+
+    // remove listeners for previous comment stream
+    if (this.commentChannelListener) {
+      this.commentChannelListener.off();
+      this.channelListening = false;
+    }
+    componentId = cleanComponentId(activeComponent);
+
+    // register listener
+    this.commentChannelListener = db.ref('comments/' + componentId);
+    this.commentChannelListener.on('value', function(snapshot) {
+      var updatedComments = [],
+        commentsData,
+        commentKey;
+
+      // only fire on change - not initial load
+      if (!this.channelListening) {
+        this.channelListening = true;
+        return;
+      }
+      var snapshotData = snapshot.val();
+
+      for (var key in snapshotData) {
+        // skip loop if the property is from prototype
+        if (!snapshotData.hasOwnProperty(key)) continue;
+
+        commentsData = snapshotData[key];
+
+        updatedComments.push({
+          id: key,
+          ...commentsData
+        });
+      }
+
+      this.setState({
+        comments: updatedComments,
+        userComment: ''
+      });
+    }.bind(this));
+
   }
   verifyUser() {
     const userName = localStorage.getItem('blabbr_userName');
@@ -96,13 +153,11 @@ export default class Panel extends Component {
       component: activeComponent,
       story: activeStory,
       version: activeVersion,
-    })
-      .then((data) => {
-        this.setState({
-          comments: [data.comment, ...comments],
-          userComment: ''
-        });
-      });
+    });
+    // TODO - comment added successfully notification
+    //   .then((data) => {
+    //     // console.log('comment added', data);
+    //   });
   }
   fetchComments(kind, story, version) {
     getComments(kind, story, version)
