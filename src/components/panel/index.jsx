@@ -7,7 +7,7 @@ import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
 import db from '../api/db';
-import { cleanComponentId } from '../../utils';
+import { cleanToken } from '../../utils';
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -70,7 +70,7 @@ export default class Panel extends Component {
       this.commentChannelListener.off();
       this.channelListening = false;
     }
-    componentId = cleanComponentId(activeComponent);
+    componentId = cleanToken(activeComponent);
 
     // register listener
     this.commentChannelListener = db.ref('comments/' + componentId);
