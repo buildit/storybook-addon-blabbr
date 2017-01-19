@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { FormGroup, FormControl, ControlLabel, Button, Panel } from 'react-bootstrap';
+import { FormGroup, FormControl, Button, Panel } from 'react-bootstrap';
 
 const SubmitComment = ({
   onUserCommentChange,
