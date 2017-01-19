@@ -8,8 +8,9 @@ module.exports = {
 
 		loaders: [
 			{ test: /\.(js|jsx)$/, exclude: [ /node_modules/ ], loader: 'babel' },
-			{ test: /\.(png|jpg|gif)$/, loader: 'file-loader' },
-      { test: /\.(less|css)$/, loader: 'style-loader!css-loader!less-loader' }
+			{ test: /\.(png|jpg|gif|svg)$/, loader: 'file-loader' },
+            { test: /\.(less|css)$/, loader: 'style-loader!css-loader!less-loader' },
+			{ test: /\.(eot|ttf|svg|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' }
 		]
 	},
 

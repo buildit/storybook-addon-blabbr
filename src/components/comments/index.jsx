@@ -32,7 +32,7 @@ const Comments = ({comments}) => {
 	});
 	return 	(
 		<div>
-			<h5>Comments</h5>
+			<h3>Comments</h3>
 			{ commentsComponents }
 		</div>
 	);

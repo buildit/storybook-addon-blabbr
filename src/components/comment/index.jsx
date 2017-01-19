@@ -1,37 +1,41 @@
-import React from 'react';
-import 'material-design-lite/material.min';
-import './style.less';
-
-const Comment = props =>
-  <div className="mdl-card mdl-shadow--2dp comment-card">
-    <div className="mdl-card__title">
-      <h2 className="mdl-card__title-text">{props.nickname}</h2>
-      <h3 className="mdl-card__title-text">{props.emailId}</h3>
-      <datetime>{props.date}</datetime>
-    </div>
-    <div className="mdl-card__supporting-text">
-      {props.comment}
-    </div>
-    <div className="mdl-card__actions mdl-card--border">
-      <button
-        className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
-        disabled={props.approved}>
-        {props.approved ? 'Approved' : 'Approve'}
-      </button>
-    </div>
-    <div className="mdl-card__menu">
-      <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-        <i className="material-icons">mode_edit</i>
-      </button>
-    </div>
-  </div>;
+import React, { PropTypes } from 'react';
+import { Panel, Well, Button } from 'react-bootstrap';
+const Comment = ({
+  nickname,
+  emailId,
+  date,
+  comment,
+  approved
+}) => {
+  const panelHeader = (
+    <h3>{date}</h3>
+  );
+  return (
+    <Panel header={panelHeader}>
+      <h4 className="h5">{`${nickname} - ${emailId}`}</h4>
+      <Well>
+        {comment}
+      </Well>
+      <Button
+        bsStyle="success"
+        style={{ marginRight: 10 }}
+        disabled={approved}>
+          {approved ? 'Approved' : 'Approve'}
+      </Button>
+      <Button
+        bsStyle="warning">
+        Edit
+      </Button>
+    </Panel>
+  );
+};
 
 Comment.propTypes = {
-  emailId: React.PropTypes.string.isRequired,
-  nickname: React.PropTypes.string,
-  date: React.PropTypes.string.isRequired,
-  comment: React.PropTypes.string.isRequired,
-  approved: React.PropTypes.bool,
+  emailId: PropTypes.string.isRequired,
+  nickname: PropTypes.string,
+  date: PropTypes.string.isRequired,
+  comment: PropTypes.string.isRequired,
+  approved: PropTypes.bool,
 };
 
 Comment.defaultProps = {

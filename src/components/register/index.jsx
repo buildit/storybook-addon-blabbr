@@ -1,67 +1,61 @@
 import React, { PropTypes } from 'react';
+import { FormGroup, FormControl, ControlLabel, Button, Panel } from 'react-bootstrap';
 
 const Register = ({
-	onUserNickNameChange,
-	onUserEmailChange,
-	onRegisterSubmit,
-	userNickName,
-	userEmail
-}) => (
-	<section>
-		<form>
-			<div style={{
-				borderStyle: "solid",
-				borderWidth: 1,
-				borderColor: "rgba(0,0,0,.12)",
-				padding: 12,
-				paddingTop: 0
-			}}>
-				<h5 className="mdl-h5">Register to add comments</h5>
-				<div className="mdl-textfield" style={{ display: "block" }}>
-					<input
-						className="mdl-textfield__input"
-						type="text"
-						id="nickname"
-						value={userNickName || ''}
-						onChange={onUserNickNameChange} />
-					<label
-						className="mdl-textfield__label"
-						htmlFor="nickname">
-						Nick name
-					</label>
-				</div>
+  onUserNickNameChange,
+  onUserEmailChange,
+  onRegisterSubmit,
+  userNickName,
+  userEmail
+}) => {
 
-				<div className="mdl-textfield" style={{ display: "block" }}>
-					<input
-						className="mdl-textfield__input"
-						type="text"
-						id="email"
-						value={userEmail || ''}
-						onChange={onUserEmailChange} />
-					<label
-						className="mdl-textfield__label"
-						htmlFor="email">
-						Email
-					</label>
-				</div>
+  const formTitle = (
+    <h2>Register to add comments</h2>
+  );
 
-				<button
-					type="submit"
-					className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-					onClick={onRegisterSubmit}>
-					Register
-				</button>
-			</div>
-		</form>
-	</section>
-);
+  return (
+    <Panel header={formTitle}>
+      <form>
+
+        <FormGroup>
+          <ControlLabel htmlFor="nick-name">
+            Nick name:
+          </ControlLabel>
+          <FormControl
+            id="nick-name"
+            value={userNickName || ''}
+            onChange={onUserNickNameChange} />
+        </FormGroup>
+
+        <FormGroup>
+          <ControlLabel htmlFor="email">
+            Email:
+          </ControlLabel>
+          <FormControl
+            id="email"
+            value={userEmail || ''}
+            onChange={onUserEmailChange} />
+        </FormGroup>
+
+        <Button
+          type="submit"
+          bsClass="btn btn-success"
+          onClick={onRegisterSubmit}>
+          Register
+        </Button>
+
+      </form>
+    </Panel>
+  );
+};
+
 
 Register.propTypes = {
-	onUserNickNameChange: PropTypes.func.isRequired,
-	onUserEmailChange: PropTypes.func.isRequired,
-	onRegisterSubmit: PropTypes.func.isRequired,
-	userNickName: PropTypes.string,
-	userEmail: PropTypes.string,
+  onUserNickNameChange: PropTypes.func.isRequired,
+  onUserEmailChange: PropTypes.func.isRequired,
+  onRegisterSubmit: PropTypes.func.isRequired,
+  userNickName: PropTypes.string,
+  userEmail: PropTypes.string,
 };
 
 export default Register;

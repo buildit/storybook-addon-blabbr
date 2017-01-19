@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'material-design-lite/material.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import './style.less';
 import { getComments } from '../api';
 import { hasStorage } from '../../utils';
