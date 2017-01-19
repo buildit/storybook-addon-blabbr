@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Panel, Well, Button } from 'react-bootstrap';
 const Comment = ({
-  nickname,
+  username,
   emailId,
   date,
   comment,
@@ -12,7 +12,7 @@ const Comment = ({
   );
   return (
     <Panel header={panelHeader}>
-      <h4 className="h5">{`${nickname} - ${emailId}`}</h4>
+      <h4 className="h5">{`${username} - ${emailId}`}</h4>
       <Well>
         {comment}
       </Well>
@@ -32,14 +32,13 @@ const Comment = ({
 
 Comment.propTypes = {
   emailId: PropTypes.string.isRequired,
-  nickname: PropTypes.string,
+  username: PropTypes.string,
   date: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
   approved: PropTypes.bool,
 };
 
 Comment.defaultProps = {
-  nickname: '',
   approved: false,
 };
 

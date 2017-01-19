@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './style.less';
-import { getComments } from '../api';
+import { getComments, postComment } from '../api';
 import { hasStorage } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
@@ -12,23 +12,26 @@ export default class Panel extends Component {
     super(...args);
     this.onStoryChangeHandler = this.onStoryChangeHandler.bind(this);
     this.fetchComments = this.fetchComments.bind(this);
-    this.onUserNickNameChange = this.onUserNickNameChange.bind(this);
+    this.onUserNameChange = this.onUserNameChange.bind(this);
     this.onUserEmailChange = this.onUserEmailChange.bind(this);
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
+    this.onUserCommentChange = this.onUserCommentChange.bind(this);
+    this.onCommentSubmit = this.onCommentSubmit.bind(this);
+    this.postComment = this.postComment.bind(this);
 
-    this.state = {
-      activeComponent: null,
-      activeStory: null,
-      activeVersion: null,
-      user: {
-        isUserAuthenticated: null,
-        userNickName: null,
-        userEmail: null,
-      },
-      userComment: null,
-      comments: null,
-    };
+	  this.state = {
+        activeComponent: null,
+        activeStory: null,
+        activeVersion: null,
+        user: {
+            isUserAuthenticated: false,
+            userName: '',
+            userEmail: '',
+        },
+        userComment: '',
+        comments: [],
+	  };
   }
   componentWillMount() {
     hasStorage('localStorage') && this.verifyUser();
@@ -43,30 +46,63 @@ export default class Panel extends Component {
         activeStory: story
     });
     this.fetchComments(kind, story);
+    this.setState({ userComment: '' });
   }
   verifyUser() {
-    const userNickName = localStorage.getItem('blabbr_userNickName');
+    const userName = localStorage.getItem('blabbr_userName');
     const userEmail = localStorage.getItem('blabbr_userEmail');
-    userNickName && userEmail && this.setState({ user: { userNickName,  userEmail, isUserAuthenticated: true }});
+    userName && userEmail && this.setState({ user: { userName,  userEmail, isUserAuthenticated: true }});
   }
-  registerUser(nickname, email) {
+  registerUser(username, email) {
     const { user } = this.state;
-    localStorage.setItem('blabbr_userNickName', nickname);
+    localStorage.setItem('blabbr_userName', username);
     localStorage.setItem('blabbr_userEmail', email);
     this.setState({ user: Object.assign(user, { isUserAuthenticated: true })});
   }
-  onUserNickNameChange(e) {
+  onUserNameChange(e) {
     const { user } = this.state;
-    this.setState({ user: Object.assign(user, { userNickName: e.target.value })});
+    this.setState({ user: Object.assign(user, { userName: e.target.value })});
   }
   onUserEmailChange(e) {
     const { user } = this.state;
     this.setState({ user: Object.assign(user, { userEmail: e.target.value })});
   }
   onRegisterSubmit(e) {
-    const { user: { userNickName, userEmail } } =  this.state;
+    const { user: { userName, userEmail } } =  this.state;
     e.preventDefault();
-    this.registerUser(userNickName, userEmail);
+    this.registerUser(userName, userEmail);
+  }
+  onUserCommentChange(e) {
+    this.setState({ userComment: e.target.value });
+  }
+  onCommentSubmit(e) {
+    const { userComment } = this.state;
+    e.preventDefault();
+    this.postComment(userComment);
+  }
+  postComment(userComment) {
+    const {
+      user: { userName, userEmail },
+      activeComponent,
+      activeStory,
+      activeVersion,
+      comments,
+    } = this.state;
+
+    postComment({
+      userComment,
+      userName,
+      userEmail,
+      component: activeComponent,
+      story: activeStory,
+      version: activeVersion,
+    })
+      .then((data) => {
+        this.setState({
+          comments: [data.comment, ...comments],
+          userComment: ''
+        });
+      });
   }
   fetchComments(kind, story, version) {
     getComments(kind, story, version)
@@ -77,31 +113,36 @@ export default class Panel extends Component {
   }
   render() {
     const {
-      user: { userNickName, userEmail, isUserAuthenticated },
-      comments
+      user: { userName, userEmail, isUserAuthenticated },
+	    userComment,
+        comments
     } = this.state;
 
     return (
-          <section className="panel-container">
+      <section className="panel-container">
 
-	          { !!comments &&
-                <Comments comments={comments} />
-	          }
+        { !!comments &&
+          <Comments comments={comments} />
+        }
 
-			  { !isUserAuthenticated &&
-                <Register
-                  onUserNickNameChange={this.onUserNickNameChange}
-                  onUserEmailChange={this.onUserEmailChange}
-                  onRegisterSubmit={this.onRegisterSubmit}
-                  userNickName={userNickName}
-                  userEmail={userEmail} />
-			  }
+        { !isUserAuthenticated &&
+          <Register
+            onUserNameChange={this.onUserNameChange}
+            onUserEmailChange={this.onUserEmailChange}
+            onRegisterSubmit={this.onRegisterSubmit}
+            userName={userName}
+            userEmail={userEmail} />
+        }
 
-			  { !!isUserAuthenticated &&
-                <SubmitComment />
-			  }
+        { !!isUserAuthenticated &&
+          <SubmitComment
+            userComment={userComment}
+            onUserCommentChange={this.onUserCommentChange}
+            onCommentSubmit={this.onCommentSubmit}
+          />
+        }
 
-          </section>
+      </section>
 	  );
   }
 }

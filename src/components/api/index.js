@@ -11,6 +11,23 @@ export const getComments = (component, story, version) => {
 
 };
 
-export const  postComment = (component, story, version, comment) => {
-	console.log(component, version, comment);
+export const postComment = ({
+  userName,
+  userEmail,
+  userComment,
+  component,
+  story,
+  version,
+}) => {
+  const url = `${config.endpoint}/${cleanComponentId(component)}`;
+  return makeRequest(url, {
+    method: 'POST',
+    body: JSON.stringify({
+      userName: userName,
+      userEmail: userEmail,
+      'comment': userComment,
+      'stateId': story,
+      'version': version || "null",
+    })
+  });
 };

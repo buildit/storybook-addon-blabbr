@@ -25,7 +25,7 @@ const Comments = ({comments}) => {
 		const time = `${_date.getHours()}:${_date.getMinutes()}`;
 		return (
 			<Comment key={i}
-		         nickname={comment.userName}
+		         username={comment.userName}
 		         emailId={comment.userEmail}
 		         date={`${date} ${month} ${year}`}
 	             time={time}

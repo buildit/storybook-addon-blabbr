@@ -7,7 +7,7 @@ storiesOf('Comment')
   .add('Basic comment', () => (
     <Comment
       emailId={text('Email id', 'abc@efg.com')}
-      nickname={text('Nickname', 'abc')}
+      username={text('User name', 'abc')}
       date={text('Date', 'xx/xx/xxxx')}
       comment={text('Comment', 'Lorem ipsum')}
       approved={boolean('Approved', false)}
