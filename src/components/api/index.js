@@ -27,7 +27,7 @@ export const postComment = ({
       userEmail: userEmail,
       'comment': userComment,
       'stateId': story,
-      'version': version || "null",
+      'version': version || "initial",
     })
   });
 };
