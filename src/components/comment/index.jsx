@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Panel, Well, Button } from 'react-bootstrap';
+
 const Comment = ({
   username,
   emailId,
@@ -52,6 +53,7 @@ Comment.propTypes = {
   time: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
   approved: PropTypes.bool,
+  commentId: PropTypes.string.isRequired,
   currentUserIsOwner: PropTypes.bool.isRequired,
   onUserCommentDelete: PropTypes.func.isRequired,
 };
