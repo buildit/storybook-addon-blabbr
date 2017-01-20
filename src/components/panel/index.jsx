@@ -44,9 +44,7 @@ export default class Panel extends Component {
   }
   componentDidMount() {
     const { storybook } = this.props;
-    if (storybook) {
-      storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
-    }
+    storybook && storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
   }
   componentWillUnmount() {
     if (this.commentChannelListener) {
