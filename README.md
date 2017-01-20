@@ -1,6 +1,6 @@
-# storybook-addon-reviewer
+# storybook-addon-blabbr
 
-Component reviewer for React Storybook
+Component reviewer and approver for React Storybook.
 
 ## Usage
 You can setup the plugin to either show the comment in a separate panel or inline in the story.
@@ -10,8 +10,15 @@ Run up [the API](https://github.com/jon-ec/blabbr) locally. The addon expects th
 `http://localhost:3001`
 
 ### In Panel
-To get the comments in a panel you will need to register the addon in your `addons.js` file in the storybook
-configuration.
+To get the comments in a panel you will need to register the addon. Just add the following to your `addons.js` file in the storybook
+configuration:
+`import '@buildit/storybook-addon-blabbr';`
 
 ### Inline
-To show comments inline in the story you need to add the following to your configuration.
+To show comments inline in the story you need to configure the plugin as a decorator. Add the following to your `config.js` in the storybook configuration:
+
+```
+import { withComments } from '@buildit/storybook-addon-blabbr';
+
+addDecorator(withComments);
+```
