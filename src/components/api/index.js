@@ -1,7 +1,7 @@
 import { makeRequest, cleanToken } from '../../utils';
 
 const config = {
-  endpoint: 'http://localhost:3001',
+  endpoint: 'http://localhost:3000',
 };
 
 export const getComments = (component, story, version) => {
@@ -31,4 +31,12 @@ export const postComment = ({
       'version': version || "initial",
     })
   });
+};
+
+export const deleteComment = (component, commentId) => {
+	const url = `${config.endpoint}/${cleanToken(component)}/${commentId}`;
+	console.warn('URL TO DELETE,', url);
+	return makeRequest(url, {
+		method: 'DELETE'
+	});
 };
