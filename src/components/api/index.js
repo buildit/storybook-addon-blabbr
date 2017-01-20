@@ -8,6 +8,9 @@ export const getComments = (component, story, version) => {
   const componentId = cleanToken(component);
   const storyId = cleanToken(story);
   const endPoint = `${config.endpoint}${componentId ? '/' + componentId : ''}${storyId ? '/' + storyId : ''}${version ? '/' + version : ''}`;
+  console.log("componentId", componentId);
+  console.log("storyId", storyId);
+  console.log("endpoint", endPoint);
   return makeRequest(endPoint);
 
 };
@@ -27,7 +30,7 @@ export const postComment = ({
       userName: userName,
       userEmail: userEmail,
       'comment': userComment,
-      'stateId': story,
+      'stateId': cleanToken(story),
       'version': version || "initial",
     })
   });
