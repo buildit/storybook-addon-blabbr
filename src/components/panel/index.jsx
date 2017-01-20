@@ -8,6 +8,7 @@ import Register from '../register';
 import SubmitComment from '../submitComment';
 import db from '../api/db';
 import { cleanToken } from '../../utils';
+import AlertContainer from 'react-alert';
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -39,6 +40,13 @@ export default class Panel extends Component {
 
     this.commentChannelListener = null;
     this.channelListening = false;
+    this.alertOptions = {
+      offset: 14,
+      position: 'bottom right',
+      theme: 'light',
+      time: 3000,
+      transition: 'fade'
+    };
   }
   componentWillMount() {
     hasStorage('localStorage') && this.verifyUser();
@@ -140,7 +148,13 @@ export default class Panel extends Component {
   }
   onUserCommentDelete(e) {
     const { activeComponent } = this.state;
-    deleteComment(activeComponent, e.target.id);
+    deleteComment(activeComponent, e.target.id).then((data) => {
+        if (data.success) {
+          msg.success(data.msg);
+        } else {
+          msg.error(data.msg)
+        }
+    });
   }
   postComment(userComment) {
     const {
@@ -158,18 +172,23 @@ export default class Panel extends Component {
       component: activeComponent,
       story: activeStory,
       version: activeVersion,
+    }).then((data) => {
+      if (data.success) {
+        msg.success(data.msg);
+      } else {
+        msg.error(data.msg);
+      }
+    }).catch((error) => {
+        msg.error('An error occured while attempting to post your comment.')
     });
-    // TODO - comment added successfully notification
-    //   .then((data) => {
-    //     // console.log('comment added', data);
-    //   });
   }
   fetchComments(kind, story, version) {
     getComments(kind, story, version)
-      .then(data => {
+      .then((data) => {
+
+        console.log(data);
         this.setState({ comments: data.comments });
-	  })
-      .catch((e) => {});
+      }).catch((e) => {});
   }
   render() {
     const {
@@ -186,6 +205,7 @@ export default class Panel extends Component {
 
     return (
       <section className="panel-container">
+        <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
         <h2>Comments { commentCountView }</h2>
 
         { !isUserAuthenticated &&
