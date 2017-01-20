@@ -32,7 +32,9 @@ const Comments = ({ comments, currentUser, onUserCommentDelete }) => {
 	         date={`${date} ${month} ${year}`}
              time={time}
 	         comment={ comment.comment}
-	         approved={comment.approved} />
+	         approved={comment.approved}
+             commentId={comment.id}
+		  />
 		)
 	});
 	return 	(
