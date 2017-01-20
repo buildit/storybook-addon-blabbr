@@ -1,9 +1,9 @@
 import React from 'react';
 import { configure, setAddon, addDecorator } from '@kadira/storybook';
 import { withKnobs } from '@kadira/storybook-addon-knobs';
-import ReviewerAddon from '../src/';
+import AddComments from '../src/';
 
-setAddon(ReviewerAddon);
+setAddon(AddComments);
 
 addDecorator(withKnobs);
 addDecorator((story) => (

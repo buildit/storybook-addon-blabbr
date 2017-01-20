@@ -7,7 +7,7 @@
     "lint": "eslint src --ext .js,.jsx",
     "test": "echo *** no tests",
     "start": "echo *** no start",
-    "prepublish": "echo *** no prepublish",
+    "prepublish": "npm run lint",
     "storybook": "start-storybook -p 9001"
   },
   "repository": {
