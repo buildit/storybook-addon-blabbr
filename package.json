@@ -1,7 +1,7 @@
 {
-  "name": "@buildit/storybook-addon-reviewer",
+  "name": "@buildit/storybook-addon-blabbr",
   "version": "0.0.1",
-  "description": "React Storybook Addon Component Reviewer",
+  "description": "Component review and commenting for React Storybook",
   "main": "index.js",
   "scripts": {
     "lint": "eslint src --ext .js,.jsx",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buildit/storybook-addon-reviewer.git"
+    "url": "git+https://github.com/buildit/storybook-addon-blabbr.git"
   },
   "keywords": [
     "react",
@@ -27,9 +27,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/buildit/storybook-addon-reviewer/issues"
+    "url": "https://github.com/buildit/storybook-addon-blabbr/issues"
   },
-  "homepage": "https://github.com/buildit/storybook-addon-reviewer#readme",
+  "homepage": "https://github.com/buildit/storybook-addon-blabbr#readme",
   "devDependencies": {
     "@kadira/storybook-addon-knobs": "^1.7.1",
     "babel-cli": "^6.18.0",
