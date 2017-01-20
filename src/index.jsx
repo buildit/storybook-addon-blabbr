@@ -1,12 +1,12 @@
 import React from 'react';
+import { StoryWrapper } from './components';
 
 function addComments(storyName, storyFn, _options) {
   return this.add(storyName, (context) => (
-    <div>
-      This story has comments<br />
+    <StoryWrapper>
       {storyFn(context)}
-    </div>
+    </StoryWrapper>
   ));
 }
 
-export default addComments;
+export default { addComments };
