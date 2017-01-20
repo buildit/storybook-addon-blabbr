@@ -35,7 +35,6 @@ export const postComment = ({
 
 export const deleteComment = (component, commentId) => {
 	const url = `${config.endpoint}/${cleanToken(component)}/${commentId}`;
-	console.warn('URL TO DELETE,', url);
 	return makeRequest(url, {
 		method: 'DELETE'
 	});
