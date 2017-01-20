@@ -173,9 +173,15 @@ export default class Panel extends Component {
         comments
     } = this.state;
 
+    const commentCount = comments.length;
+
+    const commentCountView = commentCount ?
+      <span>Total comments: { commentCount }</span> :
+      null;
+
     return (
       <section className="panel-container">
-        <h2>Comments</h2>
+        <h2>Comments { commentCountView }</h2>
 
         { !isUserAuthenticated &&
           <Register
