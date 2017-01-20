@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './style.less';
-import { getComments, postComment } from '../api';
+import { getComments, postComment, deleteComment } from '../api';
 import { hasStorage } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
@@ -22,6 +22,7 @@ export default class Panel extends Component {
     this.onUserCommentChange = this.onUserCommentChange.bind(this);
     this.onCommentSubmit = this.onCommentSubmit.bind(this);
     this.postComment = this.postComment.bind(this);
+    this.onUserCommentDelete = this.onUserCommentDelete.bind(this);
 
 	  this.state = {
         activeComponent: null,
@@ -137,6 +138,10 @@ export default class Panel extends Component {
     e.preventDefault();
     this.postComment(userComment);
   }
+  onUserCommentDelete(e) {
+    const { activeComponent } = this.state;
+    deleteComment(activeComponent, e.target.id);
+  }
   postComment(userComment) {
     const {
       user: { userName, userEmail },
@@ -201,7 +206,11 @@ export default class Panel extends Component {
         }
 
         { !!comments &&
-          <Comments comments={comments} />
+          <Comments
+            onUserCommentDelete={this.onUserCommentDelete}
+            currentUser={userEmail}
+            comments={comments}
+          />
         }
 
       </section>

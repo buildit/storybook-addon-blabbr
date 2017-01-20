@@ -1,12 +1,16 @@
 import React, { PropTypes } from 'react';
 import { Panel, Well, Button } from 'react-bootstrap';
+
 const Comment = ({
   username,
   emailId,
   date,
   time,
   comment,
-  approved
+  approved,
+  currentUserIsOwner,
+  commentId,
+  onUserCommentDelete,
 }) => {
   const panelHeader = (
     <h3>{`${date}, ${time}`}</h3>
@@ -24,9 +28,20 @@ const Comment = ({
           {approved ? 'Approved' : 'Approve'}
       </Button>
       <Button
-        bsStyle="warning">
+        style={{ marginRight: 10 }}
+        bsStyle="warning"
+      >
         Edit
       </Button>
+      { !!currentUserIsOwner &&
+        <Button
+          bsStyle="danger"
+          id={commentId}
+          onClick={onUserCommentDelete}
+        >
+          Delete
+        </Button>
+      }
     </Panel>
   );
 };
@@ -38,6 +53,9 @@ Comment.propTypes = {
   time: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
   approved: PropTypes.bool,
+  commentId: PropTypes.string.isRequired,
+  currentUserIsOwner: PropTypes.bool.isRequired,
+  onUserCommentDelete: PropTypes.func.isRequired,
 };
 
 Comment.defaultProps = {
