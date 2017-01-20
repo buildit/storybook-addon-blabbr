@@ -2,13 +2,11 @@
   "name": "@buildit/storybook-addon-blabbr",
   "version": "0.0.1",
   "description": "Component review and commenting for React Storybook",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src --ext .js,.jsx",
-    "test": "echo *** no tests",
-    "start": "echo *** no start",
-    "prepublish": "npm run lint",
-    "storybook": "start-storybook -p 9001"
+    "storybook": "start-storybook -p 9001",
+    "prepublish": "babel ./src --out-dir ./dist"
   },
   "repository": {
     "type": "git",
@@ -16,7 +14,8 @@
   },
   "keywords": [
     "react",
-    "storybook"
+    "storybook",
+    "atomic-design"
   ],
   "author": "Buildit",
   "contributors": [
