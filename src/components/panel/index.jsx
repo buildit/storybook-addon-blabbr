@@ -44,7 +44,9 @@ export default class Panel extends Component {
   }
   componentDidMount() {
     const { storybook } = this.props;
-    storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
+    if (storybook) {
+      storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
+    }
   }
   componentWillUnmount() {
     if (this.commentChannelListener) {
@@ -205,10 +207,10 @@ export default class Panel extends Component {
 
 Panel.propTypes = {
   storybook: PropTypes.object,
-  inline: PropTypes.bool,
+  inStory: PropTypes.bool,
 };
 
 Panel.defaultProps = {
   storybook: null,
-  inline: true,
+  inStory: false,
 };

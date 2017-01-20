@@ -1,12 +1,16 @@
 import React from 'react';
+import addons from '@kadira/storybook-addons';
 import { StoryWrapper } from './components';
 
-function addComments(storyName, storyFn, _options) {
-  return this.add(storyName, (context) => (
+function wrapStory(channel, storyFn, context) {
+  return (
     <StoryWrapper>
       {storyFn(context)}
     </StoryWrapper>
-  ));
+  );
 }
 
-export default { addComments };
+export function withComments(storyFn, context) {
+  const channel = addons.getChannel();
+  return wrapStory(channel, storyFn, context);
+}

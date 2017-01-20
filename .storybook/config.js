@@ -1,11 +1,10 @@
 import React from 'react';
 import { configure, setAddon, addDecorator } from '@kadira/storybook';
 import { withKnobs } from '@kadira/storybook-addon-knobs';
-import AddComments from '../src/';
-
-setAddon(AddComments);
+import { withComments } from '../src/';
 
 addDecorator(withKnobs);
+addDecorator(withComments);
 addDecorator((story) => (
 	<div style={{padding: '10px'}}>
 		{story()}

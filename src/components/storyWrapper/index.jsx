@@ -1,11 +1,12 @@
 import React from 'react';
+import { Panel } from '../';
 
 class StoryWrapper extends React.Component {
   render() {
     return (
       <div>
         {this.props.children}
-        Comments are here
+        <Panel inStory />
       </div>
     );
   }
