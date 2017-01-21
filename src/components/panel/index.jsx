@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import './style.less';
+import AlertContainer from 'react-alert';
 import { getComments, postComment, deleteComment } from '../api';
-import { hasStorage } from '../../utils';
+import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
 import db from '../api/db';
-import { cleanToken } from '../../utils';
-import AlertContainer from 'react-alert';
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -200,11 +198,25 @@ export default class Panel extends Component {
     const commentCount = comments.length;
 
     const commentCountView = commentCount ?
-      <span>Total comments: { commentCount }</span> :
+      (<span
+        style={{
+          fontSize: '13px',
+          color: 'gray',
+          float: 'right',
+        }}
+      >
+        Total comments: { commentCount }
+      </span>) :
       null;
 
     return (
-      <section className="panel-container">
+      <section
+        className="panel-container"
+        style={{
+          padding: '0 20px',
+          width: '100%',
+        }}
+      >
         <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
         <h2>Comments { commentCountView }</h2>
 
