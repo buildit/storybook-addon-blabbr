@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint src --ext .js,.jsx",
     "storybook": "start-storybook -p 9001",
-    "prepublish": "babel ./src --out-dir ./dist"
+    "prepublish": "babel ./src --out-dir dist --copy-files"
   },
   "repository": {
     "type": "git",
