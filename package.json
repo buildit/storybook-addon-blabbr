@@ -7,7 +7,7 @@
     "lint": "eslint src --ext .js,.jsx",
     "storybook": "start-storybook -p 9001",
     "transpile": "babel ./src --out-dir dist --copy-files",
-    "prepublish": "rm -fr dist && babel ./src --out-dir dist --copy-files"
+    "prepublish": "rm -fr dist && babel src --out-dir dist --copy-files"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,6 @@
     "babel-loader": "^6.2.10",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-2": "^6.18.0",
-    "bootstrap": "^3.3.7",
     "css-loader": "^0.26.1",
     "eslint": "^3.13.1",
     "eslint-config-airbnb": "^14.0.0",
@@ -45,16 +44,17 @@
     "eslint-plugin-react": "^6.9.0",
     "file-loader": "^0.9.0",
     "json-loader": "^0.5.4",
-    "react-bootstrap": "^0.30.7",
     "style-loader": "^0.13.1",
     "webpack": "^1.14.0"
   },
   "dependencies": {
     "@kadira/storybook": "^2.35.2",
+    "bootstrap": "^3.3.7",
     "firebase": "^3.6.6",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
     "react-alert": "^1.0.14",
+    "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2"
   },
   "peerDependencies": {

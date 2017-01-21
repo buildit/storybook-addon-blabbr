@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
+import AlertContainer from 'react-alert';
 import { getComments, postComment, deleteComment } from '../api';
-import { hasStorage } from '../../utils';
+import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
 import db from '../api/db';
-import { cleanToken } from '../../utils';
-import AlertContainer from 'react-alert';
 
 export default class Panel extends Component {
   constructor(...args) {
