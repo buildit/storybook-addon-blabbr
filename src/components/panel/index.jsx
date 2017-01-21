@@ -199,11 +199,25 @@ export default class Panel extends Component {
     const commentCount = comments.length;
 
     const commentCountView = commentCount ?
-      <span>Total comments: { commentCount }</span> :
+      (<span
+        style={{
+          fontSize: '13px',
+          color: 'gray',
+          float: 'right',
+        }}
+      >
+        Total comments: { commentCount }
+      </span>) :
       null;
 
     return (
-      <section className="panel-container">
+      <section
+        className="panel-container"
+        style={{
+          padding: '0 20px',
+          width: '100%',
+        }}
+      >
         <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
         <h2>Comments { commentCountView }</h2>
 
