@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import './style.less';
 import { getComments, postComment, deleteComment } from '../api';
 import { hasStorage } from '../../utils';
 import Comments from '../comments';
