@@ -20,7 +20,7 @@ export default class Panel extends Component {
     this.verifyUser = this.verifyUser.bind(this);
     this.onUserCommentChange = this.onUserCommentChange.bind(this);
     this.onCommentSubmit = this.onCommentSubmit.bind(this);
-    this.postComment = this.postComment.bind(this);
+    this.addComment = this.addComment.bind(this);
     this.onUserCommentDelete = this.onUserCommentDelete.bind(this);
 
 	  this.state = {
@@ -45,6 +45,11 @@ export default class Panel extends Component {
       time: 3000,
       transition: 'fade'
     };
+    this.flagActions = {
+      add: false,
+      remove: false,
+      edit: false
+    };
   }
   componentWillMount() {
     hasStorage('localStorage') && this.verifyUser();
@@ -66,41 +71,83 @@ export default class Panel extends Component {
     });
     this.fetchComments(kind, story);
     this.setState({ userComment: '' });
-    this.listenForCommentChanges();
+  }
+  fetchComments(kind, story) {
+    getComments(kind, story)
+      .then((data) => {
+        this.setState({ comments: data.comments });
+        // add listener for channel comments events
+        this.listenForCommentChanges();
+      }).catch((e) => {});
   }
   listenForCommentChanges() {
-    const { activeComponent } = this.state;
-    var componentId;
+    const { activeComponent, activeStory } = this.state;
+    var componentId, stateId;
+
+    componentId = cleanToken(activeComponent);
+    stateId = cleanToken(activeStory);
 
     // remove listeners for previous comment stream
-    if (this.commentChannelListener) {
+    if (this.commentChannelListener !== null) {
       this.commentChannelListener.off();
-      this.channelListening = false;
+      this.commentChannelListener = null;
     }
-    componentId = cleanToken(activeComponent);
-
-    // register listener
+    // register listeners
+    // These listeners use flagActions to only fire if you're
+    // not the current user
     this.commentChannelListener = db.ref('comments/' + componentId);
-    this.commentChannelListener.on('value', function(snapshot) {
-      var updatedComments = [],
-        commentsData,
-        commentKey;
+    this.commentChannelListener.on('child_added', function(data) {
+      // data.key, data.val();
+      if (data.val().stateId === stateId &&
+        !this.flagActions.add &&
+        this.isNewComment(data.key)) {
+          msg.info('A new comment was added.');
+      }
+      this.flagActions.add = false;
+    }.bind(this));
 
-      // only fire on change - not initial load
-      if (!this.channelListening) {
+    this.commentChannelListener.on('child_changed', function(data) {
+      if (data.val().stateId === stateId &&
+        !this.flagActions.edit) {
+        msg.info('A comment was editted.');
+      }
+      this.flagActions.edit = false;
+    }.bind(this));
+
+    this.commentChannelListener.on('child_removed', function(data) {
+      if (data.val().stateId === stateId &&
+        !this.flagActions.remove) {
+        msg.info('A comment has been removed.');
+      }
+      this.flagActions.remove = false;
+    }.bind(this));
+
+    this.commentChannelListener.on('value', function(snapshot) {
+      // only fire below events on change - not initial value subscriptions
+      if (this.channelListening === false) {
         this.channelListening = true;
         return;
       }
-      var snapshotData = snapshot.val();
 
-      for (var key in snapshotData) {
+      var updatedComments = [],
+        commentsData,
+        commentKey,
+        snapShotKey,
+        snapshotData = snapshot.val();
+
+      for (snapShotKey in snapshotData) {
         // skip loop if the property is from prototype
-        if (!snapshotData.hasOwnProperty(key)) continue;
+        if (!snapshotData.hasOwnProperty(snapShotKey)) continue;
 
-        commentsData = snapshotData[key];
+        commentsData = snapshotData[snapShotKey];
+
+        // only update this channel
+        if (commentsData.stateId !== stateId) {
+          continue;
+        }
 
         updatedComments.push({
-          id: key,
+          id: snapShotKey,
           ...commentsData
         });
       }
@@ -110,7 +157,20 @@ export default class Panel extends Component {
         userComment: ''
       });
     }.bind(this));
+  }
+  isNewComment(dataKey) {
+    var { comments } = this.state,
+      idFound = false,
+      commentsLength,
+      i;
 
+    for (i = 0, commentsLength = comments.length; i < commentsLength; i++) {
+      if (comments[i].id === dataKey) {
+        idFound = true;
+        break;
+      }
+    }
+    return !idFound;
   }
   verifyUser() {
     const userName = localStorage.getItem('blabbr_userName');
@@ -142,10 +202,11 @@ export default class Panel extends Component {
   onCommentSubmit(e) {
     const { userComment } = this.state;
     e.preventDefault();
-    this.postComment(userComment);
+    this.addComment(userComment);
   }
   onUserCommentDelete(e) {
     const { activeComponent } = this.state;
+    this.flagActions.remove = true;
     deleteComment(activeComponent, e.target.id).then((data) => {
         if (data.success) {
           msg.success(data.msg);
@@ -154,7 +215,7 @@ export default class Panel extends Component {
         }
     });
   }
-  postComment(userComment) {
+  addComment(userComment) {
     const {
       user: { userName, userEmail },
       activeComponent,
@@ -163,6 +224,7 @@ export default class Panel extends Component {
       comments,
     } = this.state;
 
+    this.flagActions.add = true;
     postComment({
       userComment,
       userName,
@@ -179,14 +241,6 @@ export default class Panel extends Component {
     }).catch((error) => {
         msg.error('An error occured while attempting to post your comment.')
     });
-  }
-  fetchComments(kind, story, version) {
-    getComments(kind, story, version)
-      .then((data) => {
-
-        console.log(data);
-        this.setState({ comments: data.comments });
-      }).catch((e) => {});
   }
   render() {
     const {
