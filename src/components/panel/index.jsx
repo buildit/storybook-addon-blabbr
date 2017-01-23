@@ -96,6 +96,13 @@ export default class Panel extends Component {
     // These listeners use flagActions to only fire if you're
     // not the current user
     this.commentChannelListener = db.ref('comments/' + componentId);
+    // Note: The Child Added event is typically used when retrieving a
+    // list of items (e.g. chat messages) in Firebase. Unlike 'value'
+    // which fires for the entire contents of the location, 'child_added'
+    // fires once for each immediate child and continues to trigger as
+    // new children are added. Therefore we only want this function to
+    // fire when new comments are added hence the use of our helper
+    // function 'this.isNewComment'.
     this.commentChannelListener.on('child_added', function(data) {
       // data.key, data.val();
       if (data.val().stateId === stateId &&
