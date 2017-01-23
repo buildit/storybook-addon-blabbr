@@ -38,3 +38,13 @@ export const deleteComment = (component, commentId) => {
 		method: 'DELETE'
 	});
 };
+
+export const updateComment = (component, commentId, comment) => {
+  const url = `${config.endpoint}/${cleanToken(component)}/${commentId}`;
+  return makeRequest(url, {
+    method: 'PUT',
+    body: JSON.stringify({
+      comment: comment
+    })
+  });
+}

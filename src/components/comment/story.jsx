@@ -14,6 +14,7 @@ storiesOf('Comment')
       time={'22 Jan 2017, 18:02'}
       commentId={'123'}
       currentUserIsOwner={true}
+      onUserCommentEdit={() => false}
       onUserCommentDelete={() => true}
     />
   ));

@@ -1,40 +1,47 @@
 import React, { PropTypes } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import Comment from '../comment';
+import SubmitComment from '../submitComment';
+import { getTimestamp } from '../../utils';
 
-const Comments = ({ comments, currentUser, onUserCommentDelete }) => {
+const Comments = ({ comments, currentUser, commentIdBeingEditted, userCommentBeingUpdated, onUserCommentEditCancel, onUserCommentEditSave, onUserCommentUpdate, onUserCommentEdit, onUserCommentDelete }) => {
 	const commentsComponents = comments.map((comment, i) => {
-		const months = [
-			'Jan',
-			'Feb',
-			'Mar',
-			'Apr',
-			'May',
-			'Jun',
-			'Jul',
-			'Aug',
-			'Sep',
-			'Oct',
-			'Nov',
-			'Dec'
-		];
-		const _date = new Date(comment.timestamp);
-		const date = _date.getDate();
-		const month = months[_date.getMonth()];
-		const year = _date.getFullYear();
-		const time = `${_date.getHours()}:${('0'+ _date.getMinutes()).slice(-2)}`;
+		const timestamp = getTimestamp(comment.timestamp);
+		const lastUpdated = getTimestamp(comment.lastUpdated);
+		const beingEditted = comment.id === commentIdBeingEditted;
+
+		if (beingEditted) {
+			userCommentBeingUpdated = userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
+		}
+
 		return (
-		  <Comment key={i}
-	         onUserCommentDelete={onUserCommentDelete}
-	         currentUserIsOwner={currentUser === comment.userEmail}
-	         username={comment.userName}
-	         emailId={comment.userEmail}
-	         date={`${date} ${month} ${year}`}
-             time={time}
-	         comment={ comment.comment}
-	         approved={comment.approved}
-             commentId={comment.id}
-		  />
+			<div key={i}>
+			{ !!beingEditted === true ?
+				<SubmitComment key={i}
+					userComment={userCommentBeingUpdated}
+					onUserCommentChange={onUserCommentUpdate}
+					onCommentSubmit={onUserCommentEditSave}
+					onCommentCancel={onUserCommentEditCancel}
+					title={'Edit comment'}
+					comment={comment}
+					type={'Edit'}
+				/>
+				 :
+				 <Comment
+					onUserCommentEdit={onUserCommentEdit}
+					onUserCommentDelete={onUserCommentDelete}
+					currentUserIsOwner={currentUser === comment.userEmail}
+					username={comment.userName}
+					emailId={comment.userEmail}
+					timestamp={timestamp}
+					comment={comment.comment}
+					approved={comment.approved}
+					commentId={comment.id}
+					edited={comment.edited}
+					lastUpdated={lastUpdated}
+ 		  	 />
+			 }
+			</div>
 		)
 	});
 	return 	(
@@ -46,7 +53,13 @@ const Comments = ({ comments, currentUser, onUserCommentDelete }) => {
 
 Comments.propTypes = {
   comments: PropTypes.array,
+	commentIdBeingEditted: PropTypes.string,
+	userCommentBeingUpdated: PropTypes.string,
   currentUser: PropTypes.string.isRequired,
+	onUserCommentUpdate: PropTypes.func.isRequired,
+	onUserCommentEdit: PropTypes.func.isRequired,
+	onUserCommentEditSave: PropTypes.func.isRequired,
+	onUserCommentEditCancel: PropTypes.func.isRequired,
   onUserCommentDelete: PropTypes.func.isRequired,
 };
 
