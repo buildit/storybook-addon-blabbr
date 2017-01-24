@@ -7,6 +7,6 @@ addons.register('buildit/blabbr', (api) => {
 
   addons.addPanel('buildit/blabbr', {
     title: 'blabbr',
-    render: () => <Panel channel={channel} storybook={api} inline key="knobs-panel" />,
+    render: () => <Panel channel={channel} storybook={api} key="blabbr-panel" />,
   });
 });

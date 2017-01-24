@@ -1,21 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
-import { Panel } from '../';
 
 class StoryWrapper extends React.Component {
   constructor(props) {
     super(props);
-    this.toggleComments = this.toggleComments.bind(this);
+    this.showComments = this.showComments.bind(this);
 
     this.state = {
-      showComments: false,
+      commentCount: 0,
     };
   }
 
-  toggleComments() {
-    this.setState({
-      showComments: !this.state.showComments,
-    });
+  showComments() {
+    this.props.channel.emit('blabbrFocusTab');
   }
 
   render() {
@@ -25,18 +22,23 @@ class StoryWrapper extends React.Component {
         <button
           type="button"
           className="btn btn-default"
-          onClick={this.toggleComments}
+          onClick={this.showComments}
           style={{
+            position: 'fixed',
+            top: '0',
+            right: '0',
             display: 'block',
-            marginTop: '10px',
           }}
         >
           <span className="glyphicon glyphicon-comment" />
         </button>
-        { this.state.showComments && <Panel inStory /> }
       </div>
     );
   }
 }
+
+StoryWrapper.propTypes = {
+  channel: React.PropTypes.object.isRequired,
+};
 
 export default StoryWrapper;
