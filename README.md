@@ -7,7 +7,8 @@ You can setup the plugin to either show the comment in a separate panel or inlin
 
 ## API
 Run up [the API](https://github.com/jon-ec/blabbr) locally. The addon expects the API to be available on
-`http://localhost:3001`
+`http://localhost:3001`. You will need to sign up for a firebase ID and create a project and enter the relevant
+info and keys to `src/components/api/db.js`.
 
 ### In Panel
 To get the comments in a panel you will need to register the addon. Just add the following to your `addons.js` file in the storybook
