@@ -30,6 +30,7 @@ export default class Panel extends Component {
     this.onCommentSubmit = this.onCommentSubmit.bind(this);
     this.addComment = this.addComment.bind(this);
     this.onUserCommentDelete = this.onUserCommentDelete.bind(this);
+    this.onShowAllComments = this.onShowAllComments.bind(this);
 
 	  this.state = {
         activeComponent: null,
@@ -42,6 +43,7 @@ export default class Panel extends Component {
         },
         userComment: '',
         comments: [],
+        showingAllComments: true,
         userCommentBeingUpdated: null,
         commentIdBeingEditted: null
 	  };
@@ -60,6 +62,9 @@ export default class Panel extends Component {
       remove: false,
       edit: false
     };
+    this.commentsThreshold = 5;
+    this.filteredComments = [];
+    this.allComments = [];
   }
 
   componentWillMount() {
@@ -95,10 +100,32 @@ export default class Panel extends Component {
   fetchComments(kind, story) {
     getComments(kind, story)
       .then((data) => {
-        this.setState({ comments: data.comments });
+        var comments = data.comments,
+          commentsLength = comments.length,
+          threshold = this.commentsThreshold,
+          showingAllComments = true;
+
+        this.allComments = comments ? comments.slice(0) : [];
+
+        if (commentsLength > threshold) {
+          this.filteredComments = comments ? comments.slice(0, threshold) : [];
+          showingAllComments = false;
+        }
+        this.setState({
+          comments: showingAllComments ? this.allComments : this.filteredComments,
+          showingAllComments: showingAllComments
+        });
         // add listener for channel comments events
         this.listenForCommentChanges();
-      }).catch((e) => {});
+      }).catch((e) => {
+        console.log('Error:', e);
+      });
+  }
+  onShowAllComments() {
+    this.setState({
+      comments: this.allComments,
+      showingAllComments: true
+    });
   }
 
   listenForCommentChanges() {
@@ -161,7 +188,10 @@ export default class Panel extends Component {
         commentsData,
         commentKey,
         snapShotKey,
-        snapshotData = snapshot.val();
+        snapshotData = snapshot.val(),
+        commentsLength,
+        threshold = this.commentsThreshold,
+        showingAllComments;
 
       for (snapShotKey in snapshotData) {
         // skip loop if the property is from prototype
@@ -180,15 +210,27 @@ export default class Panel extends Component {
         });
       }
 
+      commentsLength = updatedComments.length;
+      showingAllComments = true;
+
+      this.allComments = updatedComments.slice(0);
+
+      if (commentsLength > threshold) {
+        this.filteredComments = this.allComments.slice(0, threshold);
+        showingAllComments = false;
+      }
+
       this.setState({
-        comments: updatedComments,
+        comments: showingAllComments ? this.allComments : this.filteredComments,
+        showingAllComments: showingAllComments,
         userComment: ''
       });
+
     }.bind(this));
   }
 
   isNewComment(dataKey) {
-    var { comments } = this.state,
+    var comments = this.allComments,
       idFound = false,
       commentsLength,
       i;
@@ -315,10 +357,11 @@ export default class Panel extends Component {
 	    userComment,
       userCommentBeingUpdated,
       comments,
-      commentIdBeingEditted
+      commentIdBeingEditted,
+      showingAllComments
     } = this.state;
 
-    const commentCount = comments.length;
+    const commentCount = this.allComments.length;
 
     const commentCountView = commentCount ?
       (<span
@@ -372,6 +415,8 @@ export default class Panel extends Component {
             currentUser={userEmail}
             comments={comments}
             commentIdBeingEditted={commentIdBeingEditted}
+            showingAllComments={showingAllComments}
+            onShowAllComments={this.onShowAllComments}
           />
         }
       </section>

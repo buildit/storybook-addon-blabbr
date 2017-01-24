@@ -3,6 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 import Comment from '../comment';
 import SubmitComment from '../submitComment';
 import { getTimestamp } from '../../utils';
+import { Button } from 'react-bootstrap';
 
 const Comments = ({
 	comments,
@@ -14,6 +15,8 @@ const Comments = ({
 	onUserCommentUpdate,
 	onUserCommentEdit,
 	onUserCommentDelete,
+	onShowAllComments,
+	showingAllComments
 }) => {
 	const commentsComponents = comments.map((comment, i) => {
 		const timestamp = getTimestamp(comment.timestamp);
@@ -53,10 +56,14 @@ const Comments = ({
 			</div>
 		)
 	});
+	const showAllCommentsLink = !showingAllComments ? <Button bsStyle="link" block style={{ marginBottom: 20 }}onClick={onShowAllComments}>Show all comments</Button> : null;
 	return 	(
-		<ListGroup componentClass="ul">
-			{ commentsComponents.length ? commentsComponents : <p>No comments to show for this story</p> }
-		</ListGroup>
+		<div>
+			<ListGroup componentClass="ul">
+				{ commentsComponents.length ? commentsComponents : <p>No comments to show for this story</p> }
+			</ListGroup>
+			{showAllCommentsLink}
+		</div>
 	);
 };
 
@@ -70,6 +77,8 @@ Comments.propTypes = {
 	onUserCommentEditSave: PropTypes.func.isRequired,
 	onUserCommentEditCancel: PropTypes.func.isRequired,
   onUserCommentDelete: PropTypes.func.isRequired,
+	showingAllComments: PropTypes.bool.isRequired,
+	onShowAllComments: PropTypes.func.isRequired
 };
 
 Comment.defaultProps = {
