@@ -8,9 +8,8 @@ storiesOf('Comment')
     <Comment
       emailId={text('Email id', 'abc@efg.com')}
       username={text('User name', 'abc')}
-      date={text('Date', 'xx/xx/xxxx')}
       comment={text('Comment', 'Lorem ipsum')}
-      time={'22 Jan 2017, 18:02'}
+      timestamp={'22 Jan 2017, 18:02'}
       commentId={'123'}
       currentUserIsOwner={true}
       onUserCommentEdit={() => false}
