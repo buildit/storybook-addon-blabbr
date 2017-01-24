@@ -10,7 +10,6 @@ storiesOf('Comment')
       username={text('User name', 'abc')}
       date={text('Date', 'xx/xx/xxxx')}
       comment={text('Comment', 'Lorem ipsum')}
-      approved={boolean('Approved', false)}
       time={'22 Jan 2017, 18:02'}
       commentId={'123'}
       currentUserIsOwner={true}

@@ -6,7 +6,6 @@ const Comment = ({
   emailId,
   timestamp,
   comment,
-  approved,
   currentUserIsOwner,
   commentId,
   onUserCommentEdit,
@@ -23,12 +22,6 @@ const Comment = ({
       <Well>
         {comment} {edited && <span className="text-muted"><br/>(edited - {lastUpdated})</span>}
       </Well>
-      <Button
-        bsStyle="success"
-        style={{ marginRight: 10 }}
-        disabled={approved}>
-          {approved ? 'Approved' : 'Approve'}
-      </Button>
       { !!currentUserIsOwner &&
         <Button
           style={{ marginRight: 10 }}
@@ -57,16 +50,11 @@ Comment.propTypes = {
   username: PropTypes.string,
   timestamp: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
-  approved: PropTypes.bool,
   commentId: PropTypes.string.isRequired,
   currentUserIsOwner: PropTypes.bool.isRequired,
   onUserCommentEdit: PropTypes.func.isRequired,
   onUserCommentDelete: PropTypes.func.isRequired,
   edited: PropTypes.bool
-};
-
-Comment.defaultProps = {
-  approved: false,
 };
 
 export default Comment;
