@@ -5,10 +5,20 @@ const SubmitComment = ({
   onUserCommentChange,
   onCommentSubmit,
   userComment,
+  title='Submit a comment',
+  type='Add',
+  onCommentCancel,
+  comment = {}
 }) => {
-  const formTitle = (
-    <h2>Submit a comment</h2>
-  );
+  const { id = null, userEmail = '', userName = '' } = comment;
+
+  const formTitle =
+    type === 'Edit' ?
+        <h2>{title}: <span>{`${userName} - ${userEmail}`}</span></h2>
+      :
+        <h2>{title}</h2>
+    ;
+
   return (
     <Panel header={formTitle}>
       <form>
@@ -20,13 +30,34 @@ const SubmitComment = ({
           />
         </FormGroup>
 
-        <Button
-          type="submit"
-          bsClass="btn btn-primary"
-          onClick={onCommentSubmit}
-        >
-          Submit
-        </Button>
+        { type === 'Edit' ?
+          [
+            <Button key={'save'}
+              type="submit"
+              id={id}
+              bsClass="btn btn-primary"
+              style={{ marginRight: 10 }}
+              onClick={onCommentSubmit}
+            >
+              Update
+            </Button>,
+            <Button key={'cancel'}
+              id={id}
+              bsStyle="danger"
+              onClick={onCommentCancel}
+            >
+              Cancel
+            </Button>
+          ]
+          :
+          <Button
+            type="submit"
+            bsClass="btn btn-primary"
+            onClick={onCommentSubmit}
+          >
+            Submit
+          </Button>
+        }
       </form>
     </Panel>
   );
@@ -36,6 +67,10 @@ SubmitComment.propTypes = {
   onUserCommentChange: PropTypes.func.isRequired,
   onCommentSubmit: PropTypes.func.isRequired,
   userComment: PropTypes.string,
+  type: PropTypes.string,
+  comment: PropTypes.object,
+  onCommentCancel: PropTypes.func,
+  title: PropTypes.string
 };
 
 export default SubmitComment;

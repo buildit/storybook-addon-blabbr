@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import AlertContainer from 'react-alert';
-import { getComments, postComment, deleteComment } from '../api';
+import { getComments, postComment, deleteComment, updateComment } from '../api';
 import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
@@ -23,6 +23,10 @@ export default class Panel extends Component {
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
     this.onUserCommentChange = this.onUserCommentChange.bind(this);
+    this.onUserCommentEditCancel = this.onUserCommentEditCancel.bind(this);
+    this.onUserCommentEditSave = this.onUserCommentEditSave.bind(this);
+    this.onUserCommentUpdate = this.onUserCommentUpdate.bind(this);
+    this.onUserCommentEdit = this.onUserCommentEdit.bind(this);
     this.onCommentSubmit = this.onCommentSubmit.bind(this);
     this.addComment = this.addComment.bind(this);
     this.onUserCommentDelete = this.onUserCommentDelete.bind(this);
@@ -38,6 +42,8 @@ export default class Panel extends Component {
         },
         userComment: '',
         comments: [],
+        userCommentBeingUpdated: null,
+        commentIdBeingEditted: null
 	  };
 
     this.commentChannelListener = null;
@@ -111,6 +117,13 @@ export default class Panel extends Component {
     // These listeners use flagActions to only fire if you're
     // not the current user
     this.commentChannelListener = db.ref('comments/' + componentId);
+    // Note: The Child Added event is typically used when retrieving a
+    // list of items (e.g. chat messages) in Firebase. Unlike 'value'
+    // which fires for the entire contents of the location, 'child_added'
+    // fires once for each immediate child and continues to trigger as
+    // new children are added. Therefore we only want this function to
+    // fire when new comments are added hence the use of our helper
+    // function 'this.isNewComment'.
     this.commentChannelListener.on('child_added', function(data) {
       // data.key, data.val();
       if (data.val().stateId === stateId &&
@@ -222,10 +235,38 @@ export default class Panel extends Component {
     this.setState({ userComment: e.target.value });
   }
 
+  onUserCommentUpdate(e) {
+    this.setState({ userCommentBeingUpdated: e.target.value });
+  }
+
   onCommentSubmit(e) {
     const { userComment } = this.state;
     e.preventDefault();
     this.addComment(userComment);
+  }
+
+  onUserCommentEdit(e) {
+    e.preventDefault();
+    this.setState({ commentIdBeingEditted: e.target.id });
+    this.flagActions.edit = true;
+  }
+  onUserCommentEditCancel(e) {
+    e.preventDefault();
+    this.setState({ commentIdBeingEditted: null });
+    this.flagActions.edit = false;
+  }
+  onUserCommentEditSave(e) {
+    e.preventDefault();
+    const { activeComponent, userCommentBeingUpdated } = this.state;
+
+    updateComment(activeComponent, e.target.id, userCommentBeingUpdated).then((data) => {
+        if (data.success) {
+          msg.success(data.msg);
+        } else {
+          msg.error(data.msg)
+        }
+    });
+    this.setState({ userCommentBeingUpdated : null, commentIdBeingEditted: null });
   }
 
   onUserCommentDelete(e) {
@@ -272,7 +313,9 @@ export default class Panel extends Component {
     const {
       user: { userName, userEmail, isUserAuthenticated },
 	    userComment,
-        comments
+      userCommentBeingUpdated,
+      comments,
+      commentIdBeingEditted
     } = this.state;
 
     const commentCount = comments.length;
@@ -311,9 +354,15 @@ export default class Panel extends Component {
 
         { !!isUserAuthenticated && !!comments &&
           <Comments
+            userCommentBeingUpdated={userCommentBeingUpdated}
+            onUserCommentUpdate={this.onUserCommentUpdate}
+            onUserCommentEdit={this.onUserCommentEdit}
+            onUserCommentEditSave={this.onUserCommentEditSave}
+            onUserCommentEditCancel={this.onUserCommentEditCancel}
             onUserCommentDelete={this.onUserCommentDelete}
             currentUser={userEmail}
             comments={comments}
+            commentIdBeingEditted={commentIdBeingEditted}
           />
         }
 
