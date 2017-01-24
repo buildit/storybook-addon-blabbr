@@ -2,9 +2,9 @@ import React from 'react';
 import addons from '@kadira/storybook-addons';
 import { StoryWrapper } from './components';
 
-function wrapStory(channel, storyFn, context) {
+function wrapStory(channel, storyFn, context, panels) {
   return (
-    <StoryWrapper>
+    <StoryWrapper channel={channel}>
       {storyFn(context)}
     </StoryWrapper>
   );
@@ -12,5 +12,5 @@ function wrapStory(channel, storyFn, context) {
 
 export function withComments(storyFn, context) {
   const channel = addons.getChannel();
-  return wrapStory(channel, storyFn, context);
+  return wrapStory(channel, storyFn, context, addons.getPanels());
 }

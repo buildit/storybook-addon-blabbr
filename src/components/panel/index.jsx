@@ -11,6 +11,10 @@ import db from '../api/db';
 export default class Panel extends Component {
   constructor(...args) {
     super(...args);
+
+    this.onFocusTabHandler = this.onFocusTabHandler.bind(this);
+    this.props.channel.on('blabbrFocusTab', this.onFocusTabHandler);
+
     this.onStoryChangeHandler = this.onStoryChangeHandler.bind(this);
     this.fetchComments = this.fetchComments.bind(this);
     this.onUserNameChange = this.onUserNameChange.bind(this);
@@ -57,27 +61,37 @@ export default class Panel extends Component {
       edit: false
     };
   }
+
   componentWillMount() {
     hasStorage('localStorage') && this.verifyUser();
   }
+
   componentDidMount() {
     const { storybook } = this.props;
-    storybook && storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
+    storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
   }
+
   componentWillUnmount() {
     if (this.commentChannelListener) {
       this.commentChannelListener.off();
       this.commentChannelListener = null;
     }
   }
+
+  onFocusTabHandler() {
+    // Focus the panel via the URL
+    // Can we do this? There is nothing in API for it...
+  }
+
   onStoryChangeHandler(kind, story) {
     this.setState({
-        activeComponent: kind,
-        activeStory: story
+      activeComponent: kind,
+      activeStory: story,
     });
     this.fetchComments(kind, story);
     this.setState({ userComment: '' });
   }
+
   fetchComments(kind, story) {
     getComments(kind, story)
       .then((data) => {
@@ -86,6 +100,7 @@ export default class Panel extends Component {
         this.listenForCommentChanges();
       }).catch((e) => {});
   }
+
   listenForCommentChanges() {
     const { activeComponent, activeStory } = this.state;
     var componentId, stateId;
@@ -171,6 +186,7 @@ export default class Panel extends Component {
       });
     }.bind(this));
   }
+
   isNewComment(dataKey) {
     var { comments } = this.state,
       idFound = false,
@@ -185,41 +201,50 @@ export default class Panel extends Component {
     }
     return !idFound;
   }
+
   verifyUser() {
     const userName = localStorage.getItem('blabbr_userName');
     const userEmail = localStorage.getItem('blabbr_userEmail');
     userName && userEmail && this.setState({ user: { userName,  userEmail, isUserAuthenticated: true }});
   }
+
   registerUser(username, email) {
     const { user } = this.state;
     localStorage.setItem('blabbr_userName', username);
     localStorage.setItem('blabbr_userEmail', email);
     this.setState({ user: Object.assign(user, { isUserAuthenticated: true })});
   }
+
   onUserNameChange(e) {
     const { user } = this.state;
     this.setState({ user: Object.assign(user, { userName: e.target.value })});
   }
+
   onUserEmailChange(e) {
     const { user } = this.state;
     this.setState({ user: Object.assign(user, { userEmail: e.target.value })});
   }
+
   onRegisterSubmit(e) {
     const { user: { userName, userEmail } } =  this.state;
     e.preventDefault();
     this.registerUser(userName, userEmail);
   }
+
   onUserCommentChange(e) {
     this.setState({ userComment: e.target.value });
   }
+
   onUserCommentUpdate(e) {
     this.setState({ userCommentBeingUpdated: e.target.value });
   }
+
   onCommentSubmit(e) {
     const { userComment } = this.state;
     e.preventDefault();
     this.addComment(userComment);
   }
+
   onUserCommentEdit(e) {
     e.preventDefault();
     this.setState({ commentIdBeingEditted: e.target.id });
@@ -243,6 +268,7 @@ export default class Panel extends Component {
     });
     this.setState({ userCommentBeingUpdated : null, commentIdBeingEditted: null });
   }
+
   onUserCommentDelete(e) {
     const { activeComponent } = this.state;
     this.flagActions.remove = true;
@@ -254,6 +280,7 @@ export default class Panel extends Component {
         }
     });
   }
+
   addComment(userComment) {
     const {
       user: { userName, userEmail },
@@ -281,6 +308,7 @@ export default class Panel extends Component {
         msg.error('An error occured while attempting to post your comment.')
     });
   }
+
   render() {
     const {
       user: { userName, userEmail, isUserAuthenticated },
@@ -313,7 +341,7 @@ export default class Panel extends Component {
         }}
       >
         <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
-        <h2>Comments { commentCountView }</h2>
+        <h2>Comments { isUserAuthenticated && commentCountView }</h2>
 
         { !isUserAuthenticated &&
           <Register
@@ -321,7 +349,8 @@ export default class Panel extends Component {
             onUserEmailChange={this.onUserEmailChange}
             onRegisterSubmit={this.onRegisterSubmit}
             userName={userName}
-            userEmail={userEmail} />
+            userEmail={userEmail}
+          />
         }
 
         { !!isUserAuthenticated &&
@@ -331,7 +360,8 @@ export default class Panel extends Component {
             onCommentSubmit={this.onCommentSubmit}
           />
         }
-        { !!comments &&
+
+        { !!isUserAuthenticated && !!comments &&
           <Comments
             userCommentBeingUpdated={userCommentBeingUpdated}
             onUserCommentUpdate={this.onUserCommentUpdate}
@@ -344,18 +374,12 @@ export default class Panel extends Component {
             commentIdBeingEditted={commentIdBeingEditted}
           />
         }
-
       </section>
-	  );
+    );
   }
 }
 
 Panel.propTypes = {
-  storybook: PropTypes.object,
-  inStory: PropTypes.bool,
-};
-
-Panel.defaultProps = {
-  storybook: null,
-  inStory: false,
+  channel: PropTypes.object.isRequired,
+  storybook: PropTypes.object.isRequired,
 };
