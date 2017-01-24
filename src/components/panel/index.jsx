@@ -349,7 +349,16 @@ export default class Panel extends Component {
             onUserEmailChange={this.onUserEmailChange}
             onRegisterSubmit={this.onRegisterSubmit}
             userName={userName}
-            userEmail={userEmail} />
+            userEmail={userEmail}
+          />
+        }
+
+        { !!isUserAuthenticated &&
+          <SubmitComment
+            userComment={userComment}
+            onUserCommentChange={this.onUserCommentChange}
+            onCommentSubmit={this.onCommentSubmit}
+          />
         }
 
         { !!isUserAuthenticated && !!comments &&
@@ -365,16 +374,8 @@ export default class Panel extends Component {
             commentIdBeingEditted={commentIdBeingEditted}
           />
         }
-
-        { !!isUserAuthenticated &&
-          <SubmitComment
-            userComment={userComment}
-            onUserCommentChange={this.onUserCommentChange}
-            onCommentSubmit={this.onCommentSubmit}
-          />
-        }
       </section>
-	  );
+    );
   }
 }
 
