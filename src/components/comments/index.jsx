@@ -4,7 +4,17 @@ import Comment from '../comment';
 import SubmitComment from '../submitComment';
 import { getTimestamp } from '../../utils';
 
-const Comments = ({ comments, currentUser, commentIdBeingEditted, userCommentBeingUpdated, onUserCommentEditCancel, onUserCommentEditSave, onUserCommentUpdate, onUserCommentEdit, onUserCommentDelete }) => {
+const Comments = ({
+	comments,
+	currentUser,
+	commentIdBeingEditted,
+	userCommentBeingUpdated,
+	onUserCommentEditCancel,
+	onUserCommentEditSave,
+	onUserCommentUpdate,
+	onUserCommentEdit,
+	onUserCommentDelete,
+}) => {
 	const commentsComponents = comments.map((comment, i) => {
 		const timestamp = getTimestamp(comment.timestamp);
 		const lastUpdated = getTimestamp(comment.lastUpdated);
@@ -35,7 +45,6 @@ const Comments = ({ comments, currentUser, commentIdBeingEditted, userCommentBei
 					emailId={comment.userEmail}
 					timestamp={timestamp}
 					comment={comment.comment}
-					approved={comment.approved}
 					commentId={comment.id}
 					edited={comment.edited}
 					lastUpdated={lastUpdated}
