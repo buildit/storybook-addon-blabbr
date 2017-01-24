@@ -43,7 +43,7 @@ export default class Panel extends Component {
         },
         userComment: '',
         comments: [],
-        showingAllComments: true,
+        isShowingAllComments: true,
         userCommentBeingUpdated: null,
         commentIdBeingEditted: null
 	  };
@@ -100,31 +100,31 @@ export default class Panel extends Component {
   fetchComments(kind, story) {
     getComments(kind, story)
       .then((data) => {
-        var comments = data.comments,
+        let comments = data.comments,
           commentsLength = comments.length,
           threshold = this.commentsThreshold,
-          showingAllComments = true;
+          isShowingAllComments = true;
 
         this.allComments = comments ? comments.slice(0) : [];
 
         if (commentsLength > threshold) {
           this.filteredComments = comments ? comments.slice(0, threshold) : [];
-          showingAllComments = false;
+          isShowingAllComments = false;
         }
         this.setState({
-          comments: showingAllComments ? this.allComments : this.filteredComments,
-          showingAllComments: showingAllComments
+          comments: isShowingAllComments ? this.allComments : this.filteredComments,
+          isShowingAllComments: isShowingAllComments
         });
         // add listener for channel comments events
         this.listenForCommentChanges();
       }).catch((e) => {
-        console.log('Error:', e);
+        msg.error(`Error: ${e.message}`);
       });
   }
   onShowAllComments() {
     this.setState({
       comments: this.allComments,
-      showingAllComments: true
+      isShowingAllComments: true
     });
   }
 
@@ -191,7 +191,7 @@ export default class Panel extends Component {
         snapshotData = snapshot.val(),
         commentsLength,
         threshold = this.commentsThreshold,
-        showingAllComments;
+        isShowingAllComments;
 
       for (snapShotKey in snapshotData) {
         // skip loop if the property is from prototype
@@ -211,18 +211,18 @@ export default class Panel extends Component {
       }
 
       commentsLength = updatedComments.length;
-      showingAllComments = true;
+      isShowingAllComments = true;
 
       this.allComments = updatedComments.slice(0);
 
       if (commentsLength > threshold) {
         this.filteredComments = this.allComments.slice(0, threshold);
-        showingAllComments = false;
+        isShowingAllComments = false;
       }
 
       this.setState({
-        comments: showingAllComments ? this.allComments : this.filteredComments,
-        showingAllComments: showingAllComments,
+        comments: isShowingAllComments ? this.allComments : this.filteredComments,
+        isShowingAllComments: isShowingAllComments,
         userComment: ''
       });
 
@@ -358,7 +358,7 @@ export default class Panel extends Component {
       userCommentBeingUpdated,
       comments,
       commentIdBeingEditted,
-      showingAllComments
+      isShowingAllComments
     } = this.state;
 
     const commentCount = this.allComments.length;
@@ -415,7 +415,7 @@ export default class Panel extends Component {
             currentUser={userEmail}
             comments={comments}
             commentIdBeingEditted={commentIdBeingEditted}
-            showingAllComments={showingAllComments}
+            isShowingAllComments={isShowingAllComments}
             onShowAllComments={this.onShowAllComments}
           />
         }
