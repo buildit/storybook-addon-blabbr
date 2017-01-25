@@ -1,0 +1,23 @@
+.comment-container {
+    opacity: 1;
+}
+
+.comment-enter {
+  opacity: 0.01;
+}
+
+.comment-enter.comment-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.comment-leave {
+  opacity: 1;
+  max-height:500px;
+}
+
+.comment-leave.comment-leave-active {
+  opacity: 0.01;
+  max-height: 1px;
+  transition: opacity 500ms ease-out, max-height 500ms ease-out;
+}
