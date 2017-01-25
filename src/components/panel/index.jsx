@@ -222,8 +222,7 @@ export default class Panel extends Component {
 
       this.setState({
         comments: isShowingAllComments ? this.allComments : this.filteredComments,
-        isShowingAllComments: isShowingAllComments,
-        userComment: ''
+        isShowingAllComments: isShowingAllComments
       });
 
     }.bind(this));
@@ -349,6 +348,8 @@ export default class Panel extends Component {
     }).catch((error) => {
         msg.error('An error occured while attempting to post your comment.')
     });
+
+    this.setState({ userComment: '' });
   }
 
   render() {
