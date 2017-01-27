@@ -9,7 +9,7 @@ import './styles.css';
 const Comments = ({
 	comments,
 	currentUser,
-	commentIdBeingEditted,
+	commentIdBeingEdited,
 	userCommentBeingUpdated,
 	onUserCommentEditCancel,
 	onUserCommentEditSave,
@@ -20,43 +20,43 @@ const Comments = ({
 	isShowingAllComments
 }) => {
 	const commentsComponents = comments.map((comment, i) => {
-			const timestamp = getTimestamp(comment.timestamp);
-			const lastUpdated = getTimestamp(comment.lastUpdated);
-			const beingEditted = comment.id === commentIdBeingEditted;
+		const timestamp = getTimestamp(comment.timestamp);
+		const lastUpdated = getTimestamp(comment.lastUpdated);
+		const beingEdited = comment._id === commentIdBeingEdited;
 
-			if (beingEditted) {
-				userCommentBeingUpdated = userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
-			}
+		if (beingEdited) {
+			userCommentBeingUpdated = userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
+		}
 
-			return (
-				<div key={comment.id} className="comment-container">
-				 { !!beingEditted === true ?
-					<SubmitComment
-						userComment={userCommentBeingUpdated}
-						onUserCommentChange={onUserCommentUpdate}
-						onCommentSubmit={onUserCommentEditSave}
-						onCommentCancel={onUserCommentEditCancel}
-						title={'Edit comment'}
-						comment={comment}
-						type={'Edit'}
-					/>
-					 :
-					 <Comment
-						onUserCommentEdit={onUserCommentEdit}
-						onUserCommentDelete={onUserCommentDelete}
-						currentUserIsOwner={currentUser === comment.userEmail}
-						username={comment.userName}
-						emailId={comment.userEmail}
-						timestamp={timestamp}
-						comment={comment.comment}
-						commentId={comment.id}
-						edited={comment.edited}
-						lastUpdated={lastUpdated}
-	 		  	 />
-				 }
-				</div>
-			)
-		});
+		return (
+			<div key={comment._id}>
+			{ !!beingEdited === true ?
+				<SubmitComment key={i}
+					userComment={userCommentBeingUpdated}
+					onUserCommentChange={onUserCommentUpdate}
+					onCommentSubmit={onUserCommentEditSave}
+					onCommentCancel={onUserCommentEditCancel}
+					title={'Edit comment'}
+					comment={comment}
+					type={'Edit'}
+				/>
+				 :
+				 <Comment
+					onUserCommentEdit={onUserCommentEdit}
+					onUserCommentDelete={onUserCommentDelete}
+					currentUserIsOwner={currentUser === comment.userEmail}
+					username={comment.userName}
+					emailId={comment.userEmail}
+					timestamp={timestamp}
+					comment={comment.comment}
+					commentId={comment._id}
+					edited={comment.edited}
+					lastUpdated={lastUpdated}
+ 		  	 />
+			 }
+			</div>
+		)
+	});
 
 	const showAllCommentsLink = !isShowingAllComments ?
 		<Button bsStyle="link" block style={{ marginBottom: 20 }} onClick={onShowAllComments}>
@@ -84,7 +84,7 @@ const Comments = ({
 
 Comments.propTypes = {
   comments: PropTypes.array,
-	commentIdBeingEditted: PropTypes.string,
+	commentIdBeingEdited: PropTypes.string,
 	userCommentBeingUpdated: PropTypes.string,
   currentUser: PropTypes.string.isRequired,
 	onUserCommentUpdate: PropTypes.func.isRequired,
