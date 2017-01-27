@@ -31,6 +31,11 @@ export default class Panel extends Component {
     this.addComment = this.addComment.bind(this);
     this.onUserCommentDelete = this.onUserCommentDelete.bind(this);
     this.onShowAllComments = this.onShowAllComments.bind(this);
+    this.updateView = this.updateView.bind(this);
+    this.isNewComment = this.isNewComment.bind(this);
+    this.isAddedByMe = this.isAddedByMe.bind(this);
+    this.isEditedByMe = this.isEditedByMe.bind(this);
+    this.isDeletedByMe = this.isDeletedByMe.bind(this);
 
 	  this.state = {
         activeComponent: null,
@@ -45,7 +50,7 @@ export default class Panel extends Component {
         comments: [],
         isShowingAllComments: true,
         userCommentBeingUpdated: null,
-        commentIdBeingEditted: null
+        commentIdBeingEdited: null
 	  };
 
     this.commentChannelListener = null;
@@ -57,10 +62,11 @@ export default class Panel extends Component {
       time: 3000,
       transition: 'fade'
     };
-    this.flagActions = {
-      add: false,
-      remove: false,
-      edit: false
+    // track user actions
+    this.userActions = {
+      added: {},
+      removed: {},
+      edited: {}
     };
     this.commentsThreshold = 5;
     this.filteredComments = [];
@@ -89,18 +95,22 @@ export default class Panel extends Component {
   }
 
   onStoryChangeHandler(kind, story) {
+    let version = '0_0_1'; // TEMP
+
     this.setState({
       activeComponent: kind,
       activeStory: story,
+      activeVersion: version
     });
-    this.fetchComments(kind, story);
+
+    this.fetchComments(kind, story, version);
     this.setState({ userComment: '' });
   }
 
-  fetchComments(kind, story) {
-    getComments(kind, story)
+  fetchComments(kind, story, version) {
+    getComments(kind, story, version)
       .then((data) => {
-        let comments = data.comments,
+        let comments = data.docs,
           commentsLength = comments.length,
           threshold = this.commentsThreshold,
           isShowingAllComments = true;
@@ -127,7 +137,33 @@ export default class Panel extends Component {
       isShowingAllComments: true
     });
   }
+  updateView() {
+    let {
+      activeComponent,
+      activeStory,
+      activeVersion } = this.state;
 
+    getComments(activeComponent, activeStory, activeVersion)
+      .then((data) => {
+        let comments = data.docs,
+          commentsLength = comments.length,
+          threshold = this.commentsThreshold,
+          isShowingAllComments = true;
+
+        this.allComments = comments ? comments.slice(0) : [];
+
+        if (commentsLength > threshold) {
+          this.filteredComments = comments ? comments.slice(0, threshold) : [];
+          isShowingAllComments = false;
+        }
+        this.setState({
+          comments: isShowingAllComments ? this.allComments : this.filteredComments,
+          isShowingAllComments: isShowingAllComments
+        });
+      }).catch((e) => {
+        msg.error(`Error: ${e.message}`);
+      });
+  }
   listenForCommentChanges() {
     const { activeComponent, activeStory } = this.state;
     var componentId, stateId;
@@ -137,105 +173,63 @@ export default class Panel extends Component {
 
     // remove listeners for previous comment stream
     if (this.commentChannelListener !== null) {
-      this.commentChannelListener.off();
+      this.commentChannelListener.cancel();
       this.commentChannelListener = null;
     }
     // register listeners
-    // These listeners use flagActions to only fire if you're
+    // These listeners use userActions to only fire if you're
     // not the current user
-    this.commentChannelListener = db.ref('comments/' + componentId);
-    // Note: The Child Added event is typically used when retrieving a
-    // list of items (e.g. chat messages) in Firebase. Unlike 'value'
-    // which fires for the entire contents of the location, 'child_added'
-    // fires once for each immediate child and continues to trigger as
-    // new children are added. Therefore we only want this function to
-    // fire when new comments are added hence the use of our helper
-    // function 'this.isNewComment'.
-    this.commentChannelListener.on('child_added', function(data) {
-      // data.key, data.val();
-      if (data.val().stateId === stateId &&
-        !this.flagActions.add &&
-        this.isNewComment(data.key)) {
-          msg.info('A new comment was added.');
+    this.commentChannelListener = db.changes({
+      since: 'now',
+      live: true,
+      include_docs: true,
+      filter: function (doc) {
+        return doc.componentId === componentId &&
+          doc.stateId === stateId;
       }
-      this.flagActions.add = false;
-    }.bind(this));
+    }).on('change', (change) => {
+      // handle change
+      let changedRecordId = change.doc._id;
+      let isNewRecord = this.isNewComment(changedRecordId);
 
-    this.commentChannelListener.on('child_changed', function(data) {
-      if (data.val().stateId === stateId &&
-        !this.flagActions.edit) {
-        msg.info('A comment was editted.');
-      }
-      this.flagActions.edit = false;
-    }.bind(this));
-
-    this.commentChannelListener.on('child_removed', function(data) {
-      if (data.val().stateId === stateId &&
-        !this.flagActions.remove) {
+      if (change.deleted && !this.isDeletedByMe(changedRecordId)) {
         msg.info('A comment has been removed.');
-      }
-      this.flagActions.remove = false;
-    }.bind(this));
-
-    this.commentChannelListener.on('value', function(snapshot) {
-      // only fire below events on change - not initial value subscriptions
-      if (this.channelListening === false) {
-        this.channelListening = true;
-        return;
+      } else if (!change.deleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
+        msg.info('A new comment was added.');
+      } else if (!change.deleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
+        msg.info('A comment was edited.');
       }
 
-      var updatedComments = [],
-        commentsData,
-        commentKey,
-        snapShotKey,
-        snapshotData = snapshot.val(),
-        commentsLength,
-        threshold = this.commentsThreshold,
-        isShowingAllComments;
+      this.updateView();
 
-      for (snapShotKey in snapshotData) {
-        // skip loop if the property is from prototype
-        if (!snapshotData.hasOwnProperty(snapShotKey)) continue;
-
-        commentsData = snapshotData[snapShotKey];
-
-        // only update this channel
-        if (commentsData.stateId !== stateId) {
-          continue;
-        }
-
-        updatedComments.push({
-          id: snapShotKey,
-          ...commentsData
-        });
-      }
-
-      commentsLength = updatedComments.length;
-      isShowingAllComments = true;
-
-      this.allComments = updatedComments.slice(0);
-
-      if (commentsLength > threshold) {
-        this.filteredComments = this.allComments.slice(0, threshold);
-        isShowingAllComments = false;
-      }
-
-      this.setState({
-        comments: isShowingAllComments ? this.allComments : this.filteredComments,
-        isShowingAllComments: isShowingAllComments
-      });
-
-    }.bind(this));
+    }).on('error', (err) => {
+      msg.error(err);
+    });
   }
-
+  wasActionPerformedByMe(key, obj) {
+    let isKeyFound = obj.hasOwnProperty(key);
+    if (isKeyFound) {
+      delete obj[key]
+    }
+    return isKeyFound;
+  }
+  isDeletedByMe(dataKey) {
+    return this.wasActionPerformedByMe(dataKey, this.userActions.removed);
+  }
+  isEditedByMe(dataKey) {
+    return this.wasActionPerformedByMe(dataKey, this.userActions.edited);
+  }
+  isAddedByMe(dataKey) {
+    return this.wasActionPerformedByMe(dataKey, this.userActions.added);
+  }
   isNewComment(dataKey) {
-    var comments = this.allComments,
+    let comments = this.allComments,
       idFound = false,
       commentsLength,
       i;
 
     for (i = 0, commentsLength = comments.length; i < commentsLength; i++) {
-      if (comments[i].id === dataKey) {
+      if (comments[i]._id === dataKey) {
         idFound = true;
         break;
       }
@@ -284,36 +278,38 @@ export default class Panel extends Component {
     const { userComment } = this.state;
     e.preventDefault();
     this.addComment(userComment);
+    this.setState({ userComment: '' });
   }
 
   onUserCommentEdit(e) {
     e.preventDefault();
-    this.setState({ commentIdBeingEditted: e.target.id });
-    this.flagActions.edit = true;
+
+    this.setState({ commentIdBeingEdited: e.target.id });
+    this.userActions.edited[e.target.id] = true;
   }
   onUserCommentEditCancel(e) {
     e.preventDefault();
-    this.setState({ commentIdBeingEditted: null });
-    this.flagActions.edit = false;
+    this.setState({ commentIdBeingEdited: null });
+    delete this.userActions.edited[e.target.id];
   }
   onUserCommentEditSave(e) {
     e.preventDefault();
     const { activeComponent, userCommentBeingUpdated } = this.state;
 
-    updateComment(activeComponent, e.target.id, userCommentBeingUpdated).then((data) => {
+    updateComment(e.target.id, userCommentBeingUpdated).then((data) => {
         if (data.success) {
           msg.success(data.msg);
         } else {
           msg.error(data.msg)
         }
     });
-    this.setState({ userCommentBeingUpdated : null, commentIdBeingEditted: null });
+    this.setState({ userCommentBeingUpdated : null, commentIdBeingEdited: null });
   }
 
   onUserCommentDelete(e) {
     const { activeComponent } = this.state;
-    this.flagActions.remove = true;
-    deleteComment(activeComponent, e.target.id).then((data) => {
+    this.userActions.removed[e.target.id] = true;
+    deleteComment(e.target.id).then((data) => {
         if (data.success) {
           msg.success(data.msg);
         } else {
@@ -330,15 +326,17 @@ export default class Panel extends Component {
       activeVersion,
       comments,
     } = this.state;
+    let timestampId = new Date().getTime() + '';
 
-    this.flagActions.add = true;
+    this.userActions.added[timestampId] = true;
     postComment({
+      timestampId,
       userComment,
       userName,
       userEmail,
       component: activeComponent,
       story: activeStory,
-      version: activeVersion,
+      version: activeVersion || '0_0_1',
     }).then((data) => {
       if (data.success) {
         msg.success(data.msg);
@@ -358,7 +356,7 @@ export default class Panel extends Component {
 	    userComment,
       userCommentBeingUpdated,
       comments,
-      commentIdBeingEditted,
+      commentIdBeingEdited,
       isShowingAllComments
     } = this.state;
 
@@ -415,7 +413,7 @@ export default class Panel extends Component {
             onUserCommentDelete={this.onUserCommentDelete}
             currentUser={userEmail}
             comments={comments}
-            commentIdBeingEditted={commentIdBeingEditted}
+            commentIdBeingEdited={commentIdBeingEdited}
             isShowingAllComments={isShowingAllComments}
             onShowAllComments={this.onShowAllComments}
           />

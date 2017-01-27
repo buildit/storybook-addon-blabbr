@@ -15,7 +15,7 @@ const months = [
 ];
 
 export const getTimestamp = (timestamp) => {
-  const _date = new Date(timestamp);
+  const _date = new Date(parseInt(timestamp, 10));
   const date = _date.getDate();
   const month = months[_date.getMonth()];
   const year = _date.getFullYear();

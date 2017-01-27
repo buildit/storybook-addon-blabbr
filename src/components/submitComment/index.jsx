@@ -10,7 +10,7 @@ const SubmitComment = ({
   onCommentCancel,
   comment = {}
 }) => {
-  const { id = null, userEmail = '', userName = '' } = comment;
+  const { _id = null, userEmail = '', userName = '' } = comment;
 
   const formTitle =
     type === 'Edit' ?
@@ -34,7 +34,7 @@ const SubmitComment = ({
           [
             <Button key={'save'}
               type="submit"
-              id={id}
+              id={_id}
               bsClass="btn btn-primary"
               style={{ marginRight: 10 }}
               onClick={onCommentSubmit}
@@ -42,7 +42,7 @@ const SubmitComment = ({
               Update
             </Button>,
             <Button key={'cancel'}
-              id={id}
+              id={_id}
               bsStyle="danger"
               onClick={onCommentCancel}
             >
