@@ -84,7 +84,7 @@ export const updateComment = (commentId, userComment) => {
   }).then((data) => {
     let record = data.docs[0];
 
-    if (userComment === '') {
+    if (userComment === '' || userComment === null) {
       return {
         "success": false,
         "msg": "Cannot update with empty comment"

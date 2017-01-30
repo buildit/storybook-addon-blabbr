@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { FormGroup, FormControl, Button, Panel } from 'react-bootstrap';
+import { FormGroup, FormControl, Glyphicon, Button, Panel } from 'react-bootstrap';
 
 const SubmitComment = ({
   onUserCommentChange,
@@ -38,15 +38,23 @@ const SubmitComment = ({
               bsClass="btn btn-primary"
               style={{ marginRight: 10 }}
               onClick={onCommentSubmit}
+              title="Update"
             >
-              Update
+              <Glyphicon
+                id={_id}
+                onClick={onCommentSubmit}
+                glyph="ok"></Glyphicon>
             </Button>,
             <Button key={'cancel'}
               id={_id}
               bsStyle="danger"
               onClick={onCommentCancel}
+              title="Cancel"
             >
-              Cancel
+              <Glyphicon
+                id={_id}
+                onClick={onCommentCancel}
+                glyph="remove"></Glyphicon>
             </Button>
           ]
           :
@@ -54,8 +62,9 @@ const SubmitComment = ({
             type="submit"
             bsClass="btn btn-primary"
             onClick={onCommentSubmit}
+            title="Submit"
           >
-            Submit
+            <Glyphicon glyph="ok"></Glyphicon>
           </Button>
         }
       </form>
