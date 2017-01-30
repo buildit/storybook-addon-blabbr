@@ -6,7 +6,7 @@ import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
-import db from '../api/db';
+import { dbEventManager } from '../api/db';
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -41,6 +41,7 @@ export default class Panel extends Component {
         activeComponent: null,
         activeStory: null,
         activeVersion: null,
+        eventName: null,
         user: {
             isUserAuthenticated: false,
             userName: '',
@@ -100,11 +101,12 @@ export default class Panel extends Component {
     this.setState({
       activeComponent: kind,
       activeStory: story,
-      activeVersion: version
+      activeVersion: version,
+      eventName: `${cleanToken(kind)}${cleanToken(story)}`,
+      userComment: ''
     });
 
     this.fetchComments(kind, story, version);
-    this.setState({ userComment: '' });
   }
 
   fetchComments(kind, story, version) {
@@ -165,7 +167,7 @@ export default class Panel extends Component {
       });
   }
   listenForCommentChanges() {
-    const { activeComponent, activeStory } = this.state;
+    const { activeComponent, activeStory, eventName } = this.state;
     var componentId, stateId;
 
     componentId = cleanToken(activeComponent);
@@ -173,38 +175,41 @@ export default class Panel extends Component {
 
     // remove listeners for previous comment stream
     if (this.commentChannelListener !== null) {
-      this.commentChannelListener.cancel();
+      dbEventManager.unsubscribe(this.commentChannelListener);
       this.commentChannelListener = null;
     }
     // register listeners
     // These listeners use userActions to only fire if you're
     // not the current user
-    this.commentChannelListener = db.changes({
-      since: 'now',
-      live: true,
-      include_docs: true,
-      filter: function (doc) {
-        return doc.componentId === componentId &&
-          doc.stateId === stateId;
-      }
-    }).on('change', (change) => {
-      // handle change
-      let changedRecordId = change.doc._id;
-      let isNewRecord = this.isNewComment(changedRecordId);
 
-      if (change.deleted && !this.isDeletedByMe(changedRecordId)) {
-        msg.info('A comment has been removed.');
-      } else if (!change.deleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
-        msg.info('A new comment was added.');
-      } else if (!change.deleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
-        msg.info('A comment was edited.');
-      }
+    // this.commentChannelListener = db.changes({
+    this.commentChannelListener = dbEventManager.subscribe('change', eventName, (change) => {
+        let changedDoc = change.docs[0],
+            changedRecordId = changedDoc._id,
+            isDeleted = !!changedDoc._deleted;
 
-      this.updateView();
+        let isNewRecord = this.isNewComment(changedRecordId);
 
-    }).on('error', (err) => {
-      msg.error(err);
+        if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
+          msg.info('A comment has been removed.');
+        } else if (!isDeleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
+          msg.info('A new comment was added.');
+        } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
+          msg.info('A comment was edited.');
+        }
+
+        this.updateView();
     });
+    //   since: 'now',
+    //   live: true,
+    //   include_docs: true,
+    //   filter: function (doc) {
+    //     return doc.componentId === componentId &&
+    //       doc.stateId === stateId;
+    //   }
+    // }).on('error', (err) => {
+    //   msg.error(err);
+    // });
   }
   wasActionPerformedByMe(key, obj) {
     let isKeyFound = obj.hasOwnProperty(key);
@@ -335,6 +340,7 @@ export default class Panel extends Component {
       activeStory,
       activeVersion,
       comments,
+      eventName
     } = this.state;
     let timestampId = new Date().getTime() + '';
 
@@ -347,6 +353,7 @@ export default class Panel extends Component {
       component: activeComponent,
       story: activeStory,
       version: activeVersion || '0_0_1',
+      eventName
     }).then((data) => {
       if (data.success) {
         msg.success(data.msg);
