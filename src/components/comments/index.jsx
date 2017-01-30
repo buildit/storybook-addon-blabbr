@@ -31,7 +31,7 @@ const Comments = ({
 		return (
 			<div key={comment._id}>
 			{ !!beingEdited === true ?
-				<SubmitComment key={i}
+				<SubmitComment
 					userComment={userCommentBeingUpdated}
 					onUserCommentChange={onUserCommentUpdate}
 					onCommentSubmit={onUserCommentEditSave}
