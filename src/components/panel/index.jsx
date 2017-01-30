@@ -175,16 +175,14 @@ export default class Panel extends Component {
 
     // remove listeners for previous comment stream
     if (this.commentChannelListener !== null) {
-      dbEventManager.unsubscribe(this.commentChannelListener);
+      dbEventManager.unsubscribe('change', this.commentChannelListener);
       this.commentChannelListener = null;
     }
     // register listeners
     // These listeners use userActions to only fire if you're
     // not the current user
-
-    // this.commentChannelListener = db.changes({
     this.commentChannelListener = dbEventManager.subscribe('change', eventName, (change) => {
-        let changedDoc = change.docs[0],
+        let changedDoc = change.doc,
             changedRecordId = changedDoc._id,
             isDeleted = !!changedDoc._deleted;
 
@@ -200,16 +198,6 @@ export default class Panel extends Component {
 
         this.updateView();
     });
-    //   since: 'now',
-    //   live: true,
-    //   include_docs: true,
-    //   filter: function (doc) {
-    //     return doc.componentId === componentId &&
-    //       doc.stateId === stateId;
-    //   }
-    // }).on('error', (err) => {
-    //   msg.error(err);
-    // });
   }
   wasActionPerformedByMe(key, obj) {
     let isKeyFound = obj.hasOwnProperty(key);
@@ -321,7 +309,7 @@ export default class Panel extends Component {
   onUserCommentDelete(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const { activeComponent } = this.state;
     this.userActions.removed[e.target.id] = true;
     deleteComment(e.target.id).then((data) => {
