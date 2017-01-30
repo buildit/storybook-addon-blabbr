@@ -277,23 +277,30 @@ export default class Panel extends Component {
   onCommentSubmit(e) {
     const { userComment } = this.state;
     e.preventDefault();
+    e.stopPropagation();
+
     this.addComment(userComment);
     this.setState({ userComment: '' });
   }
 
   onUserCommentEdit(e) {
     e.preventDefault();
+    e.stopPropagation();
 
     this.setState({ commentIdBeingEdited: e.target.id });
     this.userActions.edited[e.target.id] = true;
   }
   onUserCommentEditCancel(e) {
     e.preventDefault();
+    e.stopPropagation();
+
     this.setState({ commentIdBeingEdited: null });
     delete this.userActions.edited[e.target.id];
   }
   onUserCommentEditSave(e) {
     e.preventDefault();
+    e.stopPropagation();
+
     const { activeComponent, userCommentBeingUpdated } = this.state;
 
     updateComment(e.target.id, userCommentBeingUpdated).then((data) => {
@@ -307,6 +314,9 @@ export default class Panel extends Component {
   }
 
   onUserCommentDelete(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
     const { activeComponent } = this.state;
     this.userActions.removed[e.target.id] = true;
     deleteComment(e.target.id).then((data) => {

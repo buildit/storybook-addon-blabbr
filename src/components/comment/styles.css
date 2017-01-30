@@ -1,0 +1,18 @@
+.header {
+  display: inline-block;
+  width:auto;
+}
+
+.header span {
+  font-size: 13px;
+}
+
+.controls {
+  display: inline-block;
+  right: 0;
+  position: absolute;
+}
+
+.panel-title {
+  position: relative;
+}
