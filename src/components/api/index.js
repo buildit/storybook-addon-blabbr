@@ -36,7 +36,8 @@ export const postComment = ({
   userComment,
   component,
   story,
-  version = '0_0_1'
+  version = '0_0_1',
+  eventName
 }) => {
   let record = {
     _id: timestampId,
@@ -48,7 +49,8 @@ export const postComment = ({
     stateId: cleanToken(story),
     version: version,
     edited: false,
-    lastUpdated: timestampId
+    lastUpdated: timestampId,
+    eventName: eventName
   };
 
   //return

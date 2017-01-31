@@ -6,7 +6,7 @@ import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
-import db from '../api/db';
+import { dbEventManager } from '../api/db';
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -41,6 +41,7 @@ export default class Panel extends Component {
         activeComponent: null,
         activeStory: null,
         activeVersion: null,
+        eventName: null,
         user: {
             isUserAuthenticated: false,
             userName: '',
@@ -100,11 +101,12 @@ export default class Panel extends Component {
     this.setState({
       activeComponent: kind,
       activeStory: story,
-      activeVersion: version
+      activeVersion: version,
+      eventName: `${cleanToken(kind)}${cleanToken(story)}`,
+      userComment: ''
     });
 
     this.fetchComments(kind, story, version);
-    this.setState({ userComment: '' });
   }
 
   fetchComments(kind, story, version) {
@@ -165,7 +167,7 @@ export default class Panel extends Component {
       });
   }
   listenForCommentChanges() {
-    const { activeComponent, activeStory } = this.state;
+    const { activeComponent, activeStory, eventName } = this.state;
     var componentId, stateId;
 
     componentId = cleanToken(activeComponent);
@@ -173,37 +175,28 @@ export default class Panel extends Component {
 
     // remove listeners for previous comment stream
     if (this.commentChannelListener !== null) {
-      this.commentChannelListener.cancel();
+      dbEventManager.unsubscribe('change', this.commentChannelListener);
       this.commentChannelListener = null;
     }
     // register listeners
     // These listeners use userActions to only fire if you're
     // not the current user
-    this.commentChannelListener = db.changes({
-      since: 'now',
-      live: true,
-      include_docs: true,
-      filter: function (doc) {
-        return doc.componentId === componentId &&
-          doc.stateId === stateId;
-      }
-    }).on('change', (change) => {
-      // handle change
-      let changedRecordId = change.doc._id;
-      let isNewRecord = this.isNewComment(changedRecordId);
+    this.commentChannelListener = dbEventManager.subscribe('change', eventName, (change) => {
+        let changedDoc = change.doc,
+            changedRecordId = changedDoc._id,
+            isDeleted = !!changedDoc._deleted;
 
-      if (change.deleted && !this.isDeletedByMe(changedRecordId)) {
-        msg.info('A comment has been removed.');
-      } else if (!change.deleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
-        msg.info('A new comment was added.');
-      } else if (!change.deleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
-        msg.info('A comment was edited.');
-      }
+        let isNewRecord = this.isNewComment(changedRecordId);
 
-      this.updateView();
+        if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
+          msg.info('A comment has been removed.');
+        } else if (!isDeleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
+          msg.info('A new comment was added.');
+        } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
+          msg.info('A comment was edited.');
+        }
 
-    }).on('error', (err) => {
-      msg.error(err);
+        this.updateView();
     });
   }
   wasActionPerformedByMe(key, obj) {
@@ -316,7 +309,7 @@ export default class Panel extends Component {
   onUserCommentDelete(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const { activeComponent } = this.state;
     this.userActions.removed[e.target.id] = true;
     deleteComment(e.target.id).then((data) => {
@@ -335,6 +328,7 @@ export default class Panel extends Component {
       activeStory,
       activeVersion,
       comments,
+      eventName
     } = this.state;
     let timestampId = new Date().getTime() + '';
 
@@ -347,6 +341,7 @@ export default class Panel extends Component {
       component: activeComponent,
       story: activeStory,
       version: activeVersion || '0_0_1',
+      eventName
     }).then((data) => {
       if (data.success) {
         msg.success(data.msg);
