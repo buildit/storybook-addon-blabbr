@@ -6,7 +6,9 @@ import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
+import OnlineIndicator from '../onlineIndicator';
 import { dbEventManager } from '../api/db';
+import './styles.css';
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -36,6 +38,7 @@ export default class Panel extends Component {
     this.isAddedByMe = this.isAddedByMe.bind(this);
     this.isEditedByMe = this.isEditedByMe.bind(this);
     this.isDeletedByMe = this.isDeletedByMe.bind(this);
+    this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
 
 	  this.state = {
         activeComponent: null,
@@ -51,7 +54,8 @@ export default class Panel extends Component {
         comments: [],
         isShowingAllComments: true,
         userCommentBeingUpdated: null,
-        commentIdBeingEdited: null
+        commentIdBeingEdited: null,
+        isUserOnline: navigator.onLine
 	  };
 
     this.commentChannelListener = null;
@@ -81,13 +85,25 @@ export default class Panel extends Component {
   componentDidMount() {
     const { storybook } = this.props;
     storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
+    dbEventManager.addOnlineListener();
+    dbEventManager.subscribe('online', 'dbOnline', this.handleOnlineStatusChange);
   }
 
   componentWillUnmount() {
     if (this.commentChannelListener) {
-      this.commentChannelListener.off();
+      dbEventManager.unsubscribe('change', this.commentChannelListener);
       this.commentChannelListener = null;
     }
+    if (this.isUserOnlineListener) {
+      dbEventManager.unsubscribe('online', 'dbOnline');
+    }
+    dbEventManager.removeOnlineListener();
+  }
+
+  handleOnlineStatusChange(data) {
+    this.setState({
+      isUserOnline: data.isOnline
+    });
   }
 
   onFocusTabHandler() {
@@ -362,33 +378,26 @@ export default class Panel extends Component {
       userCommentBeingUpdated,
       comments,
       commentIdBeingEdited,
-      isShowingAllComments
+      isShowingAllComments,
+      isUserOnline
     } = this.state;
 
     const commentCount = this.allComments.length;
 
     const commentCountView = commentCount ?
-      (<span
-        style={{
-          fontSize: '13px',
-          color: 'gray',
-          float: 'right',
-        }}
-      >
+      (<span className="comment-count text-muted">
         Total comments: { commentCount }
       </span>) :
       null;
 
     return (
-      <section
-        className="panel-container"
-        style={{
-          padding: '0 20px',
-          width: '100%',
-        }}
-      >
+      <section className="panel-container">
         <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
-        <h2>Comments { isUserAuthenticated && commentCountView }</h2>
+        <header>
+          <h2>Comments</h2>
+          <OnlineIndicator isOnline={isUserOnline} />
+          { isUserAuthenticated && commentCountView }
+        </header>
 
         { !isUserAuthenticated &&
           <Register

@@ -1,0 +1,29 @@
+.panel-container {
+  padding: 0 20px;
+  width: 100%;
+}
+header h2 {
+  display: inline-block;
+  width: auto;
+  vertical-align: top;
+}
+
+header .online,
+header .offline {
+  display: inline-block;
+  vertical-align: top;
+}
+
+header .status-indicator {
+  float: right;
+  clear: both;
+  margin-top: 20px;
+  color: #777; /* text-muted */
+}
+
+header .comment-count {
+  font-size: 13px;
+  float: right;
+  clear: both;
+  color: #777; /* text-muted */
+}
