@@ -1,8 +1,7 @@
 # storybook-addon-blabbr
 
-Component comment generator and progress indicator for React Storybook.
+Component reviewer and approver for React Storybook.
 
-<<<<<<< HEAD
 ### DB
 Currently it is setup to work with a PouchDB. To configure the connection you need to create a file containing the following:
 
@@ -30,10 +29,6 @@ or, if you don't have a `webpack.config.js` in your `.storybook` folder, extend 
 To use the plugin you need to register the plugin and add a decorator, like most Storybook plugins.
 
 First add the following to your `addons.js` file in the storybook configuration:
-=======
-## Usage
-The plugin will show the comments in a separate panel.
->>>>>>> wip
 
 `import '@buildit/storybook-addon-blabbr/register';`
 
@@ -46,14 +41,6 @@ addDecorator(withComments);
 ```
 
 ### Topics to discuss
-<<<<<<< HEAD
 - Authentication
-- Offline first
 - Versioning
-=======
-- Am I online / offline (status indicator)?
-- Add to a build process and host on Cloudant
-- Authentication (Active Directory?)
-- Versioning (design -> development -> testing -> staging -> production)?
->>>>>>> wip
 - Design
