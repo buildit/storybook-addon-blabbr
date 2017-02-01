@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { createHash } from '../../utils';
 import { Panel, Glyphicon, Button } from 'react-bootstrap';
 import './styles.css';
 
@@ -14,8 +15,10 @@ const Comment = ({
   edited,
   lastUpdated
 }) => {
+  const emailHash = createHash(emailId);
   const panelHeader = (
     <div>
+      <img className="avatar" src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`} />
       <h4 className="header">{`${username} - ${emailId}`} <span className="text-muted">{timestamp}</span></h4>
       <span className="controls">
         { !!currentUserIsOwner &&
@@ -39,7 +42,7 @@ const Comment = ({
             onClick={onUserCommentDelete}
             title="Remove"
           >
-            <Glyphicon 
+            <Glyphicon
               id={commentId}
               onClick={onUserCommentDelete}
               glyph="remove"></Glyphicon>

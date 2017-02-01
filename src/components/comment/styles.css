@@ -16,3 +16,8 @@
 .panel-title {
   position: relative;
 }
+
+.avatar {
+  margin-right:15px;
+  clip-path: circle(20px at center);
+}
