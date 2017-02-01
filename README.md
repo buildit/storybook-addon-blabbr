@@ -4,7 +4,7 @@ Component reviewer and approver for React Storybook.
 
 ### DB
 -
-Currently it is setup to work with CouchDB and uses PouchDB as the library and API over Couch. To configure the connection to CouchDB (either a local CouchDB or hosted on Cloudant) you need to create a file containing the following:
+Currently it is setup to work with CouchDB and uses PouchDB as the library and API over Couch. To configure the connection to CouchDB (either a local CouchDB or hosted on Cloudant) you need to create a file named `db.js` containing the following:
 
 ```
 const config = {
