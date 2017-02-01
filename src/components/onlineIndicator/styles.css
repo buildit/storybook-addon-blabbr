@@ -1,7 +1,7 @@
 .online {
-  color: green;
+  color: rgb(92, 184, 92);
 }
 
 .offline {
-  color:red;
+  color: #f0ad4e;
 }

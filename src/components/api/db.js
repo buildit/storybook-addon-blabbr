@@ -22,44 +22,12 @@ db.createIndex({
 db.sync(`https://${config.user}:${config.pwd}@${config.host}`, {
   live: true,
   retry: true
-}).on('paused', function (err) {
-  // replication paused (e.g. replication up to date, user went offline)
-  // let data = {
-  //   isOnline: false,
-  //   statusEvent: true,
-  //   msg: err
-  // };
-  // console.log('PAUSED fired!',err);
-  // fireListeners('online', data);
-}).on('active', function () {
-  // replicate resumed (e.g. new changes replicating, user went back online)
-  // let data = {
-  //   isOnline: true,
-  //   statusEvent: true
-  // };
-  // console.log('ACTIVE fired!');
-  // fireListeners('online', data);
-}).on('change', function (info) {
-  // handle change
-  console.log('CHANGE fired!');
-}).on('denied', function (err) {
-//   // a document failed to replicate (e.g. due to permissions)
-  console.log('DENIED fired!', err);
-//   dbEmitter.emit('denied', err);
-}).on('complete', function (info) {
-//   // handle complete
-//   dbEmitter.emit('complete', info);
-  console.log('COMPLETE fired!', info);
-}).on('error', function (err) {
-   // handle error
-//   dbEmitter.emit('error', err);
-  console.log('ERROR fired!', err);
 });
 
 function updateIndicator() {
 	// Show a different icon based on offline/online
   let data = {
-    isOnline: navigator.online,
+    isOnline: navigator.onLine,
     statusEvent: true
   };
   fireListeners('online', data);

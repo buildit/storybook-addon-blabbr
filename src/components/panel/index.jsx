@@ -8,6 +8,7 @@ import Register from '../register';
 import SubmitComment from '../submitComment';
 import OnlineIndicator from '../onlineIndicator';
 import { dbEventManager } from '../api/db';
+import './styles.css';
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -54,7 +55,7 @@ export default class Panel extends Component {
         isShowingAllComments: true,
         userCommentBeingUpdated: null,
         commentIdBeingEdited: null,
-        isUserOnline: false
+        isUserOnline: navigator.onLine
 	  };
 
     this.commentChannelListener = null;
@@ -382,28 +383,20 @@ export default class Panel extends Component {
     const commentCount = this.allComments.length;
 
     const commentCountView = commentCount ?
-      (<span
-        style={{
-          fontSize: '13px',
-          color: 'gray',
-          float: 'right',
-        }}
-      >
+      (<span className="comment-count text-muted">
         Total comments: { commentCount }
       </span>) :
       null;
 
     return (
-      <section
-        className="panel-container"
-        style={{
-          padding: '0 20px',
-          width: '100%',
-        }}
-      >
+      <section className="panel-container">
         <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
-        <h2>Comments { isUserAuthenticated && commentCountView }</h2>
-        <OnlineIndicator status={isUserOnline} />
+        <header>
+          <h2>Comments</h2>
+          <OnlineIndicator isOnline={isUserOnline} />
+          { isUserAuthenticated && commentCountView }
+        </header>
+
         { !isUserAuthenticated &&
           <Register
             onUserNameChange={this.onUserNameChange}

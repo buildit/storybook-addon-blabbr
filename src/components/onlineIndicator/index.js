@@ -3,23 +3,26 @@ import { Glyphicon } from 'react-bootstrap';
 import './styles.css';
 
 const OnlineIndicator = ({
-  userOnline
+  isOnline
 }) => {
-  const indicatorClass = userOnline ? 'online' : 'offline';
+  const indicatorClass = isOnline ? 'online' : 'offline';
 
   return (
-    <div className={indicatorClass}>
+    <div className="status-indicator">
+      <span>Connection status: </span>
+      <span className={indicatorClass}>
         {
-          userOnline ?
-            <Glyphicon glyph="ok-sign" /> :
-            <Glyphicon glyph="remove-sign" />
+          isOnline ?
+            <span>Online <Glyphicon glyph="ok-sign" /></span> :
+            <span>Offline <Glyphicon glyph="exclamation-sign" /></span>
         }
+      </span>
     </div>
   );
 };
 
 OnlineIndicator.propTypes = {
-  userOnline: PropTypes.bool
+  isOnline: PropTypes.bool
 };
 
 export default OnlineIndicator;
