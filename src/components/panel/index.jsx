@@ -6,6 +6,7 @@ import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
+import OnlineIndicator from '../onlineIndicator';
 import { dbEventManager } from '../api/db';
 
 export default class Panel extends Component {
@@ -36,6 +37,7 @@ export default class Panel extends Component {
     this.isAddedByMe = this.isAddedByMe.bind(this);
     this.isEditedByMe = this.isEditedByMe.bind(this);
     this.isDeletedByMe = this.isDeletedByMe.bind(this);
+    this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
 
 	  this.state = {
         activeComponent: null,
@@ -51,7 +53,8 @@ export default class Panel extends Component {
         comments: [],
         isShowingAllComments: true,
         userCommentBeingUpdated: null,
-        commentIdBeingEdited: null
+        commentIdBeingEdited: null,
+        isUserOnline: false
 	  };
 
     this.commentChannelListener = null;
@@ -81,13 +84,23 @@ export default class Panel extends Component {
   componentDidMount() {
     const { storybook } = this.props;
     storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
+    dbEventManager.subscribe('online', 'dbOnline321', this.handleOnlineStatusChange);
   }
 
   componentWillUnmount() {
     if (this.commentChannelListener) {
-      this.commentChannelListener.off();
+      dbEventManager.unsubscribe('change', this.commentChannelListener);
       this.commentChannelListener = null;
     }
+    if (this.isUserOnlineListener) {
+      dbEventManager.unsubscribe('online', 'dbOnline321');
+    }
+  }
+
+  handleOnlineStatusChange(data) {
+    this.setState({
+      isUserOnline: data.isOnline
+    });
   }
 
   onFocusTabHandler() {
@@ -362,7 +375,8 @@ export default class Panel extends Component {
       userCommentBeingUpdated,
       comments,
       commentIdBeingEdited,
-      isShowingAllComments
+      isShowingAllComments,
+      isUserOnline
     } = this.state;
 
     const commentCount = this.allComments.length;
@@ -389,7 +403,7 @@ export default class Panel extends Component {
       >
         <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
         <h2>Comments { isUserAuthenticated && commentCountView }</h2>
-
+        <OnlineIndicator status={isUserOnline} />
         { !isUserAuthenticated &&
           <Register
             onUserNameChange={this.onUserNameChange}
