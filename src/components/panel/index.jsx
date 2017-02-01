@@ -85,7 +85,8 @@ export default class Panel extends Component {
   componentDidMount() {
     const { storybook } = this.props;
     storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
-    dbEventManager.subscribe('online', 'dbOnline321', this.handleOnlineStatusChange);
+    dbEventManager.addOnlineListener();
+    dbEventManager.subscribe('online', 'dbOnline', this.handleOnlineStatusChange);
   }
 
   componentWillUnmount() {
@@ -94,8 +95,9 @@ export default class Panel extends Component {
       this.commentChannelListener = null;
     }
     if (this.isUserOnlineListener) {
-      dbEventManager.unsubscribe('online', 'dbOnline321');
+      dbEventManager.unsubscribe('online', 'dbOnline');
     }
+    dbEventManager.removeOnlineListener();
   }
 
   handleOnlineStatusChange(data) {

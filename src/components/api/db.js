@@ -33,17 +33,21 @@ function updateIndicator() {
   fireListeners('online', data);
 }
 
-// Update the online status icon based on connectivity
-window.addEventListener('online',  updateIndicator);
-window.addEventListener('offline', updateIndicator);
+function addOnlineListener() {
+  // Update the online status icon based on connectivity
+  window.addEventListener('online',  updateIndicator, false);
+  window.addEventListener('offline', updateIndicator, false);
+}
 
+function removeOnlineListener() {
+  window.removeEventListener('online', updateIndicator, false);
+  window.removeEventListener('offline', updateIndicator, false);
+}
 
 const dbEvents = {
   change: [],
   online: [],
-  denied: [],
-  complete: [],
-  error: [],
+  error: []
 };
 
 dbEmitter.on('change', (data) => {
@@ -74,7 +78,6 @@ const fireListeners = (eventType, data) => {
     }
   }
 };
-// TODO - add other event types to listen e.g. error etc.
 
 const subscribe = (eventType, eventName, listener) => {
   if (!dbEvents[eventType]) {
@@ -126,6 +129,8 @@ const unsubscribe = (eventType, eventId) => {
 export const dbEventManager = {
   subscribe,
   unsubscribe,
+  addOnlineListener,
+  removeOnlineListener
 };
 
 export default db;
