@@ -41,7 +41,7 @@ addDecorator(withComments);
 ```
 
 ### Topics to discuss
--Authentication
--Offline first
--Versioning
--Design
+- Authentication
+- Offline first
+- Versioning
+- Design
