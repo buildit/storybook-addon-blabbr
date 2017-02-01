@@ -6,3 +6,4 @@ stub
 .editorconfig
 .eslintignore
 .eslintrc
+config/db.js

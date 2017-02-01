@@ -2,26 +2,37 @@
 
 Component reviewer and approver for React Storybook.
 
-## Usage
-You can setup the plugin to either show the comment in a separate panel or inline in the story.
+## DB
+Currently it is setup to work with a PouchDB. You can
 
-## API
-Run up [the API](https://github.com/jon-ec/blabbr) locally. The addon expects the API to be available on
-`http://localhost:3001`. You will need to sign up for a firebase ID and create a project and enter the relevant
-info and keys to `src/components/api/db.js`.
+### configuration
+To use the plugin you need to register the plugin and add a decorator. You also need to setup the storybook webpack config to point to your DB configuration.
 
-### In Panel
-To get the comments in a panel you will need to register the addon. Just add the following to your `addons.js` file in the storybook
-configuration:
+First add the following to your `addons.js` file in the storybook configuration:
 `import '@buildit/storybook-addon-blabbr';`
 
-### Inline
-To show comments inline in the story you need to configure the plugin as a decorator. Add the following to your `config.js` in the storybook configuration:
-
+Then configure the decorator. Add the following to your `config.js` in the storybook configuration:
 ```
 import { withComments } from '@buildit/storybook-addon-blabbr';
 
 addDecorator(withComments);
+```
+
+Finally add the following to the `resolve` section in your `webpack.config.js` file in `.storybook`:
+```
+  alias: {
+    'blabbr-config': path.join(path.resolve(__dirname), '../<PATH_TO_YOUR_CONFIG>')
+  }
+```
+
+The config will be a file containing the following:
+```
+const config = {
+  user: '<YOUR_API_KEY>',
+  pwd: '<YOUR_API_PASSWORD>',
+  host: '<YOUR_HOST_NAME>',
+};
+export default config;
 ```
 
 ### Topics to discuss

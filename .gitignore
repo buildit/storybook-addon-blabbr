@@ -3,4 +3,4 @@ npm-debug.log
 dist
 .idea/
 .DS_Store
-src/config/db.js
+config/db.js

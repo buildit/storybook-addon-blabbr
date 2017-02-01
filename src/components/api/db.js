@@ -1,15 +1,13 @@
 // Initialize PouchDB
 import PouchDB from 'pouchdb-browser';
 import * as pouchDBFind from 'pouchdb-find';
-import * as config from '../../config/db';
+import config from 'blabbr-config/db'; // eslint-disable-line
 import { EventEmitter } from 'events';
-
-const user = config;
 
 PouchDB.plugin(pouchDBFind);
 
 // enable debugging
-PouchDB.debug.enable('pouchdb:find')
+PouchDB.debug.enable('pouchdb:find');
 
 const db = new PouchDB('blabbr');
 
@@ -17,13 +15,13 @@ const dbEmitter = new EventEmitter();
 
 db.createIndex({
   index: {
-    fields: ['componentId', 'timestamp']
-  }
+    fields: ['componentId', 'timestamp'],
+  },
 });
 
-db.sync(`https://${user.user}:${user.pwd}@jonathan-ec.cloudant.com/blabbr`, {
+db.sync(`https://${config.user}:${config.pwd}@${config.host}`, {
   live: true,
-  retry: true
+  retry: true,
 });
 // .on('change', function (info) {
 //   // handle change
@@ -45,15 +43,13 @@ db.sync(`https://${user.user}:${user.pwd}@jonathan-ec.cloudant.com/blabbr`, {
 //   dbEmitter.emit('error', err);
 // });
 
-
-
 const dbEvents = {
   change: [],
   paused: [],
   active: [],
   denied: [],
   complete: [],
-  error: []
+  error: [],
 };
 
 dbEmitter.on('change', (data) => {
@@ -122,7 +118,7 @@ const unsubscribe = (eventType, eventId) => {
 
 export const dbEventManager = {
   subscribe,
-  unsubscribe
+  unsubscribe,
 };
 
 export default db;
