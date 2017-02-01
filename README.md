@@ -3,7 +3,8 @@
 Component reviewer and approver for React Storybook.
 
 ### DB
-Currently it is setup to work with a PouchDB. To configure the connection you need to create a file containing the following:
+-
+Currently it is setup to work with CouchDB and uses PouchDB as the library and API over Couch. To configure the connection to CouchDB (either a local CouchDB or hosted on Cloudant) you need to create a file containing the following:
 
 ```
 const config = {
@@ -26,6 +27,7 @@ or, if you don't have a `webpack.config.js` in your `.storybook` folder, extend 
 [Storybook documentation](https://getstorybook.io/docs/react-storybook/configurations/custom-webpack-config#full-control-mode) on how to do this.
 
 ### Configuration
+-
 To use the plugin you need to register the plugin and add a decorator, like most Storybook plugins.
 
 First add the following to your `addons.js` file in the storybook configuration:
@@ -41,6 +43,7 @@ addDecorator(withComments);
 ```
 
 ### Topics to discuss
+-
 - Authentication
 - Versioning
 - Design
