@@ -1,4 +1,4 @@
-import { makeRequest, cleanToken } from '../../utils';
+import { cleanToken } from '../../utils';
 import db from './db';
 
 export const getComments = (component, story, version = '0_0_1') =>
@@ -50,7 +50,6 @@ export const postComment = ({
 
   // return
   return db.put(record).then((data) => {
-    const returnObj = {};
     if (data.ok) {
       return {
         success: data.ok,
@@ -119,7 +118,7 @@ export const deleteComment = commentId => db.find({
       };
     }).catch(error => ({
       success: 0,
-      msg:  `There was a problem deleting your comment. Error: ${error.message}`,
+      msg: `There was a problem deleting your comment. Error: ${error.message}`,
     }));
   }
   return {
@@ -128,5 +127,5 @@ export const deleteComment = commentId => db.find({
   };
 }).catch(error => ({
   success: 0,
-  msg:  `There was a problem deleting your comment. Not found. Error: ${error.message}`,
+  msg: `There was a problem deleting your comment. Not found. Error: ${error.message}`,
 }));

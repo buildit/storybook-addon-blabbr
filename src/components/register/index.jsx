@@ -52,8 +52,8 @@ Register.propTypes = {
   onUserNameChange: PropTypes.func.isRequired,
   onUserEmailChange: PropTypes.func.isRequired,
   onRegisterSubmit: PropTypes.func.isRequired,
-  userName: PropTypes.string,
-  userEmail: PropTypes.string,
+  userName: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired,
 };
 
 export default Register;

@@ -40,23 +40,23 @@ export default class Panel extends Component {
     this.isDeletedByMe = this.isDeletedByMe.bind(this);
     this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
 
-	  this.state = {
-    activeComponent: null,
-    activeStory: null,
-    activeVersion: null,
-    eventName: null,
-    user: {
-      isUserAuthenticated: false,
-      userName: '',
-      userEmail: '',
-    },
-    userComment: '',
-    comments: [],
-    isShowingAllComments: true,
-    userCommentBeingUpdated: null,
-    commentIdBeingEdited: null,
-    isUserOnline: navigator.onLine,
-	  };
+    this.state = {
+      activeComponent: null,
+      activeStory: null,
+      activeVersion: null,
+      eventName: null,
+      user: {
+        isUserAuthenticated: false,
+        userName: '',
+        userEmail: '',
+      },
+      userComment: '',
+      comments: [],
+      isShowingAllComments: true,
+      userCommentBeingUpdated: null,
+      commentIdBeingEdited: null,
+      isUserOnline: navigator.onLine,
+    };
 
     this.commentChannelListener = null;
     this.channelListening = false;
@@ -100,12 +100,6 @@ export default class Panel extends Component {
     dbEventManager.removeOnlineListener();
   }
 
-  handleOnlineStatusChange(data) {
-    this.setState({
-      isUserOnline: data.isOnline,
-    });
-  }
-
   onFocusTabHandler() {
     // Focus the panel via the URL
     // Can we do this? There is nothing in API for it...
@@ -125,70 +119,15 @@ export default class Panel extends Component {
     this.fetchComments(kind, story, version);
   }
 
-  fetchComments(kind, story, version) {
-    getComments(kind, story, version)
-      .then((data) => {
-        let comments = data.docs,
-          commentsLength = comments.length,
-          threshold = this.commentsThreshold,
-          isShowingAllComments = true;
-
-        this.allComments = comments ? comments.slice(0) : [];
-
-        if (commentsLength > threshold) {
-          this.filteredComments = comments ? comments.slice(0, threshold) : [];
-          isShowingAllComments = false;
-        }
-        this.setState({
-          comments: isShowingAllComments ? this.allComments : this.filteredComments,
-          isShowingAllComments,
-        });
-        // add listener for channel comments events
-        this.listenForCommentChanges();
-      }).catch((e) => {
-        msg.error(`Error: ${e.message}`);
-      });
-  }
   onShowAllComments() {
     this.setState({
       comments: this.allComments,
       isShowingAllComments: true,
     });
   }
-  updateView() {
-    const {
-      activeComponent,
-      activeStory,
-      activeVersion } = this.state;
 
-    getComments(activeComponent, activeStory, activeVersion)
-      .then((data) => {
-        let comments = data.docs,
-          commentsLength = comments.length,
-          threshold = this.commentsThreshold,
-          isShowingAllComments = true;
-
-        this.allComments = comments ? comments.slice(0) : [];
-
-        if (commentsLength > threshold) {
-          this.filteredComments = comments ? comments.slice(0, threshold) : [];
-          isShowingAllComments = false;
-        }
-        this.setState({
-          comments: isShowingAllComments ? this.allComments : this.filteredComments,
-          isShowingAllComments,
-        });
-      }).catch((e) => {
-        msg.error(`Error: ${e.message}`);
-      });
-  }
   listenForCommentChanges() {
-    const { activeComponent, activeStory, eventName } = this.state;
-    let componentId,
-      stateId;
-
-    componentId = cleanToken(activeComponent);
-    stateId = cleanToken(activeStory);
+    const { activeStory, eventName } = this.state;
 
     // remove listeners for previous comment stream
     if (this.commentChannelListener !== null) {
@@ -199,9 +138,9 @@ export default class Panel extends Component {
     // These listeners use userActions to only fire if you're
     // not the current user
     this.commentChannelListener = dbEventManager.subscribe('change', eventName, (change) => {
-      let changedDoc = change.doc,
-        changedRecordId = changedDoc._id,
-        isDeleted = !!changedDoc._deleted;
+      const changedDoc = change.doc;
+      const changedRecordId = changedDoc._id;
+      const isDeleted = !!changedDoc._deleted;
 
       const isNewRecord = this.isNewComment(changedRecordId);
 
@@ -216,6 +155,7 @@ export default class Panel extends Component {
       this.updateView();
     });
   }
+
   wasActionPerformedByMe(key, obj) {
     const isKeyFound = obj.hasOwnProperty(key);
     if (isKeyFound) {
@@ -223,20 +163,23 @@ export default class Panel extends Component {
     }
     return isKeyFound;
   }
+
   isDeletedByMe(dataKey) {
     return this.wasActionPerformedByMe(dataKey, this.userActions.removed);
   }
+
   isEditedByMe(dataKey) {
     return this.wasActionPerformedByMe(dataKey, this.userActions.edited);
   }
   isAddedByMe(dataKey) {
     return this.wasActionPerformedByMe(dataKey, this.userActions.added);
   }
+
   isNewComment(dataKey) {
-    let comments = this.allComments,
-      idFound = false,
-      commentsLength,
-      i;
+    const comments = this.allComments;
+    let idFound = false;
+    let commentsLength;
+    let i;
 
     for (i = 0, commentsLength = comments.length; i < commentsLength; i++) {
       if (comments[i]._id === dataKey) {
@@ -250,7 +193,8 @@ export default class Panel extends Component {
   verifyUser() {
     const userName = localStorage.getItem('blabbr_userName');
     const userEmail = localStorage.getItem('blabbr_userEmail');
-    userName && userEmail && this.setState({ user: { userName, userEmail, isUserAuthenticated: true } });
+    userName && userEmail &&
+      this.setState({ user: { userName, userEmail, isUserAuthenticated: true } });
   }
 
   registerUser(username, email) {
@@ -311,7 +255,7 @@ export default class Panel extends Component {
     e.preventDefault();
     e.stopPropagation();
 
-    const { activeComponent, userCommentBeingUpdated } = this.state;
+    const { userCommentBeingUpdated } = this.state;
 
     updateComment(e.target.id, userCommentBeingUpdated).then((data) => {
       if (data.success) {
@@ -327,7 +271,6 @@ export default class Panel extends Component {
     e.preventDefault();
     e.stopPropagation();
 
-    const { activeComponent } = this.state;
     this.userActions.removed[e.target.id] = true;
     deleteComment(e.target.id).then((data) => {
       if (data.success) {
@@ -338,13 +281,71 @@ export default class Panel extends Component {
     });
   }
 
+  fetchComments(kind, story, version) {
+    getComments(kind, story, version)
+      .then((data) => {
+        const comments = data.docs;
+        const commentsLength = comments.length;
+        const threshold = this.commentsThreshold;
+        let isShowingAllComments = true;
+
+        this.allComments = comments ? comments.slice(0) : [];
+
+        if (commentsLength > threshold) {
+          this.filteredComments = comments ? comments.slice(0, threshold) : [];
+          isShowingAllComments = false;
+        }
+        this.setState({
+          comments: isShowingAllComments ? this.allComments : this.filteredComments,
+          isShowingAllComments,
+        });
+        // add listener for channel comments events
+        this.listenForCommentChanges();
+      }).catch((e) => {
+        msg.error(`Error: ${e.message}`);
+      });
+  }
+
+  updateView() {
+    const {
+      activeComponent,
+      activeStory,
+      activeVersion } = this.state;
+
+    getComments(activeComponent, activeStory, activeVersion)
+      .then((data) => {
+        const comments = data.docs;
+        const commentsLength = comments.length;
+        const threshold = this.commentsThreshold;
+        let isShowingAllComments = true;
+
+        this.allComments = comments ? comments.slice(0) : [];
+
+        if (commentsLength > threshold) {
+          this.filteredComments = comments ? comments.slice(0, threshold) : [];
+          isShowingAllComments = false;
+        }
+        this.setState({
+          comments: isShowingAllComments ? this.allComments : this.filteredComments,
+          isShowingAllComments,
+        });
+      }).catch((e) => {
+        msg.error(`Error: ${e.message}`);
+      });
+  }
+
+  handleOnlineStatusChange(data) {
+    this.setState({
+      isUserOnline: data.isOnline,
+    });
+  }
+
   addComment(userComment) {
     const {
       user: { userName, userEmail },
       activeComponent,
       activeStory,
       activeVersion,
-      comments,
       eventName,
     } = this.state;
     const timestampId = `${new Date().getTime()}`;
@@ -375,7 +376,7 @@ export default class Panel extends Component {
   render() {
     const {
       user: { userName, userEmail, isUserAuthenticated },
-	    userComment,
+      userComment,
       userCommentBeingUpdated,
       comments,
       commentIdBeingEdited,

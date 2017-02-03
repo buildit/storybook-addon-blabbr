@@ -25,4 +25,8 @@ OnlineIndicator.propTypes = {
   isOnline: PropTypes.bool,
 };
 
+OnlineIndicator.defaultProps = {
+  isOnline: false,
+};
+
 export default OnlineIndicator;

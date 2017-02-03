@@ -1,23 +1,23 @@
 import React, { PropTypes } from 'react';
-import { ListGroup, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Comment from '../comment';
 import SubmitComment from '../submitComment';
 import { getTimestamp } from '../../utils';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './styles.css';
 
 const Comments = ({
-	comments,
-	currentUser,
-	commentIdBeingEdited,
-	userCommentBeingUpdated,
-	onUserCommentEditCancel,
-	onUserCommentEditSave,
-	onUserCommentUpdate,
-	onUserCommentEdit,
-	onUserCommentDelete,
-	onShowAllComments,
-	isShowingAllComments,
+  comments,
+  currentUser,
+  commentIdBeingEdited,
+  userCommentBeingUpdated,
+  onUserCommentEditCancel,
+  onUserCommentEditSave,
+  onUserCommentUpdate,
+  onUserCommentEdit,
+  onUserCommentDelete,
+  onShowAllComments,
+  isShowingAllComments,
 }) => {
   const commentsComponents = comments.map((comment, i) => {
     const timestamp = getTimestamp(comment.timestamp);
@@ -57,12 +57,12 @@ const Comments = ({
   });
 
   const showAllCommentsLink = !isShowingAllComments ?
-		(<Button bsStyle="link" block style={{ marginBottom: 20 }} onClick={onShowAllComments}>
-			Show all comments
-		</Button>) :
-		null;
+    (<Button bsStyle="link" block style={{ marginBottom: 20 }} onClick={onShowAllComments}>
+      Show all comments
+    </Button>) :
+    null;
 
-  return 	(
+  return (
     <div>
       <ReactCSSTransitionGroup
         component="div"
@@ -72,9 +72,9 @@ const Comments = ({
         transitionAppear={false}
       >
         { comments.length ?
-					commentsComponents :
-					<p key="no-comments">No comments to show for this story</p>
-				}
+          commentsComponents :
+          <p key="no-comments">No comments to show for this story</p>
+        }
       </ReactCSSTransitionGroup>
       {showAllCommentsLink}
     </div>

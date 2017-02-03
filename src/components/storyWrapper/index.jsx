@@ -39,6 +39,7 @@ class StoryWrapper extends React.Component {
 
 StoryWrapper.propTypes = {
   channel: React.PropTypes.object.isRequired,
+  children: React.PropTypes.node.isRequired,
 };
 
 export default StoryWrapper;

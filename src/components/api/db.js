@@ -24,8 +24,37 @@ db.sync(`https://${config.user}:${config.pwd}@${config.host}`, {
   retry: true,
 });
 
+const dbEvents = {
+  change: [],
+  online: [],
+  error: [],
+};
+
+const fireListeners = (eventType, data) => {
+  let changedDoc = {
+    eventName: '',
+  };
+  let eventData;
+  const isStatusEvent = !!data.statusEvent;
+
+  if (eventType === 'change') {
+    changedDoc = data.doc;
+  }
+
+  // fire any listeners passing through data
+  for (let i = 0, l = dbEvents[eventType].length; i < l; i++) {
+    eventData = dbEvents[eventType][i];
+
+    if ((eventData.eventName === changedDoc.eventName ||
+      isStatusEvent === true) &&
+      eventData.listener) {
+      eventData.listener(data);
+    }
+  }
+};
+
 function updateIndicator() {
-	// Show a different icon based on offline/online
+  // Show a different icon based on offline/online
   const data = {
     isOnline: navigator.onLine,
     statusEvent: true,
@@ -44,47 +73,16 @@ function removeOnlineListener() {
   window.removeEventListener('offline', updateIndicator, false);
 }
 
-const dbEvents = {
-  change: [],
-  online: [],
-  error: [],
-};
-
 dbEmitter.on('change', (data) => {
   fireListeners('change', data);
 });
-
-const fireListeners = (eventType, data) => {
-  let changedDoc = {
-      eventName: '',
-    },
-    componentId,
-    stateId,
-    eventData,
-    isStatusEvent = !!data.statusEvent;
-
-  if (eventType === 'change') {
-    changedDoc = data.doc;
-  }
-
-  // fire any listeners passing through data
-  for (let i = 0, l = dbEvents[eventType].length; i < l; i++) {
-    eventData = dbEvents[eventType][i];
-
-    if ((eventData.eventName === changedDoc.eventName ||
-      isStatusEvent === true) &&
-      eventData.listener) {
-      eventData.listener(data);
-    }
-  }
-};
 
 const subscribe = (eventType, eventName, listener) => {
   if (!dbEvents[eventType]) {
     return "No such event type, please use 'change'/'online'/'denied'/'complete'/'error'";
   }
-  let eventId = `${eventType}${eventName}`,
-    eventListener = null;
+  const eventId = `${eventType}${eventName}`;
+  let eventListener = null;
 
   if (eventType === 'change') {
     eventListener = db.changes({
