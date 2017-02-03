@@ -18,21 +18,24 @@ class StoryWrapper extends React.Component {
     return (
       <div>
         {this.props.children}
-        <button
-          type="button"
-          className="btn btn-default"
-          onClick={this.showComments}
-          style={{
-            position: 'fixed',
-            top: '0',
-            right: '0',
-            display: 'block',
-          }}
-        >
-          <span className="glyphicon glyphicon-comment" />
-        </button>
       </div>
     );
+    // Reenable this when we have a valid style
+        // <button
+        //   type="button"
+        //   className="btn btn-default"
+        //   onClick={this.showComments}
+        //   style={{
+        //     position: 'fixed',
+        //     top: '0',
+        //     right: '0',
+        //     display: 'block',
+        //   }}
+        // >
+        //   <span className="glyphicon glyphicon-comment" />
+        // </button>
+    //   </div>
+    // );
   }
 }
 
