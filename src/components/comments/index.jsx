@@ -27,35 +27,31 @@ const Comments = ({
 		if (beingEdited) {
 			userCommentBeingUpdated = userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
 		}
+		const commentOrSubmit = !!beingEdited === true ?
+      <SubmitComment key={comment._id}
+                     userComment={userCommentBeingUpdated}
+                     onUserCommentChange={onUserCommentUpdate}
+                     onCommentSubmit={onUserCommentEditSave}
+                     onCommentCancel={onUserCommentEditCancel}
+                     title={'Edit comment'}
+                     comment={comment}
+                     type={'Edit'}
+      />
+      :
+      <Comment key={comment._id}
+               onUserCommentEdit={onUserCommentEdit}
+               onUserCommentDelete={onUserCommentDelete}
+               currentUserIsOwner={currentUser === comment.userEmail}
+               username={comment.userName}
+               emailId={comment.userEmail}
+               timestamp={timestamp}
+               comment={comment.comment}
+               commentId={comment._id}
+               edited={comment.edited}
+               lastUpdated={lastUpdated}
+      />;
 
-		return (
-			<div key={comment._id}>
-			{ !!beingEdited === true ?
-				<SubmitComment
-					userComment={userCommentBeingUpdated}
-					onUserCommentChange={onUserCommentUpdate}
-					onCommentSubmit={onUserCommentEditSave}
-					onCommentCancel={onUserCommentEditCancel}
-					title={'Edit comment'}
-					comment={comment}
-					type={'Edit'}
-				/>
-				 :
-				 <Comment
-					onUserCommentEdit={onUserCommentEdit}
-					onUserCommentDelete={onUserCommentDelete}
-					currentUserIsOwner={currentUser === comment.userEmail}
-					username={comment.userName}
-					emailId={comment.userEmail}
-					timestamp={timestamp}
-					comment={comment.comment}
-					commentId={comment._id}
-					edited={comment.edited}
-					lastUpdated={lastUpdated}
- 		  	 />
-			 }
-			</div>
-		)
+		return  commentOrSubmit;
 	});
 
 	const showAllCommentsLink = !isShowingAllComments ?
@@ -67,6 +63,7 @@ const Comments = ({
 	return 	(
 		<div>
 			<ReactCSSTransitionGroup
+        component="div"
 				transitionName="comment"
 				transitionEnterTimeout={500}
 				transitionLeaveTimeout={500}

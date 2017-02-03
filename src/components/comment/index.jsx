@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { createHash } from '../../utils';
-import { Panel, Glyphicon, Button } from 'react-bootstrap';
 import './styles.css';
 
 const Comment = ({
@@ -16,46 +15,34 @@ const Comment = ({
   lastUpdated
 }) => {
   const emailHash = createHash(emailId);
-  const panelHeader = (
-    <div>
-      <img className="avatar" src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`} />
-      <h4 className="header">{`${username} - ${emailId}`} <span className="text-muted">{timestamp}</span></h4>
-      <span className="controls">
-        { !!currentUserIsOwner &&
-          <Button
-            style={{ marginRight: 10 }}
-            bsStyle="warning"
-            id={commentId}
-            onClick={onUserCommentEdit}
-            title="Edit"
-          >
-            <Glyphicon
+  return <article className="blabbr-comment">
+      <header>
+        <h2>{`${username}`}</h2>
+        <time dateTime={timestamp}>{timestamp}</time>
+        <img className="avatar" src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`} alt={`${username}'s Gravatar`} />
+
+        <span className="controls">
+          { !!currentUserIsOwner &&
+            <button
               id={commentId}
               onClick={onUserCommentEdit}
-              glyph="pencil"></Glyphicon>
-          </Button>
-        }
-        { !!currentUserIsOwner &&
-          <Button
-            bsStyle="danger"
-            id={commentId}
-            onClick={onUserCommentDelete}
-            title="Remove"
-          >
-            <Glyphicon
+            >
+              Edit
+            </button>
+          }
+          { !!currentUserIsOwner &&
+            <button
               id={commentId}
               onClick={onUserCommentDelete}
-              glyph="remove"></Glyphicon>
-          </Button>
-        }
-      </span>
-    </div>
-  );
-  return (
-    <Panel header={panelHeader}>
-      {comment} {edited && <span className="text-muted"><br/>(edited - {lastUpdated})</span>}
-    </Panel>
-  );
+            >
+              Remove
+            </button>
+          }
+        </span>
+      </header>
+      <p>{comment}</p>
+      {edited && <p><small>(edited - {lastUpdated})</small></p>}
+    </article>;
 };
 
 Comment.propTypes = {
