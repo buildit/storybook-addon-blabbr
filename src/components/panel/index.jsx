@@ -47,6 +47,7 @@ export default class Panel extends Component {
     this.isEditedByMe = this.isEditedByMe.bind(this);
     this.isDeletedByMe = this.isDeletedByMe.bind(this);
     this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
+    this.processComments = this.processComments.bind(this);
 
     this.state = {
       activeComponent: null,
@@ -201,16 +202,18 @@ export default class Panel extends Component {
 
   onStoryChangeHandler(kind, story) {
     const version = '0_0_1'; // TEMP
+    const componentId = cleanToken(kind);
+    const storyId = cleanToken(story);
 
     this.setState({
-      activeComponent: kind,
-      activeStory: story,
+      activeComponent: componentId,
+      activeStory: storyId,
       activeVersion: version,
-      eventName: `${cleanToken(kind)}${cleanToken(story)}`,
+      eventName: `${componentId}${storyId}`,
       userComment: '',
     });
 
-    this.fetchComments(kind, story, version);
+    this.fetchComments();
   }
 
   isDeletedByMe(dataKey) {
@@ -220,6 +223,7 @@ export default class Panel extends Component {
   isEditedByMe(dataKey) {
     return wasActionPerformedByMe(dataKey, this.userActions.edited);
   }
+
   isAddedByMe(dataKey) {
     return wasActionPerformedByMe(dataKey, this.userActions.added);
   }
@@ -239,9 +243,26 @@ export default class Panel extends Component {
     return !idFound;
   }
 
+  processComments(data) {
+    const comments = data.docs;
+    const commentsLength = comments.length;
+    const threshold = this.commentsThreshold;
+    let isShowingAllComments = true;
+
+    this.allComments = comments ? comments.slice(0) : [];
+
+    if (commentsLength > threshold) {
+      this.filteredComments = comments ? comments.slice(0, threshold) : [];
+      isShowingAllComments = false;
+    }
+    this.setState({
+      comments: isShowingAllComments ? this.allComments : this.filteredComments,
+      isShowingAllComments,
+    });
+  }
+
   listenForCommentChanges() {
     const { eventName } = this.state;
-
     // remove listeners for previous comment stream
     if (this.commentChannelListener !== null) {
       dbEventManager.unsubscribe('change', this.commentChannelListener);
@@ -254,7 +275,6 @@ export default class Panel extends Component {
       const changedDoc = change.doc;
       const changedRecordId = changedDoc._id;
       const isDeleted = !!changedDoc._deleted;
-
       const isNewRecord = this.isNewComment(changedRecordId);
 
       if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
@@ -264,7 +284,6 @@ export default class Panel extends Component {
       } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
         global.msg.info('A comment was edited.');
       }
-
       this.updateView();
     });
   }
@@ -281,31 +300,17 @@ export default class Panel extends Component {
     localStorage.setItem('blabbr_userName', username);
     localStorage.setItem('blabbr_userEmail', email);
     this.setState({ user: Object.assign(user, { isUserAuthenticated: true }) });
+    this.updateView();
+    this.listenForCommentChanges();
   }
 
-  fetchComments(kind, story, version) {
-    getComments(kind, story, version)
-      .then((data) => {
-        const comments = data.docs;
-        const commentsLength = comments.length;
-        const threshold = this.commentsThreshold;
-        let isShowingAllComments = true;
+  fetchComments() {
+    const { user } = this.state;
 
-        this.allComments = comments ? comments.slice(0) : [];
-
-        if (commentsLength > threshold) {
-          this.filteredComments = comments ? comments.slice(0, threshold) : [];
-          isShowingAllComments = false;
-        }
-        this.setState({
-          comments: isShowingAllComments ? this.allComments : this.filteredComments,
-          isShowingAllComments,
-        });
-        // add listener for channel comments events
-        this.listenForCommentChanges();
-      }).catch((e) => {
-        global.msg.error(`Error: ${e.message}`);
-      });
+    if (user.isUserAuthenticated) {
+      this.updateView();
+      this.listenForCommentChanges();
+    }
   }
 
   updateView() {
@@ -316,21 +321,7 @@ export default class Panel extends Component {
 
     getComments(activeComponent, activeStory, activeVersion)
       .then((data) => {
-        const comments = data.docs;
-        const commentsLength = comments.length;
-        const threshold = this.commentsThreshold;
-        let isShowingAllComments = true;
-
-        this.allComments = comments ? comments.slice(0) : [];
-
-        if (commentsLength > threshold) {
-          this.filteredComments = comments ? comments.slice(0, threshold) : [];
-          isShowingAllComments = false;
-        }
-        this.setState({
-          comments: isShowingAllComments ? this.allComments : this.filteredComments,
-          isShowingAllComments,
-        });
+        this.processComments(data);
       }).catch((e) => {
         global.msg.error(`Error: ${e.message}`);
       });
