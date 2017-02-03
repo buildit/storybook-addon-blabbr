@@ -19,7 +19,7 @@ export const getComments = (component, story, version = '0_0_1') =>
    }).then(data => ({
      success: true,
      ...data,
-   })).catch(error => ({
+   })).catch(() => ({
      success: false,
      msg: 'No comments available.',
    }));
@@ -87,10 +87,10 @@ export const updateComment = (commentId, userComment) => {
     record.edited = true;
     record.lastUpdated = timestampId;
 
-    return db.put(record).then(data => ({
+    return db.put(record).then(() => ({
       success: true,
       msg: 'Your comment was edited successfully.',
-    })).catch(error => ({
+    })).catch(() => ({
       success: false,
       msg: 'There was an error editing your comment.',
     }));
@@ -105,8 +105,8 @@ export const deleteComment = commentId => db.find({
   if (data.docs && data.docs.length) {
     const record = data.docs[0];
     record._deleted = true;
-    return db.put(record).then((data) => {
-      if (data.ok) {
+    return db.put(record).then((result) => {
+      if (result.ok) {
         return {
           success: true,
           msg: 'Your comment was removed successfully.',

@@ -55,6 +55,7 @@ Comment.propTypes = {
   onUserCommentEdit: PropTypes.func.isRequired,
   onUserCommentDelete: PropTypes.func.isRequired,
   edited: PropTypes.bool,
+  lastUpdated: PropTypes.string,
 };
 
 export default Comment;

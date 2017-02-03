@@ -19,18 +19,23 @@ const Comments = ({
   onShowAllComments,
   isShowingAllComments,
 }) => {
-  const commentsComponents = comments.map((comment, i) => {
+  const commentsComponents = comments.map((comment) => {
     const timestamp = getTimestamp(comment.timestamp);
     const lastUpdated = getTimestamp(comment.lastUpdated);
     const beingEdited = comment._id === commentIdBeingEdited;
 
+    let userCommentBeingUpdatedFn;
     if (beingEdited) {
-      userCommentBeingUpdated = userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
+      userCommentBeingUpdatedFn =
+        userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
+    } else {
+      userCommentBeingUpdatedFn = userCommentBeingUpdated;
     }
+
     const commentOrSubmit = !!beingEdited === true ?
       (<SubmitComment
         key={comment._id}
-        userComment={userCommentBeingUpdated}
+        userComment={userCommentBeingUpdatedFn}
         onUserCommentChange={onUserCommentUpdate}
         onCommentSubmit={onUserCommentEditSave}
         onCommentCancel={onUserCommentEditCancel}
