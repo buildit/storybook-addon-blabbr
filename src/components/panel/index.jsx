@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
 import AlertContainer from 'react-alert';
 import { getComments, postComment, deleteComment, updateComment } from '../api';
 import { hasStorage, cleanToken } from '../../utils';

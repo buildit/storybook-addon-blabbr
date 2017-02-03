@@ -1,6 +1,16 @@
 .panel-container {
   padding: 0 20px;
   width: 100%;
+  font-family:
+    -apple-system,
+    ".SFNSText-Regular",
+    "San Francisco",
+    Roboto,
+    "Segoe UI",
+    "Helvetica Neue",
+     "Lucida Grande",
+     sans-serif;
+   color: #444;
 }
 header h2 {
   display: inline-block;
