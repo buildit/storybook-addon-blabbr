@@ -201,7 +201,6 @@ export default class Panel extends Component {
         } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
           msg.info('A comment was edited.');
         }
-        console.log('updateView called');
         this.updateView();
     });
   }
