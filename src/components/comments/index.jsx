@@ -17,84 +17,86 @@ const Comments = ({
 	onUserCommentEdit,
 	onUserCommentDelete,
 	onShowAllComments,
-	isShowingAllComments
+	isShowingAllComments,
 }) => {
-	const commentsComponents = comments.map((comment, i) => {
-		const timestamp = getTimestamp(comment.timestamp);
-		const lastUpdated = getTimestamp(comment.lastUpdated);
-		const beingEdited = comment._id === commentIdBeingEdited;
+  const commentsComponents = comments.map((comment, i) => {
+    const timestamp = getTimestamp(comment.timestamp);
+    const lastUpdated = getTimestamp(comment.lastUpdated);
+    const beingEdited = comment._id === commentIdBeingEdited;
 
-		if (beingEdited) {
-			userCommentBeingUpdated = userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
-		}
-		const commentOrSubmit = !!beingEdited === true ?
-      <SubmitComment key={comment._id}
-                     userComment={userCommentBeingUpdated}
-                     onUserCommentChange={onUserCommentUpdate}
-                     onCommentSubmit={onUserCommentEditSave}
-                     onCommentCancel={onUserCommentEditCancel}
-                     title={'Edit comment'}
-                     comment={comment}
-                     type={'Edit'}
-      />
+    if (beingEdited) {
+      userCommentBeingUpdated = userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
+    }
+    const commentOrSubmit = !!beingEdited === true ?
+      (<SubmitComment
+        key={comment._id}
+        userComment={userCommentBeingUpdated}
+        onUserCommentChange={onUserCommentUpdate}
+        onCommentSubmit={onUserCommentEditSave}
+        onCommentCancel={onUserCommentEditCancel}
+        title={'Edit comment'}
+        comment={comment}
+        type={'Edit'}
+      />)
       :
-      <Comment key={comment._id}
-               onUserCommentEdit={onUserCommentEdit}
-               onUserCommentDelete={onUserCommentDelete}
-               currentUserIsOwner={currentUser === comment.userEmail}
-               username={comment.userName}
-               emailId={comment.userEmail}
-               timestamp={timestamp}
-               comment={comment.comment}
-               commentId={comment._id}
-               edited={comment.edited}
-               lastUpdated={lastUpdated}
-      />;
+      (<Comment
+        key={comment._id}
+        onUserCommentEdit={onUserCommentEdit}
+        onUserCommentDelete={onUserCommentDelete}
+        currentUserIsOwner={currentUser === comment.userEmail}
+        username={comment.userName}
+        emailId={comment.userEmail}
+        timestamp={timestamp}
+        comment={comment.comment}
+        commentId={comment._id}
+        edited={comment.edited}
+        lastUpdated={lastUpdated}
+      />);
 
-		return  commentOrSubmit;
-	});
+    return commentOrSubmit;
+  });
 
-	const showAllCommentsLink = !isShowingAllComments ?
-		<Button bsStyle="link" block style={{ marginBottom: 20 }} onClick={onShowAllComments}>
+  const showAllCommentsLink = !isShowingAllComments ?
+		(<Button bsStyle="link" block style={{ marginBottom: 20 }} onClick={onShowAllComments}>
 			Show all comments
-		</Button> :
+		</Button>) :
 		null;
 
-	return 	(
-		<div>
-			<ReactCSSTransitionGroup
+  return 	(
+    <div>
+      <ReactCSSTransitionGroup
         component="div"
-				transitionName="comment"
-				transitionEnterTimeout={500}
-				transitionLeaveTimeout={500}
-				transitionAppear={false}
-			>
-				{ comments.length ?
+        transitionName="comment"
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
+        transitionAppear={false}
+      >
+        { comments.length ?
 					commentsComponents :
 					<p key="no-comments">No comments to show for this story</p>
 				}
-			</ReactCSSTransitionGroup>
-			{showAllCommentsLink}
-		</div>
-	);
+      </ReactCSSTransitionGroup>
+      {showAllCommentsLink}
+    </div>
+  );
 };
 
 Comments.propTypes = {
   comments: PropTypes.array,
-	commentIdBeingEdited: PropTypes.string,
-	userCommentBeingUpdated: PropTypes.string,
+  commentIdBeingEdited: PropTypes.string,
+  userCommentBeingUpdated: PropTypes.string,
   currentUser: PropTypes.string.isRequired,
-	onUserCommentUpdate: PropTypes.func.isRequired,
-	onUserCommentEdit: PropTypes.func.isRequired,
-	onUserCommentEditSave: PropTypes.func.isRequired,
-	onUserCommentEditCancel: PropTypes.func.isRequired,
+  onUserCommentUpdate: PropTypes.func.isRequired,
+  onUserCommentEdit: PropTypes.func.isRequired,
+  onUserCommentEditSave: PropTypes.func.isRequired,
+  onUserCommentEditCancel: PropTypes.func.isRequired,
   onUserCommentDelete: PropTypes.func.isRequired,
-	isShowingAllComments: PropTypes.bool.isRequired,
-	onShowAllComments: PropTypes.func.isRequired
+  isShowingAllComments: PropTypes.bool.isRequired,
+  onShowAllComments: PropTypes.func.isRequired,
 };
 
 Comment.defaultProps = {
-	comments: [],
+  comments: [],
 };
 
 export default Comments;

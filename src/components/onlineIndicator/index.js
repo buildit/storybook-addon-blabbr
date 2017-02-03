@@ -3,7 +3,7 @@ import { Glyphicon } from 'react-bootstrap';
 import './styles.css';
 
 const OnlineIndicator = ({
-  isOnline
+  isOnline,
 }) => {
   const indicatorClass = isOnline ? 'online' : 'offline';
 
@@ -22,7 +22,7 @@ const OnlineIndicator = ({
 };
 
 OnlineIndicator.propTypes = {
-  isOnline: PropTypes.bool
+  isOnline: PropTypes.bool,
 };
 
 export default OnlineIndicator;

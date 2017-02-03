@@ -4,9 +4,8 @@
 const lib = {};
 
 (function (global) {
-
-  var md5cycle = function (x, k) {
-    var a = x[0],
+  const md5cycle = function (x, k) {
+    let a = x[0],
       b = x[1],
       c = x[2],
       d = x[3];
@@ -83,32 +82,31 @@ const lib = {};
     x[1] = add32(b, x[1]);
     x[2] = add32(c, x[2]);
     x[3] = add32(d, x[3]);
+  };
 
-  }
-
-  var cmn = function (q, a, b, x, s, t) {
+  const cmn = function (q, a, b, x, s, t) {
     a = add32(add32(a, q), add32(x, t));
     return add32((a << s) | (a >>> (32 - s)), b);
-  }
+  };
 
   var ff = function (a, b, c, d, x, s, t) {
     return cmn((b & c) | ((~b) & d), a, b, x, s, t);
-  }
+  };
 
   var gg = function (a, b, c, d, x, s, t) {
     return cmn((b & d) | (c & (~d)), a, b, x, s, t);
-  }
+  };
 
   var hh = function (a, b, c, d, x, s, t) {
     return cmn(b ^ c ^ d, a, b, x, s, t);
-  }
+  };
 
   var ii = function (a, b, c, d, x, s, t) {
     return cmn(c ^ (b | (~d)), a, b, x, s, t);
-  }
+  };
 
-  var md51 = function (s) {
-    var txt = '',
+  const md51 = function (s) {
+    let txt = '',
       n = s.length,
       state = [1732584193, -271733879, -1732584194, 271733878],
       i;
@@ -116,9 +114,8 @@ const lib = {};
       md5cycle(state, md5blk(s.substring(i - 64, i)));
     }
     s = s.substring(i - 64);
-    var tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    for (i = 0; i < s.length; i++)
-      tail[i >> 2] |= s.charCodeAt(i) << ((i % 4) << 3);
+    const tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (i = 0; i < s.length; i++) { tail[i >> 2] |= s.charCodeAt(i) << ((i % 4) << 3); }
     tail[i >> 2] |= 0x80 << ((i % 4) << 3);
     if (i > 55) {
       md5cycle(state, tail);
@@ -127,7 +124,7 @@ const lib = {};
     tail[14] = n * 8;
     md5cycle(state, tail);
     return state;
-  }
+  };
 
   /* there needs to be support for Unicode here,
    * unless we pretend that we can redefine the MD-5
@@ -145,33 +142,31 @@ const lib = {};
    * 8-bit unsigned value arrays.
    */
   var md5blk = function (s) { /* I figured global was faster.   */
-    var md5blks = [],
+    let md5blks = [],
       i; /* Andy King said do it this way. */
     for (i = 0; i < 64; i += 4) {
       md5blks[i >> 2] = s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) + (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
     }
     return md5blks;
-  }
+  };
 
-  var hex_chr = '0123456789abcdef'.split('');
+  const hex_chr = '0123456789abcdef'.split('');
 
-  var rhex = function (n) {
-    var s = '',
+  const rhex = function (n) {
+    let s = '',
       j = 0;
-    for (; j < 4; j++)
-      s += hex_chr[(n >> (j * 8 + 4)) & 0x0F] + hex_chr[(n >> (j * 8)) & 0x0F];
+    for (; j < 4; j++) { s += hex_chr[(n >> (j * 8 + 4)) & 0x0F] + hex_chr[(n >> (j * 8)) & 0x0F]; }
     return s;
-  }
+  };
 
-  var hex = function (x) {
-    for (var i = 0; i < x.length; i++)
-      x[i] = rhex(x[i]);
+  const hex = function (x) {
+    for (var i = 0; i < x.length; i++) { x[i] = rhex(x[i]); }
     return x.join('');
-  }
+  };
 
-  var md5 = global.md5 = function (s) {
+  const md5 = global.md5 = function (s) {
     return hex(md51(s));
-  }
+  };
 
   /* this function is much faster,
   so if possible we use it. Some IEs
@@ -181,19 +176,17 @@ const lib = {};
 
   var add32 = function (a, b) {
     return (a + b) & 0xFFFFFFFF;
-  }
+  };
 
   if (md5('hello') != '5d41402abc4b2a76b9719d911017c592') {
     add32 = function (x, y) {
-      var lsw = (x & 0xFFFF) + (y & 0xFFFF),
+      let lsw = (x & 0xFFFF) + (y & 0xFFFF),
         msw = (x >> 16) + (y >> 16) + (lsw >> 16);
       return (msw << 16) | (lsw & 0xFFFF);
-    }
+    };
   }
+}(lib));
 
-})(lib);
-
-export const createHash = (emailId) => {
+export const createHash = emailId =>
   // create MD5 hash of email address
-  return lib.md5(emailId);
-};
+   lib.md5(emailId);

@@ -12,37 +12,37 @@ const Comment = ({
   onUserCommentEdit,
   onUserCommentDelete,
   edited,
-  lastUpdated
+  lastUpdated,
 }) => {
   const emailHash = createHash(emailId);
-  return <article className="blabbr-comment">
-      <header>
-        <h2>{`${username}`}</h2>
-        <time dateTime={timestamp}>{timestamp}</time>
-        <img className="avatar" src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`} alt={`${username}'s Gravatar`} />
+  return (<article className="blabbr-comment">
+    <header>
+      <h2>{`${username}`}</h2>
+      <time dateTime={timestamp}>{timestamp}</time>
+      <img className="avatar" src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`} alt={`${username}'s Gravatar`} />
 
-        <span className="controls">
-          { !!currentUserIsOwner &&
-            <button
-              id={commentId}
-              onClick={onUserCommentEdit}
-            >
+      <span className="controls">
+        { !!currentUserIsOwner &&
+        <button
+          id={commentId}
+          onClick={onUserCommentEdit}
+        >
               Edit
             </button>
           }
-          { !!currentUserIsOwner &&
-            <button
-              id={commentId}
-              onClick={onUserCommentDelete}
-            >
+        { !!currentUserIsOwner &&
+        <button
+          id={commentId}
+          onClick={onUserCommentDelete}
+        >
               Remove
             </button>
           }
-        </span>
-      </header>
-      <p>{comment}</p>
-      {edited && <p><small>(edited - {lastUpdated})</small></p>}
-    </article>;
+      </span>
+    </header>
+    <p>{comment}</p>
+    {edited && <p><small>(edited - {lastUpdated})</small></p>}
+  </article>);
 };
 
 Comment.propTypes = {
@@ -54,7 +54,7 @@ Comment.propTypes = {
   currentUserIsOwner: PropTypes.bool.isRequired,
   onUserCommentEdit: PropTypes.func.isRequired,
   onUserCommentDelete: PropTypes.func.isRequired,
-  edited: PropTypes.bool
+  edited: PropTypes.bool,
 };
 
 export default Comment;

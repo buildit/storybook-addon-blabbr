@@ -6,7 +6,7 @@ const Register = ({
   onUserEmailChange,
   onRegisterSubmit,
   userName,
-  userEmail
+  userEmail,
 }) => {
   const formTitle = (
     <h2>Register to add comments</h2>
@@ -22,7 +22,8 @@ const Register = ({
           <FormControl
             id="user-name"
             value={userName || ''}
-            onChange={onUserNameChange} />
+            onChange={onUserNameChange}
+          />
         </FormGroup>
         <FormGroup>
           <ControlLabel htmlFor="email">
@@ -31,12 +32,14 @@ const Register = ({
           <FormControl
             id="email"
             value={userEmail || ''}
-            onChange={onUserEmailChange} />
+            onChange={onUserEmailChange}
+          />
         </FormGroup>
         <Button
           type="submit"
           bsClass="btn btn-success"
-          onClick={onRegisterSubmit}>
+          onClick={onRegisterSubmit}
+        >
           Register
         </Button>
       </form>

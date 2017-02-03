@@ -41,21 +41,21 @@ export default class Panel extends Component {
     this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
 
 	  this.state = {
-        activeComponent: null,
-        activeStory: null,
-        activeVersion: null,
-        eventName: null,
-        user: {
-            isUserAuthenticated: false,
-            userName: '',
-            userEmail: '',
-        },
-        userComment: '',
-        comments: [],
-        isShowingAllComments: true,
-        userCommentBeingUpdated: null,
-        commentIdBeingEdited: null,
-        isUserOnline: navigator.onLine
+    activeComponent: null,
+    activeStory: null,
+    activeVersion: null,
+    eventName: null,
+    user: {
+      isUserAuthenticated: false,
+      userName: '',
+      userEmail: '',
+    },
+    userComment: '',
+    comments: [],
+    isShowingAllComments: true,
+    userCommentBeingUpdated: null,
+    commentIdBeingEdited: null,
+    isUserOnline: navigator.onLine,
 	  };
 
     this.commentChannelListener = null;
@@ -65,13 +65,13 @@ export default class Panel extends Component {
       position: 'bottom right',
       theme: 'light',
       time: 3000,
-      transition: 'fade'
+      transition: 'fade',
     };
     // track user actions
     this.userActions = {
       added: {},
       removed: {},
-      edited: {}
+      edited: {},
     };
     this.commentsThreshold = 5;
     this.filteredComments = [];
@@ -102,7 +102,7 @@ export default class Panel extends Component {
 
   handleOnlineStatusChange(data) {
     this.setState({
-      isUserOnline: data.isOnline
+      isUserOnline: data.isOnline,
     });
   }
 
@@ -112,14 +112,14 @@ export default class Panel extends Component {
   }
 
   onStoryChangeHandler(kind, story) {
-    let version = '0_0_1'; // TEMP
+    const version = '0_0_1'; // TEMP
 
     this.setState({
       activeComponent: kind,
       activeStory: story,
       activeVersion: version,
       eventName: `${cleanToken(kind)}${cleanToken(story)}`,
-      userComment: ''
+      userComment: '',
     });
 
     this.fetchComments(kind, story, version);
@@ -141,7 +141,7 @@ export default class Panel extends Component {
         }
         this.setState({
           comments: isShowingAllComments ? this.allComments : this.filteredComments,
-          isShowingAllComments: isShowingAllComments
+          isShowingAllComments,
         });
         // add listener for channel comments events
         this.listenForCommentChanges();
@@ -152,11 +152,11 @@ export default class Panel extends Component {
   onShowAllComments() {
     this.setState({
       comments: this.allComments,
-      isShowingAllComments: true
+      isShowingAllComments: true,
     });
   }
   updateView() {
-    let {
+    const {
       activeComponent,
       activeStory,
       activeVersion } = this.state;
@@ -176,7 +176,7 @@ export default class Panel extends Component {
         }
         this.setState({
           comments: isShowingAllComments ? this.allComments : this.filteredComments,
-          isShowingAllComments: isShowingAllComments
+          isShowingAllComments,
         });
       }).catch((e) => {
         msg.error(`Error: ${e.message}`);
@@ -184,7 +184,8 @@ export default class Panel extends Component {
   }
   listenForCommentChanges() {
     const { activeComponent, activeStory, eventName } = this.state;
-    var componentId, stateId;
+    let componentId,
+      stateId;
 
     componentId = cleanToken(activeComponent);
     stateId = cleanToken(activeStory);
@@ -198,27 +199,27 @@ export default class Panel extends Component {
     // These listeners use userActions to only fire if you're
     // not the current user
     this.commentChannelListener = dbEventManager.subscribe('change', eventName, (change) => {
-        let changedDoc = change.doc,
-            changedRecordId = changedDoc._id,
-            isDeleted = !!changedDoc._deleted;
+      let changedDoc = change.doc,
+        changedRecordId = changedDoc._id,
+        isDeleted = !!changedDoc._deleted;
 
-        let isNewRecord = this.isNewComment(changedRecordId);
+      const isNewRecord = this.isNewComment(changedRecordId);
 
-        if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
-          msg.info('A comment has been removed.');
-        } else if (!isDeleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
-          msg.info('A new comment was added.');
-        } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
-          msg.info('A comment was edited.');
-        }
+      if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
+        msg.info('A comment has been removed.');
+      } else if (!isDeleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
+        msg.info('A new comment was added.');
+      } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
+        msg.info('A comment was edited.');
+      }
 
-        this.updateView();
+      this.updateView();
     });
   }
   wasActionPerformedByMe(key, obj) {
-    let isKeyFound = obj.hasOwnProperty(key);
+    const isKeyFound = obj.hasOwnProperty(key);
     if (isKeyFound) {
-      delete obj[key]
+      delete obj[key];
     }
     return isKeyFound;
   }
@@ -249,28 +250,28 @@ export default class Panel extends Component {
   verifyUser() {
     const userName = localStorage.getItem('blabbr_userName');
     const userEmail = localStorage.getItem('blabbr_userEmail');
-    userName && userEmail && this.setState({ user: { userName,  userEmail, isUserAuthenticated: true }});
+    userName && userEmail && this.setState({ user: { userName, userEmail, isUserAuthenticated: true } });
   }
 
   registerUser(username, email) {
     const { user } = this.state;
     localStorage.setItem('blabbr_userName', username);
     localStorage.setItem('blabbr_userEmail', email);
-    this.setState({ user: Object.assign(user, { isUserAuthenticated: true })});
+    this.setState({ user: Object.assign(user, { isUserAuthenticated: true }) });
   }
 
   onUserNameChange(e) {
     const { user } = this.state;
-    this.setState({ user: Object.assign(user, { userName: e.target.value })});
+    this.setState({ user: Object.assign(user, { userName: e.target.value }) });
   }
 
   onUserEmailChange(e) {
     const { user } = this.state;
-    this.setState({ user: Object.assign(user, { userEmail: e.target.value })});
+    this.setState({ user: Object.assign(user, { userEmail: e.target.value }) });
   }
 
   onRegisterSubmit(e) {
-    const { user: { userName, userEmail } } =  this.state;
+    const { user: { userName, userEmail } } = this.state;
     e.preventDefault();
     this.registerUser(userName, userEmail);
   }
@@ -313,13 +314,13 @@ export default class Panel extends Component {
     const { activeComponent, userCommentBeingUpdated } = this.state;
 
     updateComment(e.target.id, userCommentBeingUpdated).then((data) => {
-        if (data.success) {
-          msg.success(data.msg);
-        } else {
-          msg.error(data.msg)
-        }
+      if (data.success) {
+        msg.success(data.msg);
+      } else {
+        msg.error(data.msg);
+      }
     });
-    this.setState({ userCommentBeingUpdated : null, commentIdBeingEdited: null });
+    this.setState({ userCommentBeingUpdated: null, commentIdBeingEdited: null });
   }
 
   onUserCommentDelete(e) {
@@ -329,11 +330,11 @@ export default class Panel extends Component {
     const { activeComponent } = this.state;
     this.userActions.removed[e.target.id] = true;
     deleteComment(e.target.id).then((data) => {
-        if (data.success) {
-          msg.success(data.msg);
-        } else {
-          msg.error(data.msg)
-        }
+      if (data.success) {
+        msg.success(data.msg);
+      } else {
+        msg.error(data.msg);
+      }
     });
   }
 
@@ -344,9 +345,9 @@ export default class Panel extends Component {
       activeStory,
       activeVersion,
       comments,
-      eventName
+      eventName,
     } = this.state;
-    let timestampId = new Date().getTime() + '';
+    const timestampId = `${new Date().getTime()}`;
 
     this.userActions.added[timestampId] = true;
     postComment({
@@ -357,7 +358,7 @@ export default class Panel extends Component {
       component: activeComponent,
       story: activeStory,
       version: activeVersion || '0_0_1',
-      eventName
+      eventName,
     }).then((data) => {
       if (data.success) {
         msg.success(data.msg);
@@ -365,7 +366,7 @@ export default class Panel extends Component {
         msg.error(data.msg);
       }
     }).catch((error) => {
-        msg.error('An error occured while attempting to post your comment.')
+      msg.error('An error occured while attempting to post your comment.');
     });
 
     this.setState({ userComment: '' });
@@ -379,7 +380,7 @@ export default class Panel extends Component {
       comments,
       commentIdBeingEdited,
       isShowingAllComments,
-      isUserOnline
+      isUserOnline,
     } = this.state;
 
     const commentCount = this.allComments.length;
@@ -392,7 +393,7 @@ export default class Panel extends Component {
 
     return (
       <section className="panel-container">
-        <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
+        <AlertContainer ref={a => global.msg = a} {...this.alertOptions} />
         <header>
           <h2>Comments</h2>
           <OnlineIndicator isOnline={isUserOnline} />
