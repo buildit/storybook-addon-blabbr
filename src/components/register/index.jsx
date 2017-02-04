@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import './styles.css';
 
 const Register = ({
   onUserNameChange,
@@ -13,29 +13,29 @@ const Register = ({
   );
 
   return (
-    <section>
+    <section className="blabbr-register">
       {formTitle}
       <form>
-        <FormGroup>
-          <ControlLabel htmlFor="user-name">
+        <div>
+          <label htmlFor="blabbr-userName">
             User name:
-          </ControlLabel>
-          <FormControl
-            id="user-name"
+          </label>
+          <input
+            id="blabbr-userName"
             value={userName || ''}
             onChange={onUserNameChange}
           />
-        </FormGroup>
-        <FormGroup>
-          <ControlLabel htmlFor="email">
+        </div>
+        <div>
+          <label htmlFor="blabbr-email">
             Email:
-          </ControlLabel>
-          <FormControl
-            id="email"
+          </label>
+          <input
+            id="blabbr-email"
             value={userEmail || ''}
             onChange={onUserEmailChange}
           />
-        </FormGroup>
+        </div>
         <button
           type="submit"
           onClick={onRegisterSubmit}
