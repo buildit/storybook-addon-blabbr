@@ -23,13 +23,10 @@ const Comment = ({
 
       <span className="controls">
         { !!currentUserIsOwner &&
-        <button
-          id={commentId}
-          onClick={onUserCommentEdit}
-        >
-              Edit
-            </button>
-          }
+          <button id={commentId} onClick={onUserCommentEdit}>
+            Edit
+          </button>
+        }
         { !!currentUserIsOwner &&
         <button
           id={commentId}

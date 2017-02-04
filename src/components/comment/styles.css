@@ -4,6 +4,15 @@
   position: relative;
   min-height: 5rem; /* Same as gravatar height + 2x padding! */
   padding: 0.5rem 0.5rem 0.5rem 5rem;
+  font-family:
+    -apple-system,
+    ".SFNSText-Regular",
+    "San Francisco",
+    Roboto,
+    "Segoe UI",
+    "Helvetica Neue",
+     "Lucida Grande",
+     sans-serif;
 
   /* Visual */
   border: 1px solid #ccc;
@@ -21,6 +30,14 @@
 
   /* Typography */
   font-size: 1em;
+}
+
+.blabbr-comment header time {
+  margin-left: 1em;
+}
+
+.blabbr-comment header .controls {
+  margin-left: 1em;
 }
 
 .blabbr-comment header a {
@@ -56,4 +73,3 @@
   /* Box model */
   margin-bottom: 1rem;
 }
-

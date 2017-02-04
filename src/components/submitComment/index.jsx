@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import { FormGroup, FormControl, Glyphicon, Button, Panel } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
+import './styles.css';
 
 const SubmitComment = ({
   onUserCommentChange,
@@ -20,19 +21,21 @@ const SubmitComment = ({
     ;
 
   return (
-    <Panel header={formTitle}>
+    <section className="blabbr-submitComment">
       <form>
-        <FormGroup>
-          <FormControl
-            componentClass="textarea"
-            value={userComment}
-            onChange={onUserCommentChange}
-          />
-        </FormGroup>
+        {formTitle}
+        <FormControl
+          componentClass="textarea"
+          value={userComment}
+          onChange={onUserCommentChange}
+          style={{
+            width: '100%',
+          }}
+        />
 
         { type === 'Edit' ?
         [
-          <Button
+          <button
             key={'save'}
             type="submit"
             id={_id}
@@ -41,38 +44,29 @@ const SubmitComment = ({
             onClick={onCommentSubmit}
             title="Update"
           >
-            <Glyphicon
-              id={_id}
-              onClick={onCommentSubmit}
-              glyph="ok"
-            />
-          </Button>,
-          <Button
+            Update
+          </button>,
+          <button
             key={'cancel'}
             id={_id}
             bsStyle="danger"
             onClick={onCommentCancel}
             title="Cancel"
           >
-            <Glyphicon
-              id={_id}
-              onClick={onCommentCancel}
-              glyph="remove"
-            />
-          </Button>,
+            Remove
+          </button>,
         ]
           :
-        <Button
+        <button
           type="submit"
-          bsClass="btn btn-primary"
           onClick={onCommentSubmit}
           title="Submit"
         >
-          <Glyphicon glyph="ok" />
-        </Button>
+          Submit
+        </button>
         }
       </form>
-    </Panel>
+    </section>
   );
 };
 
