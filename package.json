@@ -14,9 +14,14 @@
     "url": "git+https://github.com/buildit/storybook-addon-blabbr.git"
   },
   "keywords": [
+    "atomic-design",
+    "blabbr",
     "react",
     "storybook",
-    "atomic-design"
+    "storybook-addon",
+    "storybook-addon-blabbr",
+    "collaboration",
+    "review"
   ],
   "author": "Buildit",
   "contributors": [
