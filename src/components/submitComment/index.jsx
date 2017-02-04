@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { FormControl } from 'react-bootstrap';
 import './styles.css';
 
 const SubmitComment = ({
@@ -24,13 +23,9 @@ const SubmitComment = ({
     <section className="blabbr-submitComment">
       <form>
         {formTitle}
-        <FormControl
-          componentClass="textarea"
+        <textarea
           value={userComment}
           onChange={onUserCommentChange}
-          style={{
-            width: '100%',
-          }}
         />
 
         { type === 'Edit' ?

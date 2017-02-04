@@ -19,4 +19,7 @@
   min-height: 3em;
   font-size: 1em;
   padding: 0.5rem;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  width: 100%;
 }

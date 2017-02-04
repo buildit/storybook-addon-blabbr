@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Button } from 'react-bootstrap';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Comment from '../comment';
 import SubmitComment from '../submitComment';
@@ -62,9 +61,9 @@ const Comments = ({
   });
 
   const showAllCommentsLink = !isShowingAllComments ?
-    (<Button bsStyle="link" block style={{ marginBottom: 20 }} onClick={onShowAllComments}>
+    (<button style={{ marginBottom: 20 }} onClick={onShowAllComments}>
       Show all comments
-    </Button>) :
+    </button>) :
     null;
 
   return (
