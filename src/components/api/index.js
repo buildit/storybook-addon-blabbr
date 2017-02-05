@@ -1,4 +1,3 @@
-import { cleanToken } from '../../utils';
 import db from './db';
 
 export const getComments = (component, story, version = '0_0_1') =>
@@ -6,9 +5,9 @@ export const getComments = (component, story, version = '0_0_1') =>
    db.find({
      selector: {
        $and: [
-          { componentId: cleanToken(component) },
-          { stateId: cleanToken(story) },
-          { version: cleanToken(version) },
+          { componentId: component },
+          { stateId: story },
+          { version },
        ],
      },
      sort: [
@@ -31,17 +30,17 @@ export const postComment = ({
   userComment,
   component,
   story,
-  version = '0_0_1',
+  version,
   eventName,
 }) => {
   const record = {
     _id: timestampId,
     userName,
     userEmail,
-    componentId: cleanToken(component),
+    componentId: component,
     comment: userComment,
     timestamp: timestampId,
-    stateId: cleanToken(story),
+    stateId: story,
     version,
     edited: false,
     lastUpdated: timestampId,

@@ -116,6 +116,9 @@ const unsubscribe = (eventType, eventId) => {
       if (dbEvents[eventType][i].eventId === eventId) {
         if (dbEvents[eventType][i].eventListener) {
           dbEvents[eventType][i].eventListener.cancel();
+          dbEvents[eventType][i].eventListener.removeAllListeners('change');
+          dbEvents[eventType][i].eventListener.removeAllListeners('error');
+          dbEvents[eventType][i].eventListener = null;
         }
         dbEvents[eventType].splice(i, 1);
         eventRemoved = true;

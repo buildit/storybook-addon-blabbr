@@ -34,7 +34,6 @@ const SubmitComment = ({
             key={'save'}
             type="submit"
             id={_id}
-            bsClass="btn btn-primary"
             style={{ marginRight: 10 }}
             onClick={onCommentSubmit}
             title="Update"
@@ -44,7 +43,6 @@ const SubmitComment = ({
           <button
             key={'cancel'}
             id={_id}
-            bsStyle="danger"
             onClick={onCommentCancel}
             title="Cancel"
           >

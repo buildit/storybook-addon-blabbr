@@ -200,19 +200,22 @@ export default class Panel extends Component {
   }
 
   onStoryChangeHandler(kind, story) {
-    const version = '0_0_1'; // TEMP
-    const componentId = cleanToken(kind);
-    const storyId = cleanToken(story);
+    const activeVersion = '0_0_1'; // TEMP
+    const activeComponent = cleanToken(kind);
+    const activeStory = cleanToken(story);
 
     this.setState({
-      activeComponent: componentId,
-      activeStory: storyId,
-      activeVersion: version,
-      eventName: `${componentId}${storyId}`,
+      activeComponent,
+      activeStory,
+      activeVersion,
+      eventName: `${activeComponent}${activeStory}`,
       userComment: '',
+      comments: [],
     });
+    this.filteredComments = [];
+    this.allComments = [];
 
-    this.fetchComments();
+    this.fetchComments(activeComponent, activeStory, activeVersion);
   }
 
   isDeletedByMe(dataKey) {
@@ -260,7 +263,7 @@ export default class Panel extends Component {
     });
   }
 
-  listenForCommentChanges() {
+  listenForCommentChanges(activeComponent, activeStory, activeVersion) {
     const { eventName } = this.state;
     // remove listeners for previous comment stream
     if (this.commentChannelListener !== null) {
@@ -283,7 +286,8 @@ export default class Panel extends Component {
       } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
         global.msg.info('A comment was edited.');
       }
-      this.updateView();
+      console.log('added2');
+      this.updateView(activeComponent, activeStory, activeVersion);
     });
   }
 
@@ -295,29 +299,29 @@ export default class Panel extends Component {
   }
 
   registerUser(username, email) {
-    const { user } = this.state;
+    const { user,
+      activeComponent,
+      activeStory,
+      activeVersion,
+    } = this.state;
+
     localStorage.setItem('blabbr_userName', username);
     localStorage.setItem('blabbr_userEmail', email);
     this.setState({ user: Object.assign(user, { isUserAuthenticated: true }) });
-    this.updateView();
-    this.listenForCommentChanges();
+    this.updateView(activeComponent, activeStory, activeVersion);
+    this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
   }
 
-  fetchComments() {
+  fetchComments(activeComponent, activeStory, activeVersion) {
     const { user } = this.state;
 
     if (user.isUserAuthenticated) {
-      this.updateView();
-      this.listenForCommentChanges();
+      this.updateView(activeComponent, activeStory, activeVersion);
+      this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
     }
   }
 
-  updateView() {
-    const {
-      activeComponent,
-      activeStory,
-      activeVersion } = this.state;
-
+  updateView(activeComponent, activeStory, activeVersion) {
     getComments(activeComponent, activeStory, activeVersion)
       .then((data) => {
         this.processComments(data);
@@ -358,6 +362,9 @@ export default class Panel extends Component {
       } else {
         global.msg.error(data.msg);
       }
+      console.log('added1');
+      this.updateView(activeComponent, activeStory, activeVersion);
+      this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
     }).catch(() => {
       global.msg.error('An error occured while attempting to post your comment.');
     });
