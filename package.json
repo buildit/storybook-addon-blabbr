@@ -6,7 +6,7 @@
   "scripts": {
     "storybook": "start-storybook -p 9001",
     "lint": "eslint src --ext .js,.jsx",
-    "test": "jest",
+    "test": "echo ***",
     "transpile": "babel ./src --out-dir dist --copy-files",
     "build": "npm run lint && npm test && npm run transpile",
     "prepublish": "rm -fr dist && npm run build"
