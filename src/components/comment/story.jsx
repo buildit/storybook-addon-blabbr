@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
-import { text, boolean } from '@kadira/storybook-addon-knobs';
+import { text } from '@kadira/storybook-addon-knobs';
 import Comment from './';
 
 storiesOf('Comment')
@@ -11,7 +11,7 @@ storiesOf('Comment')
       comment={text('Comment', 'Lorem ipsum')}
       timestamp={'22 Jan 2017, 18:02'}
       commentId={'123'}
-      currentUserIsOwner={true}
+      currentUserIsOwner
       onUserCommentEdit={() => false}
       onUserCommentDelete={() => true}
     />

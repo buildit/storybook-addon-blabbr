@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
 import AlertContainer from 'react-alert';
 import { getComments, postComment, deleteComment, updateComment } from '../api';
 import { hasStorage, cleanToken } from '../../utils';
@@ -10,12 +9,20 @@ import OnlineIndicator from '../onlineIndicator';
 import { dbEventManager } from '../api/db';
 import './styles.css';
 
+function wasActionPerformedByMe(key, obj) {
+  const isKeyFound = obj.hasOwnProperty(key); // eslint-disable-line no-prototype-builtins
+  if (isKeyFound) {
+    delete obj[key]; // eslint-disable-line no-param-reassign
+  }
+  return isKeyFound;
+}
+
 export default class Panel extends Component {
   constructor(...args) {
     super(...args);
 
-    this.onFocusTabHandler = this.onFocusTabHandler.bind(this);
-    this.props.channel.on('blabbrFocusTab', this.onFocusTabHandler);
+    // this.onFocusTabHandler = this.onFocusTabHandler.bind(this);
+    // this.props.channel.on('blabbrFocusTab', this.onFocusTabHandler);
 
     this.onStoryChangeHandler = this.onStoryChangeHandler.bind(this);
     this.fetchComments = this.fetchComments.bind(this);
@@ -41,23 +48,23 @@ export default class Panel extends Component {
     this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
     this.processComments = this.processComments.bind(this);
 
-	  this.state = {
-        activeComponent: null,
-        activeStory: null,
-        activeVersion: null,
-        eventName: null,
-        user: {
-            isUserAuthenticated: false,
-            userName: '',
-            userEmail: '',
-        },
-        userComment: '',
-        comments: [],
-        isShowingAllComments: true,
-        userCommentBeingUpdated: null,
-        commentIdBeingEdited: null,
-        isUserOnline: navigator.onLine
-	  };
+    this.state = {
+      activeComponent: null,
+      activeStory: null,
+      activeVersion: null,
+      eventName: null,
+      user: {
+        isUserAuthenticated: false,
+        userName: '',
+        userEmail: '',
+      },
+      userComment: '',
+      comments: [],
+      isShowingAllComments: true,
+      userCommentBeingUpdated: null,
+      commentIdBeingEdited: null,
+      isUserOnline: navigator.onLine,
+    };
 
     this.commentChannelListener = null;
     this.channelListening = false;
@@ -66,13 +73,13 @@ export default class Panel extends Component {
       position: 'bottom right',
       theme: 'light',
       time: 3000,
-      transition: 'fade'
+      transition: 'fade',
     };
     // track user actions
     this.userActions = {
       added: {},
       removed: {},
-      edited: {}
+      edited: {},
     };
     this.commentsThreshold = 5;
     this.filteredComments = [];
@@ -101,167 +108,23 @@ export default class Panel extends Component {
     dbEventManager.removeOnlineListener();
   }
 
-  handleOnlineStatusChange(data) {
-    this.setState({
-      isUserOnline: data.isOnline
-    });
-  }
-
-  onFocusTabHandler() {
-    // Focus the panel via the URL
-    // Can we do this? There is nothing in API for it...
-  }
-
-  onStoryChangeHandler(kind, story) {
-    let version = '0_0_1'; // TEMP
-
-    let componentId = cleanToken(kind);
-    let storyId = cleanToken(story);
-
-    this.setState({
-      activeComponent: componentId,
-      activeStory: storyId,
-      activeVersion: version,
-      eventName: `${componentId}${storyId}`,
-      userComment: ''
-    });
-
-    this.fetchComments();
-  }
-
-  fetchComments() {
-    let { user } = this.state;
-
-    if (user.isUserAuthenticated) {
-      this.updateView();
-      this.listenForCommentChanges();
-    }
-  }
-
-  onShowAllComments() {
-    this.setState({
-      comments: this.allComments,
-      isShowingAllComments: true
-    });
-  }
-
-  updateView() {
-    let {
-      activeComponent,
-      activeStory,
-      activeVersion } = this.state;
-
-    getComments(activeComponent, activeStory, activeVersion)
-      .then((data) => {
-        this.processComments(data);
-      }).catch((e) => {
-        msg.error(`Error: ${e.message}`);
-      });
-  }
-
-  processComments(data) {
-    let comments = data.docs,
-      commentsLength = comments.length,
-      threshold = this.commentsThreshold,
-      isShowingAllComments = true;
-
-    this.allComments = comments ? comments.slice(0) : [];
-
-    if (commentsLength > threshold) {
-      this.filteredComments = comments ? comments.slice(0, threshold) : [];
-      isShowingAllComments = false;
-    }
-    this.setState({
-      comments: isShowingAllComments ? this.allComments : this.filteredComments,
-      isShowingAllComments: isShowingAllComments
-    });
-  }
-
-  listenForCommentChanges() {
-    let { eventName } = this.state;
-    // remove listeners for previous comment stream
-    if (this.commentChannelListener !== null) {
-      dbEventManager.unsubscribe('change', this.commentChannelListener);
-      this.commentChannelListener = null;
-    }
-    // register listeners
-    // These listeners use userActions to only fire if you're
-    // not the current user
-    this.commentChannelListener = dbEventManager.subscribe('change', eventName, (change) => {
-        let changedDoc = change.doc,
-            changedRecordId = changedDoc._id,
-            isDeleted = !!changedDoc._deleted;
-
-        let isNewRecord = this.isNewComment(changedRecordId);
-
-        if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
-          msg.info('A comment has been removed.');
-        } else if (!isDeleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
-          msg.info('A new comment was added.');
-        } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
-          msg.info('A comment was edited.');
-        }
-        this.updateView();
-    });
-  }
-  wasActionPerformedByMe(key, obj) {
-    let isKeyFound = obj.hasOwnProperty(key);
-    if (isKeyFound) {
-      delete obj[key]
-    }
-    return isKeyFound;
-  }
-  isDeletedByMe(dataKey) {
-    return this.wasActionPerformedByMe(dataKey, this.userActions.removed);
-  }
-  isEditedByMe(dataKey) {
-    return this.wasActionPerformedByMe(dataKey, this.userActions.edited);
-  }
-  isAddedByMe(dataKey) {
-    return this.wasActionPerformedByMe(dataKey, this.userActions.added);
-  }
-  isNewComment(dataKey) {
-    let comments = this.allComments,
-      idFound = false,
-      commentsLength,
-      i;
-
-    for (i = 0, commentsLength = comments.length; i < commentsLength; i++) {
-      if (comments[i]._id === dataKey) {
-        idFound = true;
-        break;
-      }
-    }
-    return !idFound;
-  }
-
-  verifyUser() {
-    const userName = localStorage.getItem('blabbr_userName');
-    const userEmail = localStorage.getItem('blabbr_userEmail');
-    userName && userEmail && this.setState({ user: { userName,  userEmail, isUserAuthenticated: true }});
-  }
-
-  registerUser(username, email) {
-    const { user } = this.state;
-    localStorage.setItem('blabbr_userName', username);
-    localStorage.setItem('blabbr_userEmail', email);
-    this.setState({ user: Object.assign(user, { isUserAuthenticated: true })});
-    this.updateView();
-    this.listenForCommentChanges();
-  }
+  // onFocusTabHandler() {
+  //   // Focus the panel via the URL
+  //   // Can we do this? There is nothing in API for it...
+  // }
 
   onUserNameChange(e) {
     const { user } = this.state;
-    this.setState({ user: Object.assign(user, { userName: e.target.value })});
+    this.setState({ user: Object.assign(user, { userName: e.target.value }) });
   }
 
   onUserEmailChange(e) {
     const { user } = this.state;
-    this.setState({ user: Object.assign(user, { userEmail: e.target.value })});
+    this.setState({ user: Object.assign(user, { userEmail: e.target.value }) });
   }
 
   onRegisterSubmit(e) {
-    const { user: { userName, userEmail } } =  this.state;
+    const { user: { userName, userEmail } } = this.state;
     e.preventDefault();
     this.registerUser(userName, userEmail);
   }
@@ -290,6 +153,7 @@ export default class Panel extends Component {
     this.setState({ commentIdBeingEdited: e.target.id });
     this.userActions.edited[e.target.id] = true;
   }
+
   onUserCommentEditCancel(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -297,34 +161,178 @@ export default class Panel extends Component {
     this.setState({ commentIdBeingEdited: null });
     delete this.userActions.edited[e.target.id];
   }
+
   onUserCommentEditSave(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    const { activeComponent, userCommentBeingUpdated } = this.state;
+    const { userCommentBeingUpdated } = this.state;
 
     updateComment(e.target.id, userCommentBeingUpdated).then((data) => {
-        if (data.success) {
-          msg.success(data.msg);
-        } else {
-          msg.error(data.msg)
-        }
+      if (data.success) {
+        global.msg.success(data.msg);
+      } else {
+        global.msg.error(data.msg);
+      }
     });
-    this.setState({ userCommentBeingUpdated : null, commentIdBeingEdited: null });
+    this.setState({ userCommentBeingUpdated: null, commentIdBeingEdited: null });
   }
 
   onUserCommentDelete(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    const { activeComponent } = this.state;
     this.userActions.removed[e.target.id] = true;
     deleteComment(e.target.id).then((data) => {
-        if (data.success) {
-          msg.success(data.msg);
-        } else {
-          msg.error(data.msg)
-        }
+      if (data.success) {
+        global.msg.success(data.msg);
+      } else {
+        global.msg.error(data.msg);
+      }
+    });
+  }
+
+  onShowAllComments() {
+    this.setState({
+      comments: this.allComments,
+      isShowingAllComments: true,
+    });
+  }
+
+  onStoryChangeHandler(kind, story) {
+    const activeVersion = '0_0_1'; // TEMP
+    const activeComponent = cleanToken(kind);
+    const activeStory = cleanToken(story);
+
+    this.setState({
+      activeComponent,
+      activeStory,
+      activeVersion,
+      eventName: `${activeComponent}${activeStory}`,
+      userComment: '',
+      comments: [],
+    });
+    this.filteredComments = [];
+    this.allComments = [];
+
+    this.fetchComments(activeComponent, activeStory, activeVersion);
+  }
+
+  isDeletedByMe(dataKey) {
+    return wasActionPerformedByMe(dataKey, this.userActions.removed);
+  }
+
+  isEditedByMe(dataKey) {
+    return wasActionPerformedByMe(dataKey, this.userActions.edited);
+  }
+
+  isAddedByMe(dataKey) {
+    return wasActionPerformedByMe(dataKey, this.userActions.added);
+  }
+
+  isNewComment(dataKey) {
+    const comments = this.allComments;
+    let idFound = false;
+    let commentsLength;
+    let i;
+
+    for (i = 0, commentsLength = comments.length; i < commentsLength; i++) {
+      if (comments[i]._id === dataKey) {
+        idFound = true;
+        break;
+      }
+    }
+    return !idFound;
+  }
+
+  processComments(data) {
+    const comments = data.docs;
+    const commentsLength = comments.length;
+    const threshold = this.commentsThreshold;
+    let isShowingAllComments = true;
+
+    this.allComments = comments ? comments.slice(0) : [];
+
+    if (commentsLength > threshold) {
+      this.filteredComments = comments ? comments.slice(0, threshold) : [];
+      isShowingAllComments = false;
+    }
+    this.setState({
+      comments: isShowingAllComments ? this.allComments : this.filteredComments,
+      isShowingAllComments,
+    });
+  }
+
+  listenForCommentChanges(activeComponent, activeStory, activeVersion) {
+    const { eventName } = this.state;
+    // remove listeners for previous comment stream
+    if (this.commentChannelListener !== null) {
+      dbEventManager.unsubscribe('change', this.commentChannelListener);
+      this.commentChannelListener = null;
+    }
+    // register listeners
+    // These listeners use userActions to only fire if you're
+    // not the current user
+    this.commentChannelListener = dbEventManager.subscribe('change', eventName, (change) => {
+      const changedDoc = change.doc;
+      const changedRecordId = changedDoc._id;
+      const isDeleted = !!changedDoc._deleted;
+      const isNewRecord = this.isNewComment(changedRecordId);
+
+      if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
+        global.msg.info('A comment has been removed.');
+      } else if (!isDeleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
+        global.msg.info('A new comment was added.');
+      } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
+        global.msg.info('A comment was edited.');
+      }
+      console.log('added2');
+      this.updateView(activeComponent, activeStory, activeVersion);
+    });
+  }
+
+  verifyUser() {
+    const userName = localStorage.getItem('blabbr_userName');
+    const userEmail = localStorage.getItem('blabbr_userEmail');
+    userName && userEmail &&
+      this.setState({ user: { userName, userEmail, isUserAuthenticated: true } });
+  }
+
+  registerUser(username, email) {
+    const { user,
+      activeComponent,
+      activeStory,
+      activeVersion,
+    } = this.state;
+
+    localStorage.setItem('blabbr_userName', username);
+    localStorage.setItem('blabbr_userEmail', email);
+    this.setState({ user: Object.assign(user, { isUserAuthenticated: true }) });
+    this.updateView(activeComponent, activeStory, activeVersion);
+    this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
+  }
+
+  fetchComments(activeComponent, activeStory, activeVersion) {
+    const { user } = this.state;
+
+    if (user.isUserAuthenticated) {
+      this.updateView(activeComponent, activeStory, activeVersion);
+      this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
+    }
+  }
+
+  updateView(activeComponent, activeStory, activeVersion) {
+    getComments(activeComponent, activeStory, activeVersion)
+      .then((data) => {
+        this.processComments(data);
+      }).catch((e) => {
+        global.msg.error(`Error: ${e.message}`);
+      });
+  }
+
+  handleOnlineStatusChange(data) {
+    this.setState({
+      isUserOnline: data.isOnline,
     });
   }
 
@@ -334,10 +342,9 @@ export default class Panel extends Component {
       activeComponent,
       activeStory,
       activeVersion,
-      comments,
-      eventName
+      eventName,
     } = this.state;
-    let timestampId = new Date().getTime() + '';
+    const timestampId = `${new Date().getTime()}`;
 
     this.userActions.added[timestampId] = true;
     postComment({
@@ -348,15 +355,18 @@ export default class Panel extends Component {
       component: activeComponent,
       story: activeStory,
       version: activeVersion || '0_0_1',
-      eventName
+      eventName,
     }).then((data) => {
       if (data.success) {
-        msg.success(data.msg);
+        global.msg.success(data.msg);
       } else {
-        msg.error(data.msg);
+        global.msg.error(data.msg);
       }
-    }).catch((error) => {
-        msg.error('An error occured while attempting to post your comment.')
+      console.log('added1');
+      this.updateView(activeComponent, activeStory, activeVersion);
+      this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
+    }).catch(() => {
+      global.msg.error('An error occured while attempting to post your comment.');
     });
 
     this.setState({ userComment: '' });
@@ -365,12 +375,12 @@ export default class Panel extends Component {
   render() {
     const {
       user: { userName, userEmail, isUserAuthenticated },
-	    userComment,
+      userComment,
       userCommentBeingUpdated,
       comments,
       commentIdBeingEdited,
       isShowingAllComments,
-      isUserOnline
+      isUserOnline,
     } = this.state;
 
     const commentCount = this.allComments.length;
@@ -383,7 +393,7 @@ export default class Panel extends Component {
 
     return (
       <section className="panel-container">
-        <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />
+        <AlertContainer ref={a => (global.msg = a)} {...this.alertOptions} />
         <header>
           <h2>Comments</h2>
           <OnlineIndicator isOnline={isUserOnline} />
@@ -429,6 +439,6 @@ export default class Panel extends Component {
 }
 
 Panel.propTypes = {
-  channel: PropTypes.object.isRequired,
+  // channel: PropTypes.object.isRequired,
   storybook: PropTypes.object.isRequired,
 };

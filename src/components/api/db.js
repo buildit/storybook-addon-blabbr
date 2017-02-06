@@ -21,47 +21,21 @@ db.createIndex({
 
 db.sync(`https://${config.user}:${config.pwd}@${config.host}`, {
   live: true,
-  retry: true
+  retry: true,
 });
-
-function updateIndicator() {
-	// Show a different icon based on offline/online
-  let data = {
-    isOnline: navigator.onLine,
-    statusEvent: true
-  };
-  fireListeners('online', data);
-}
-
-function addOnlineListener() {
-  // Update the online status icon based on connectivity
-  window.addEventListener('online',  updateIndicator, false);
-  window.addEventListener('offline', updateIndicator, false);
-}
-
-function removeOnlineListener() {
-  window.removeEventListener('online', updateIndicator, false);
-  window.removeEventListener('offline', updateIndicator, false);
-}
 
 const dbEvents = {
   change: [],
   online: [],
-  error: []
+  error: [],
 };
-
-dbEmitter.on('change', (data) => {
-  fireListeners('change', data);
-});
 
 const fireListeners = (eventType, data) => {
   let changedDoc = {
-      eventName: ''
-    },
-    componentId,
-    stateId,
-    eventData,
-    isStatusEvent = !!data.statusEvent;
+    eventName: '',
+  };
+  let eventData;
+  const isStatusEvent = !!data.statusEvent;
 
   if (eventType === 'change') {
     changedDoc = data.doc;
@@ -79,21 +53,45 @@ const fireListeners = (eventType, data) => {
   }
 };
 
+function updateIndicator() {
+  // Show a different icon based on offline/online
+  const data = {
+    isOnline: navigator.onLine,
+    statusEvent: true,
+  };
+  fireListeners('online', data);
+}
+
+function addOnlineListener() {
+  // Update the online status icon based on connectivity
+  window.addEventListener('online', updateIndicator, false);
+  window.addEventListener('offline', updateIndicator, false);
+}
+
+function removeOnlineListener() {
+  window.removeEventListener('online', updateIndicator, false);
+  window.removeEventListener('offline', updateIndicator, false);
+}
+
+dbEmitter.on('change', (data) => {
+  fireListeners('change', data);
+});
+
 const subscribe = (eventType, eventName, listener) => {
   if (!dbEvents[eventType]) {
     return "No such event type, please use 'change'/'online'/'denied'/'complete'/'error'";
   }
-  let eventId = `${eventType}${eventName}`,
-    eventListener = null;
+  const eventId = `${eventType}${eventName}`;
+  let eventListener = null;
 
   if (eventType === 'change') {
     eventListener = db.changes({
       since: 'now',
       live: true,
       include_docs: true,
-      filter: function (doc) {
+      filter(doc) {
         return doc.eventName === eventName;
-      }
+      },
     }).on('change', (data) => {
       dbEmitter.emit('change', data);
     }).on('error', (err) => {
@@ -101,7 +99,7 @@ const subscribe = (eventType, eventName, listener) => {
     });
   }
 
-  dbEvents[eventType].push({ "eventId": eventId, eventListener, eventName, listener });
+  dbEvents[eventType].push({ eventId, eventListener, eventName, listener });
 
   // unique id returned
   return eventId;
@@ -116,7 +114,12 @@ const unsubscribe = (eventType, eventId) => {
   if (dbEvents[eventType]) {
     for (let i = 0, l = dbEvents[eventType].length; i < l; i++) {
       if (dbEvents[eventType][i].eventId === eventId) {
-        dbEvents[eventType][i].eventListener && dbEvents[eventType][i].eventListener.cancel();
+        if (dbEvents[eventType][i].eventListener) {
+          dbEvents[eventType][i].eventListener.cancel();
+          dbEvents[eventType][i].eventListener.removeAllListeners('change');
+          dbEvents[eventType][i].eventListener.removeAllListeners('error');
+          dbEvents[eventType][i].eventListener = null;
+        }
         dbEvents[eventType].splice(i, 1);
         eventRemoved = true;
         break;
@@ -130,7 +133,7 @@ export const dbEventManager = {
   subscribe,
   unsubscribe,
   addOnlineListener,
-  removeOnlineListener
+  removeOnlineListener,
 };
 
 export default db;

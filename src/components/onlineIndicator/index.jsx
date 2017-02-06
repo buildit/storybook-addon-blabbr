@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react';
-import { Glyphicon } from 'react-bootstrap';
 import './styles.css';
 
 const OnlineIndicator = ({
-  isOnline
+  isOnline,
 }) => {
   const indicatorClass = isOnline ? 'online' : 'offline';
 
@@ -13,8 +12,8 @@ const OnlineIndicator = ({
       <span className={indicatorClass}>
         {
           isOnline ?
-            <span>Online <Glyphicon glyph="ok-sign" /></span> :
-            <span>Offline <Glyphicon glyph="exclamation-sign" /></span>
+            <span>Online</span> :
+            <span>Offline</span>
         }
       </span>
     </div>
@@ -22,7 +21,11 @@ const OnlineIndicator = ({
 };
 
 OnlineIndicator.propTypes = {
-  isOnline: PropTypes.bool
+  isOnline: PropTypes.bool,
+};
+
+OnlineIndicator.defaultProps = {
+  isOnline: false,
 };
 
 export default OnlineIndicator;

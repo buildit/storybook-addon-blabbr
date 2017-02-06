@@ -1,46 +1,49 @@
 import React, { PropTypes } from 'react';
-import { FormGroup, FormControl, ControlLabel, Button, Panel } from 'react-bootstrap';
+import './styles.css';
 
 const Register = ({
   onUserNameChange,
   onUserEmailChange,
   onRegisterSubmit,
   userName,
-  userEmail
+  userEmail,
 }) => {
   const formTitle = (
     <h2>Register to add comments</h2>
   );
 
   return (
-    <Panel header={formTitle}>
+    <section className="blabbr-register">
+      {formTitle}
       <form>
-        <FormGroup>
-          <ControlLabel htmlFor="user-name">
+        <div>
+          <label htmlFor="blabbr-userName">
             User name:
-          </ControlLabel>
-          <FormControl
-            id="user-name"
+          </label>
+          <input
+            id="blabbr-userName"
             value={userName || ''}
-            onChange={onUserNameChange} />
-        </FormGroup>
-        <FormGroup>
-          <ControlLabel htmlFor="email">
+            onChange={onUserNameChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="blabbr-email">
             Email:
-          </ControlLabel>
-          <FormControl
-            id="email"
+          </label>
+          <input
+            id="blabbr-email"
             value={userEmail || ''}
-            onChange={onUserEmailChange} />
-        </FormGroup>
-        <Button
+            onChange={onUserEmailChange}
+          />
+        </div>
+        <button
           type="submit"
-          bsClass="btn btn-success"
-          onClick={onRegisterSubmit}>
+          onClick={onRegisterSubmit}
+        >
           Register
-        </Button>
+        </button>
       </form>
-    </Panel>
+    </section>
   );
 };
 
@@ -49,8 +52,8 @@ Register.propTypes = {
   onUserNameChange: PropTypes.func.isRequired,
   onUserEmailChange: PropTypes.func.isRequired,
   onRegisterSubmit: PropTypes.func.isRequired,
-  userName: PropTypes.string,
-  userEmail: PropTypes.string,
+  userName: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired,
 };
 
 export default Register;
