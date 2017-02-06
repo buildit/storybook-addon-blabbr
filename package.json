@@ -4,10 +4,12 @@
   "description": "Component review and commenting for React Storybook",
   "main": "dist/index.js",
   "scripts": {
-    "lint": "eslint src --ext .js,.jsx",
     "storybook": "start-storybook -p 9001",
+    "lint": "eslint src --ext .js,.jsx",
+    "test": "jest",
     "transpile": "babel ./src --out-dir dist --copy-files",
-    "prepublish": "rm -fr dist && npm run transpile"
+    "build": "npm run lint && npm test && npm run transpile",
+    "prepublish": "rm -fr dist && npm run build"
   },
   "repository": {
     "type": "git",
@@ -53,6 +55,7 @@
     "eslint-plugin-react": "^6.9.0",
     "file-loader": "^0.9.0",
     "json-loader": "^0.5.4",
+    "react-test-renderer": "^15.4.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.14.0"
   },
