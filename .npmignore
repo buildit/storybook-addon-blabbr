@@ -7,3 +7,4 @@ stub
 .eslintignore
 .eslintrc
 config/db.js
+__mocks__
