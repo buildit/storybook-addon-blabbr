@@ -4,10 +4,12 @@
   "description": "Component review and commenting for React Storybook",
   "main": "dist/index.js",
   "scripts": {
-    "lint": "eslint src --ext .js,.jsx",
     "storybook": "start-storybook -p 9001",
+    "lint": "eslint src --ext .js,.jsx",
     "transpile": "babel ./src --out-dir dist --copy-files",
-    "prepublish": "rm -fr dist && npm run transpile"
+    "test": "jest",
+    "build": "npm run lint && npm run test && npm run transpile",
+    "prepublish": "rm -fr dist && npm run build"
   },
   "repository": {
     "type": "git",
