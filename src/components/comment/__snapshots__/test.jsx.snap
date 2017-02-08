@@ -1,0 +1,41 @@
+exports[`test Comment renders correctly 1`] = `
+<article
+  className="blabbr-comment">
+  <header>
+    <h2>
+      username
+    </h2>
+    <time
+      dateTime="1-Jan-17">
+      1-Jan-17
+    </time>
+    <img
+      alt="username\'s Gravatar"
+      className="avatar"
+      src="https://gravatar.com/avatar/7b707d018e06cb8c85737c876034a655?s=40&r=pg&d=retro" />
+    <span
+      className="controls">
+      <button
+        id="id123"
+        onClick={[Function]}>
+        Edit
+      </button>
+      <button
+        id="id123"
+        onClick={[Function]}>
+        Remove
+      </button>
+    </span>
+  </header>
+  <p>
+    This is a comment
+  </p>
+  <p>
+    <small>
+      (edited - 
+      2-Jan-17
+      )
+    </small>
+  </p>
+</article>
+`;

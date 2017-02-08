@@ -1,0 +1,29 @@
+exports[`test Offline indicator renderes correctly 1`] = `
+<div
+  className="status-indicator">
+  <span>
+    Connection status: 
+  </span>
+  <span
+    className="offline">
+    <span>
+      Offline
+    </span>
+  </span>
+</div>
+`;
+
+exports[`test Online indicator renderes correctly 1`] = `
+<div
+  className="status-indicator">
+  <span>
+    Connection status: 
+  </span>
+  <span
+    className="online">
+    <span>
+      Online
+    </span>
+  </span>
+</div>
+`;
