@@ -1,0 +1,9 @@
+exports[`test Comments render correctly 1`] = `
+<div>
+  <div>
+    <p>
+      No comments to show for this story
+    </p>
+  </div>
+</div>
+`;

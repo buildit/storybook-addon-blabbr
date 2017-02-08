@@ -1,7 +1,9 @@
 {
   "extends": ["airbnb"],
   "env": {
-    "browser": 1
+    "browser": true,
+    "node": true,
+    "jest": true
   },
   "rules": {
     "import/prefer-default-export": 0,
