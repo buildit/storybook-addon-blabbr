@@ -15,6 +15,12 @@ const Comment = ({
   lastUpdated,
 }) => {
   const emailHash = createHash(emailId);
+
+  // Convert new lines
+  const lines = comment ? comment.split('\n') : [];
+  const output = lines.map(line => (line && <p>{line}</p>));
+  // Convert hyperlinks
+
   return (<article className="blabbr-comment">
     <header>
       <h2>{`${username}`}</h2>
@@ -37,7 +43,7 @@ const Comment = ({
           }
       </span>
     </header>
-    <p>{comment}</p>
+    {output}
     {edited && <p><small>(edited - {lastUpdated})</small></p>}
   </article>);
 };
