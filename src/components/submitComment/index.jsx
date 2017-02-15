@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import StyledButton from '../button/styledButton.jsx';
+import PrimaryButton from '../button/primaryButton.jsx';
 import StyledLink from '../links/tromblon.jsx';
 import './styles.css';
 
@@ -24,8 +24,8 @@ const SubmitComment = ({
 
   return (
     <section className="blabbr-submitComment">
-      <StyledLink yo="yoyo">link</StyledLink>
-      <StyledButton title="Update" id={_id} type="submit" onClick={onCommentSubmit}/>
+      <StyledLink href="blabla">my link</StyledLink>
+      <PrimaryButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" />
       <form>
         {formTitle}
         <textarea

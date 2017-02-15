@@ -6,8 +6,7 @@ import React, { PropTypes, defaultProps } from 'react';
 
 const Button = ({key, type, id, style, onClick, title, ...props}) => {
   return (
-    <button
-      {...props}
+    <button {...props}
       key={key}
       type={type}
       id={id}
@@ -20,11 +19,18 @@ const Button = ({key, type, id, style, onClick, title, ...props}) => {
 };
 
 Button.propTypes = {
-  title: PropTypes.string.isRequired
+  key: React.PropTypes.number,
+  type: React.PropTypes.oneOf(["submit", "reset"]),
+  title: React.PropTypes.string,
+  id: React.PropTypes.number,
+  onClick: React.PropTypes.func
 };
 
 Button.defaultProps = {
-  title: 'I am a string and required'
+  type: 'submit',
+  title: 'button',
+  onClick: null
 };
+
 
 export default Button;
