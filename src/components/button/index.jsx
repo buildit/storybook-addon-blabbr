@@ -4,7 +4,7 @@
 import React, { PropTypes, defaultProps } from 'react';
 
 
-const Button = ({key, type, id, style, onClick, title, ...props}) => {
+const Button = ({key, type, id, style, onClick, title, children, ...props}) => {
   return (
     <button {...props}
       key={key}
@@ -13,7 +13,7 @@ const Button = ({key, type, id, style, onClick, title, ...props}) => {
       style={style}
       onClick={onClick}
     >
-      {title}
+      {children}
     </button>
   )
 };
@@ -23,13 +23,15 @@ Button.propTypes = {
   type: React.PropTypes.oneOf(["submit", "reset"]),
   title: React.PropTypes.string,
   id: React.PropTypes.number,
-  onClick: React.PropTypes.func
+  onClick: React.PropTypes.func,
+  children: React.PropTypes.string.isRequired
 };
 
 Button.defaultProps = {
   type: 'submit',
   title: 'button',
-  onClick: null
+  onClick: null,
+  children: 'Text button'
 };
 
 

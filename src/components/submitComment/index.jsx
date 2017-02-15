@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import PrimaryButton from '../button/primaryButton.jsx';
-import StyledLink from '../links/tromblon.jsx';
+import RegularTextArea from '../form-fields/textArea.jsx';
 import './styles.css';
 
 
@@ -24,44 +24,16 @@ const SubmitComment = ({
 
   return (
     <section className="blabbr-submitComment">
-      <StyledLink href="blabla">my link</StyledLink>
-      <PrimaryButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" />
-      <form>
+      <form style={{marginBottom: 25}}>
         {formTitle}
-        <textarea
-          value={userComment}
-          onChange={onUserCommentChange}
-        />
-
+        <RegularTextArea value={userComment} onChange={onUserCommentChange}/>
         { type === 'Edit' ?
         [
-          <button
-            key={'save'}
-            type="submit"
-            id={_id}
-            style={{ marginRight: 10 }}
-            onClick={onCommentSubmit}
-            title="Update"
-          >
-            Update
-          </button>,
-          <button
-            key={'cancel'}
-            id={_id}
-            onClick={onCommentCancel}
-            title="Cancel"
-          >
-            Remove
-          </button>,
+          <PrimaryButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" >Update</PrimaryButton>,
+          <PrimaryButton key={'cancel'} id={_id} type="submit" onClick={onCommentCancel} title="Cancel">Cancel</PrimaryButton>,
         ]
           :
-        <button
-          type="submit"
-          onClick={onCommentSubmit}
-          title="Submit"
-        >
-          Submit
-        </button>
+          <PrimaryButton type="submit" onClick={onCommentSubmit} title="Submit" >Submit</PrimaryButton>
         }
       </form>
     </section>

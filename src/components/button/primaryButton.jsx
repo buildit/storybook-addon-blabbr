@@ -11,7 +11,8 @@ const PrimaryWrapper = (Comp) => styled(Comp)`
     box-sizing: border-box;
     display: inline-block;
     padding: 0.8em 1.8em;
-    margin-left: 0.5em;
+    margin-top: 0.5em;
+    margin-right: 0.5em;
     background: palevioletred;
     border-radius: 3px;
     border: 3px solid palevioletred;
