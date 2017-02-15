@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react';
+import StyledButton from '../button/styledButton.jsx';
+import StyledLink from '../links/tromblon.jsx';
 import './styles.css';
+
 
 const SubmitComment = ({
   onUserCommentChange,
@@ -21,6 +24,8 @@ const SubmitComment = ({
 
   return (
     <section className="blabbr-submitComment">
+      <StyledLink yo="yoyo">link</StyledLink>
+      <StyledButton title="Update" id={_id} type="submit" onClick={onCommentSubmit}/>
       <form>
         {formTitle}
         <textarea
