@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { createHash } from '../../utils';
+import { createHash, formatToHTML } from '../../utils';
 import './styles.css';
 
 const Comment = ({
@@ -15,11 +15,7 @@ const Comment = ({
   lastUpdated,
 }) => {
   const emailHash = createHash(emailId);
-
-  // Convert new lines
-  const lines = comment ? comment.split('\n') : [];
-  const output = lines.map(line => (line && <p>{line}</p>));
-  // Convert hyperlinks
+  const output = formatToHTML(comment);
 
   return (<article className="blabbr-comment">
     <header>
