@@ -1,37 +1,27 @@
 import React from 'react';
 
-function formatItalic(line) {
-  // if (line) {
-  //
-  // }
-  return line;
-}
-
-function formatBold(line) {
-  // if (line) {
-  //
-  // }
-  return formatItalic(line);
-}
-
 let key = 0;
-const urlRegex = /\b((?:https?):\/\/\S*?)[\s$\)]/gi;
+const urlRegex = /\b((?:https?):\/\/\S*?)[\s$\)]/gi; // eslint-disable-line
 function formatLine(line) {
   if (line) {
     const segments = line.split(urlRegex); // eslint-disable-line
 
-    segments.forEach( (element, index, array) => {
+    segments.forEach((element, index, array) => {
       if (index % 2) {
-        array[index] = <a key={`sb_blabbr_key${key++}`} target="_blank" ref="noopener noreferrer" href={element}>{element}</a>
+        array[index] = (  // eslint-disable-line
+          <a
+            key={`sb_blabbr_key${key++}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            href={element}
+          >
+            {element}
+          </a>
+        );
       }
     });
-    console.log(segments);
 
-    return (
-      <p key={`sb_blabbr_key${key++}`}>
-        {segments}
-      </p>
-    );
+    return <p key={`sb_blabbr_key${key++}`}>{segments}</p>;
   }
   return '';
 }
