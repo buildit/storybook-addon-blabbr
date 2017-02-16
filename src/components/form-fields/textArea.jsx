@@ -23,7 +23,7 @@ const TextWrapper = (Comp) => {
   return styled(Comp)`
     box-sizing: border-box;
     display: block;
-    padding: 0;
+    padding: 10px;
     margin: .5em 0;
     width: 100%;
     min-height: 100px;

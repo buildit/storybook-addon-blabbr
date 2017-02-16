@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import PrimaryButton from '../button/primaryButton.jsx';
 import RegularTextArea from '../form-fields/textArea.jsx';
-import './styles.css';
+import {H1, H2, H3} from '../typography/index.jsx';
 
 
 const SubmitComment = ({
@@ -17,16 +17,16 @@ const SubmitComment = ({
 
   const formTitle =
     type === 'Edit' ?
-      <h2>{title}: <span>{`${userName} - ${userEmail}`}</span></h2>
+      <H2>{title}: <span>{`${userName} - ${userEmail}`}</span></H2>
       :
-      <h2>{title}</h2>
+      <H2>{title}</H2>
     ;
 
   return (
-    <section className="blabbr-submitComment">
+    <section>
       <form style={{marginBottom: 25}}>
         {formTitle}
-        <RegularTextArea value={userComment} onChange={onUserCommentChange}/>
+        <RegularTextArea value={userComment} onChange={onUserCommentChange} placeholder="Enter a comment..."/>
         { type === 'Edit' ?
         [
           <PrimaryButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" >Update</PrimaryButton>,
