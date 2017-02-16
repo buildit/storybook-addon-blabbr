@@ -1,7 +1,7 @@
 import React from 'react';
 
 let key = 0;
-const urlRegex = /\b((?:https?):\/\/\S*?)[\s$\)]/gi; // eslint-disable-line
+const urlRegex = /\b((?:https?):\/\/\S*)/gi; // eslint-disable-line
 function formatLine(line) {
   if (line) {
     const segments = line.split(urlRegex); // eslint-disable-line
