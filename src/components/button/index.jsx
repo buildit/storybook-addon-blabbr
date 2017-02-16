@@ -22,7 +22,7 @@ Button.propTypes = {
   key: React.PropTypes.number,
   type: React.PropTypes.oneOf(["submit", "reset"]),
   title: React.PropTypes.string,
-  id: React.PropTypes.number,
+  // id: React.PropTypes.number,
   onClick: React.PropTypes.func,
   children: React.PropTypes.string.isRequired
 };
