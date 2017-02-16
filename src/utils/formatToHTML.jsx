@@ -9,14 +9,14 @@ function formatLine(line) {
     segments.forEach((element, index, array) => {
       if (index % 2) {
         array[index] = (  // eslint-disable-line
-          <a
+          <span><a
             key={`sb_blabbr_key${key++}`}
             target="_blank"
             rel="noopener noreferrer"
             href={element}
           >
             {element}
-          </a>
+          </a> </span>
         );
       }
     });
