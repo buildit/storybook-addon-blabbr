@@ -15,19 +15,23 @@ function formatBold(line) {
 }
 
 let key = 0;
+const urlRegex = /\b((?:https?):\/\/\S*?)[\s$\)]/gi;
 function formatLine(line) {
   if (line) {
-    const hyperlink = /\b((?:https?):\/\/(.*?))[\s$\)]/mg.exec(line); // eslint-disable-line
-    if (hyperlink) {
-      return (
-        <p key={`sb_blabbr_key${key++}`}>
-          {formatBold(line.slice(0, hyperlink.index))}
-          <a target="_blank" rel="noopener noreferrer" href={hyperlink[1]}>{hyperlink[1]}</a>
-          {formatBold(line.slice(hyperlink.index + hyperlink[1].length))}
-        </p>
-      );
-    }
-    return <p key={`sb_blabbr_key${key++}`}>{formatBold(line)}</p>;
+    const segments = line.split(urlRegex); // eslint-disable-line
+
+    segments.forEach( (element, index, array) => {
+      if (index % 2) {
+        array[index] = <a key={`sb_blabbr_key${key++}`} target="_blank" ref="noopener noreferrer" href={element}>{element}</a>
+      }
+    });
+    console.log(segments);
+
+    return (
+      <p key={`sb_blabbr_key${key++}`}>
+        {segments}
+      </p>
+    );
   }
   return '';
 }
