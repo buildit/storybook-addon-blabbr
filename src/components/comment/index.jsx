@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { createHash } from '../../utils';
 import './styles.css';
-import PrimaryButton from '../button/primaryButton';
 import SecondaryButton from '../button/secondaryButton';
 import { HyperLink } from '../typography/';
 

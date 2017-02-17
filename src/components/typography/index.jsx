@@ -1,11 +1,10 @@
 /**
  * Created by jonlazarini on 15/02/17.
  */
-import React, {PropTypes} from 'react';
 import styled from 'styled-components';
 
 // TODO Add style composition for later - HOC/Wrapper
-export const H1 =  styled.h1`
+export const H1 = styled.h1`
   box-sizing: border-box;
   display: block;
   padding: 10px;
@@ -18,7 +17,7 @@ export const H1 =  styled.h1`
   background: transparent;
 `;
 
-export const H2 =  styled.h2`
+export const H2 = styled.h2`
   box-sizing: border-box;
   display: block;
   padding: 10px;
@@ -32,7 +31,7 @@ export const H2 =  styled.h2`
   background: transparent;
 `;
 
-export const H3 =  styled.h3`
+export const H3 = styled.h3`
   box-sizing: border-box;
   display: block;
   padding: 10px;
@@ -59,4 +58,3 @@ export const HyperLink = styled.a`
   }
   transition: color .2s ease
 `;
-

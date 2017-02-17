@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
-import PrimaryButton from '../button/primaryButton.jsx';
-import RegularTextArea from '../form-fields/textArea.jsx';
-import {H1, H2, H3} from '../typography/index.jsx';
+import PrimaryButton from '../button/primaryButton';
+import RegularTextArea from '../form-fields/textArea';
+import { H2 } from '../typography/index';
 
 
 const SubmitComment = ({
@@ -24,16 +24,16 @@ const SubmitComment = ({
 
   return (
     <section>
-      <form style={{marginBottom: 25}}>
+      <form style={{ marginBottom: 25 }}>
         {formTitle}
-        <RegularTextArea value={userComment} onChange={onUserCommentChange} placeholder="Enter a comment..."/>
+        <RegularTextArea value={userComment} onChange={onUserCommentChange} placeholder="Enter a comment..." />
         { type === 'Edit' ?
         [
           <PrimaryButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" >Update</PrimaryButton>,
           <PrimaryButton key={'cancel'} id={_id} type="submit" onClick={onCommentCancel} title="Cancel">Cancel</PrimaryButton>,
         ]
           :
-          <PrimaryButton type="submit" onClick={onCommentSubmit} title="Submit" >Submit</PrimaryButton>
+        <PrimaryButton type="submit" onClick={onCommentSubmit} title="Submit" >Submit</PrimaryButton>
         }
       </form>
     </section>

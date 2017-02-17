@@ -1,14 +1,13 @@
 /**
  * Created by jonlazarini on 14/02/17.
  */
-import React from 'react';
-// import Button from './index.jsx';
-import PrimaryButton from './primaryButton.jsx';
 import styled from 'styled-components';
+// import Button from './index.jsx';
+import PrimaryButton from './primaryButton';
 
 
 // Style wrapper for default buttons - Composition
-const SecondaryWrapper = (Comp) => styled(Comp)`
+const SecondaryWrapper = Comp => styled(Comp)`
   margin-top: 0.2em;
   padding: 0.6em 1.6em;
   border: 2px solid black;

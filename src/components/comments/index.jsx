@@ -62,7 +62,7 @@ const Comments = ({
   });
 
   const showAllCommentsLink = !isShowingAllComments ?
-    (<HyperLink secondary style={{display: 'block', textAlign: 'center', width: '100%'}} onClick={onShowAllComments}>
+    (<HyperLink secondary style={{ display: 'block', textAlign: 'center', width: '100%' }} onClick={onShowAllComments}>
       Show all comments
     </HyperLink>) :
     null;
@@ -81,7 +81,7 @@ const Comments = ({
           <p key="no-comments">No comments to show for this story</p>
         }
       </ReactCSSTransitionGroup>
-      <div style={{display: 'block', margin: '10px 0', with: '100%'}}>
+      <div style={{ display: 'block', margin: '10px 0', with: '100%' }}>
         {showAllCommentsLink}
       </div>
     </div>

@@ -1,26 +1,21 @@
 // Created by jonlazarini on 15/02/17.
-import React, { PropTypes, defaultProps } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 
-const TextArea = ({...props}) => {
-  return (
-    <textarea {...props} />
-  )
-};
+const TextArea = ({ ...props }) => <textarea {...props} />;
 
 TextArea.propTypes = {
   value: React.PropTypes.string,
-  onChange: React.PropTypes.func
+  onChange: React.PropTypes.func,
 };
 
 TextArea.defaultProps = {
   value: 'submit',
-  onChange: null
+  onChange: null,
 };
 
-const TextWrapper = (Comp) => {
-  return styled(Comp)`
+const TextWrapper = Comp => styled(Comp)`
     box-sizing: border-box;
     display: block;
     padding: 10px;
@@ -48,8 +43,7 @@ const TextWrapper = (Comp) => {
       box-shadow: inset 0 0 5px #719ECE;
     }
     resize: none;
-  `
-};
+  `;
 
 const RegularTextArea = TextWrapper(TextArea);
 

@@ -1,13 +1,12 @@
 /**
  * Created by jonlazarini on 14/02/17.
  */
-import React from 'react';
-import Button from './index.jsx';
 import styled from 'styled-components';
+import Button from './index';
 
 
 // Style wrapper for default buttons - Composition
-const PrimaryWrapper = (Comp) => styled(Comp)`
+const PrimaryWrapper = Comp => styled(Comp)`
     box-sizing: border-box;
     display: inline-block;
     padding: 0.8em 1.8em;
