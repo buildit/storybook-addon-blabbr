@@ -26,14 +26,24 @@ const SubmitComment = ({
     <section>
       <form style={{ marginBottom: 25 }}>
         {formTitle}
-        <RegularTextArea value={userComment} onChange={onUserCommentChange} placeholder="Enter a comment..." />
+        <RegularTextArea
+          value={userComment}
+          onChange={onUserCommentChange}
+          placeholder="Enter a comment..."
+        />
         { type === 'Edit' ?
         [
           <PrimaryButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" >Update</PrimaryButton>,
           <PrimaryButton key={'cancel'} id={_id} type="submit" onClick={onCommentCancel} title="Cancel">Cancel</PrimaryButton>,
         ]
           :
-        <PrimaryButton type="submit" onClick={onCommentSubmit} title="Submit" >Submit</PrimaryButton>
+        <PrimaryButton
+          type="submit"
+          onClick={onCommentSubmit}
+          title="Submit"
+        >
+          Submit
+        </PrimaryButton>
         }
       </form>
     </section>
