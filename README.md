@@ -42,8 +42,8 @@ import { withComments } from '@buildit/storybook-addon-blabbr';
 addDecorator(withComments);
 ```
 
-### Topics to discuss
--
-- Authentication
-- Versioning
-- Design
+### Comment formatting
+
+There is currently no formatting available in the comments section. However, the editor does two things:
+1. Retains multi-line format
+2. Parses hyperlinks. So if you type `http://www.yoururl.com` in the box this will be shown as a link.
