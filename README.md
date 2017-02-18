@@ -43,7 +43,7 @@ addDecorator(withComments);
 ```
 
 ### Comment formatting
-
+-
 There is currently no formatting available in the comments section. However, the editor does two things:
 
 1. Retains multi-line format
