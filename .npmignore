@@ -6,5 +6,5 @@ stub
 .editorconfig
 .eslintignore
 .eslintrc
-config/db.js
+config/blabbr-config.js
 __mocks__
