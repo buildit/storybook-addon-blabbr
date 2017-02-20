@@ -1,7 +1,7 @@
 // Initialize PouchDB
 import PouchDB from 'pouchdb-browser';
 import * as pouchDBFind from 'pouchdb-find';
-import config from 'blabbr-config/db'; // eslint-disable-line
+import { db as dbConfig } from 'blabbr-config'; // eslint-disable-line
 import { EventEmitter } from 'events';
 
 PouchDB.plugin(pouchDBFind);
@@ -19,7 +19,7 @@ db.createIndex({
   },
 });
 
-db.sync(`https://${config.user}:${config.pwd}@${config.host}`, {
+db.sync(`https://${dbConfig.user}:${dbConfig.pwd}@${dbConfig.host}`, {
   live: true,
   retry: true,
 });

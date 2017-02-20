@@ -1,4 +1,5 @@
 import db from './db';
+import { slack } from 'blabbr-config'; // eslint-disable-line
 
 export const getComments = (component, story, version = '0_0_1') =>
   // returns a promise
@@ -46,6 +47,22 @@ export const postComment = ({
     lastUpdated: timestampId,
     eventName,
   };
+
+  if (slack && slack.endPoint) {
+    // Slack
+    const myHeaders = new Headers();
+    const payload = {
+      username: userName,
+      text: `${record.userName} just commented on component <${window.location.href}|${record.componentId}>: ${record.comment}`,
+    };
+
+    const myInit = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify(payload),
+    };
+    fetch(slack.endPoint, myInit);
+  }
 
   // return
   return db.put(record).then((data) => {
