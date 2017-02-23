@@ -1,5 +1,9 @@
 import React, { PropTypes } from 'react';
-import './styles.css';
+import { H3 } from '../typography/';
+import PrimaryButton from '../button/primaryButton';
+import { Label } from '../form-fields/Label';
+import { Input } from '../form-fields/Input';
+// import './styles.css';
 
 const Register = ({
   onUserNameChange,
@@ -9,7 +13,7 @@ const Register = ({
   userEmail,
 }) => {
   const formTitle = (
-    <h2>Register to add comments</h2>
+    <H3>Register to add comments</H3>
   );
 
   return (
@@ -17,31 +21,34 @@ const Register = ({
       {formTitle}
       <form>
         <div>
-          <label htmlFor="blabbr-userName">
+          <Label htmlFor="blabbr-userName">
             User name:
-          </label>
-          <input
+          </Label>
+          <Input
             id="blabbr-userName"
             value={userName || ''}
             onChange={onUserNameChange}
           />
         </div>
         <div>
-          <label htmlFor="blabbr-email">
+          <Label htmlFor="blabbr-email">
             Email:
-          </label>
-          <input
+          </Label>
+          <Input
             id="blabbr-email"
             value={userEmail || ''}
             onChange={onUserEmailChange}
           />
         </div>
-        <button
-          type="submit"
-          onClick={onRegisterSubmit}
-        >
-          Register
-        </button>
+        <div style={{ textAlign: 'center' }}>
+          <PrimaryButton
+            type="submit"
+            onClick={onRegisterSubmit}
+            style={{ width: '50%', minWidth: '30%', marginTop: '2em' }}
+          >
+            Register
+          </PrimaryButton>
+        </div>
       </form>
     </section>
   );
