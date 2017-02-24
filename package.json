@@ -42,6 +42,7 @@
   },
   "homepage": "https://github.com/buildit/storybook-addon-blabbr#readme",
   "devDependencies": {
+    "@kadira/storybook": "^2.35.2",
     "@kadira/storybook-addon-knobs": "^1.7.1",
     "babel-cli": "^6.18.0",
     "babel-jest": "^18.0.0",
@@ -65,7 +66,6 @@
     "webpack": "^1.14.0"
   },
   "dependencies": {
-    "@kadira/storybook": "^2.35.2",
     "events": "^1.1.1",
     "pouchdb-browser": "^6.1.1",
     "pouchdb-find": "^0.10.4",
