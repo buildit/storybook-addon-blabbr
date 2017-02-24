@@ -3,6 +3,11 @@
   "version": "0.2.9",
   "description": "Component review and commenting for React Storybook",
   "main": "dist/index.js",
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
   "scripts": {
     "storybook": "start-storybook -p 9001",
     "lint": "eslint src --ext .js,.jsx",
@@ -58,6 +63,7 @@
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
     "file-loader": "^0.9.0",
+    "ghooks": "2.0.0",
     "jest": "^18.1.0",
     "json-loader": "^0.5.4",
     "react-test-renderer": "^15.4.2",
@@ -72,7 +78,8 @@
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
     "react-alert": "^1.0.14",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "styled-components": "1.4.3"
   },
   "jest": {
     "moduleNameMapper": {

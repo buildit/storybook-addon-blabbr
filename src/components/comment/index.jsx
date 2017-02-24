@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { createHash, formatToHTML } from '../../utils';
 import './styles.css';
+import SecondaryButton from '../button/secondaryButton';
+import { HyperLink } from '../typography/';
 
 const Comment = ({
   username,
@@ -25,17 +27,17 @@ const Comment = ({
 
       <span className="controls">
         { !!currentUserIsOwner &&
-          <button id={commentId} onClick={onUserCommentEdit}>
+          <SecondaryButton id={commentId} onClick={onUserCommentEdit}>
             Edit
-          </button>
+          </SecondaryButton>
         }
         { !!currentUserIsOwner &&
-        <button
+        <HyperLink
           id={commentId}
           onClick={onUserCommentDelete}
         >
               Remove
-            </button>
+            </HyperLink>
           }
       </span>
     </header>

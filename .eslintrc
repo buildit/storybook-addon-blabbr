@@ -11,6 +11,7 @@
     "react/require-default-props": 1,
     "no-underscore-dangle": 1,
     "no-plusplus": 0,
-    "no-unused-expressions": ["error", { "allowShortCircuit": true }]
+    "no-unused-expressions": ["error", { "allowShortCircuit": true }],
+    "no-confusing-arrow": 1
   }
 }

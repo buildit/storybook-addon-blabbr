@@ -3,6 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Comment from '../comment';
 import SubmitComment from '../submitComment';
 import { getTimestamp } from '../../utils';
+import { HyperLink } from '../typography/';
 import './styles.css';
 
 const Comments = ({
@@ -61,9 +62,9 @@ const Comments = ({
   });
 
   const showAllCommentsLink = !isShowingAllComments ?
-    (<button style={{ marginBottom: 20 }} onClick={onShowAllComments}>
+    (<HyperLink secondary style={{ display: 'block', textAlign: 'center', width: '100%' }} onClick={onShowAllComments}>
       Show all comments
-    </button>) :
+    </HyperLink>) :
     null;
 
   return (
@@ -80,7 +81,9 @@ const Comments = ({
           <p key="no-comments">No comments to show for this story</p>
         }
       </ReactCSSTransitionGroup>
-      {showAllCommentsLink}
+      <div style={{ display: 'block', margin: '10px 0', with: '100%' }}>
+        {showAllCommentsLink}
+      </div>
     </div>
   );
 };

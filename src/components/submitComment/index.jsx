@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react';
-import './styles.css';
+import BaseButton from '../button/BaseButton';
+import RegularTextArea from '../form-fields/textArea';
+import { H2 } from '../typography/index';
+
 
 const SubmitComment = ({
   onUserCommentChange,
@@ -14,49 +17,33 @@ const SubmitComment = ({
 
   const formTitle =
     type === 'Edit' ?
-      <h2>{title}: <span>{`${userName} - ${userEmail}`}</span></h2>
+      <H2>{title}: <span>{`${userName} - ${userEmail}`}</span></H2>
       :
-      <h2>{title}</h2>
+      <H2>{title}</H2>
     ;
 
   return (
-    <section className="blabbr-submitComment">
-      <form>
+    <section>
+      <form style={{ marginBottom: 25 }}>
         {formTitle}
-        <textarea
+        <RegularTextArea
           value={userComment}
           onChange={onUserCommentChange}
+          placeholder="Enter a comment..."
         />
-
         { type === 'Edit' ?
         [
-          <button
-            key={'save'}
-            type="submit"
-            id={_id}
-            style={{ marginRight: 10 }}
-            onClick={onCommentSubmit}
-            title="Update"
-          >
-            Update
-          </button>,
-          <button
-            key={'cancel'}
-            id={_id}
-            onClick={onCommentCancel}
-            title="Cancel"
-          >
-            Remove
-          </button>,
+          <BaseButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" >Update</BaseButton>,
+          <BaseButton key={'cancel'} id={_id} type="submit" onClick={onCommentCancel} title="Cancel">Cancel</BaseButton>,
         ]
           :
-        <button
+        <BaseButton
           type="submit"
           onClick={onCommentSubmit}
           title="Submit"
         >
           Submit
-        </button>
+        </BaseButton>
         }
       </form>
     </section>

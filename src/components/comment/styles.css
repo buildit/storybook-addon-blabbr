@@ -38,6 +38,7 @@
 
 .blabbr-comment header .controls {
   margin-left: 1em;
+  float: right;
 }
 
 .blabbr-comment header a {
