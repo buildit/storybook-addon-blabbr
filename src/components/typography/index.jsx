@@ -50,8 +50,9 @@ export const HyperLink = styled.a`
   text-align: center;
   text-transform: lowercase;
   color: ${props => props.secondary ? '#BEBEBE' : '#777'};
+  transition: text-shadow .2s;
   &:hover {
-    font-weight: 500;
+    text-shadow: 0 0 1px;
     color: #444;
     text-decoration: underline;
     cursor: pointer;

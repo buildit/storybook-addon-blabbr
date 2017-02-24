@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components';
 // import Button from './index.jsx';
-import PrimaryButton from './primaryButton';
+import BaseButton from './BaseButton';
 
 
 // Style wrapper for default buttons - Composition
@@ -23,7 +23,7 @@ const SecondaryWrapper = Comp => styled(Comp)`
     }
   `;
 
-const SecondaryButton = SecondaryWrapper(PrimaryButton);
+const SecondaryButton = SecondaryWrapper(BaseButton);
 
 
 export default SecondaryButton;

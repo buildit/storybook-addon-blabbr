@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { H3 } from '../typography/';
-import PrimaryButton from '../button/primaryButton';
+import BaseButton from '../button/BaseButton';
 import { Label } from '../form-fields/Label';
 import { Input } from '../form-fields/Input';
 // import './styles.css';
@@ -41,13 +41,13 @@ const Register = ({
           />
         </div>
         <div style={{ textAlign: 'center' }}>
-          <PrimaryButton
+          <BaseButton
             type="submit"
             onClick={onRegisterSubmit}
             style={{ width: '50%', minWidth: '30%', marginTop: '2em' }}
           >
             Register
-          </PrimaryButton>
+          </BaseButton>
         </div>
       </form>
     </section>

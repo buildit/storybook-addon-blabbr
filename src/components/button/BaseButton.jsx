@@ -26,7 +26,7 @@ const PrimaryWrapper = Comp => styled(Comp)`
     transition: background .2s linear;
   `;
 
-const PrimaryButton = PrimaryWrapper(Button);
+const BaseButton = PrimaryWrapper(Button);
 
 
-export default PrimaryButton;
+export default BaseButton;

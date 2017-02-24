@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import PrimaryButton from '../button/primaryButton';
+import BaseButton from '../button/BaseButton';
 import RegularTextArea from '../form-fields/textArea';
 import { H2 } from '../typography/index';
 
@@ -33,17 +33,17 @@ const SubmitComment = ({
         />
         { type === 'Edit' ?
         [
-          <PrimaryButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" >Update</PrimaryButton>,
-          <PrimaryButton key={'cancel'} id={_id} type="submit" onClick={onCommentCancel} title="Cancel">Cancel</PrimaryButton>,
+          <BaseButton key={'save'} type="submit" id={_id} onClick={onCommentSubmit} title="Update" >Update</BaseButton>,
+          <BaseButton key={'cancel'} id={_id} type="submit" onClick={onCommentCancel} title="Cancel">Cancel</BaseButton>,
         ]
           :
-        <PrimaryButton
+        <BaseButton
           type="submit"
           onClick={onCommentSubmit}
           title="Submit"
         >
           Submit
-        </PrimaryButton>
+        </BaseButton>
         }
       </form>
     </section>
