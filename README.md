@@ -41,6 +41,19 @@ export { slack };
 
 ```
 
+### UI Options
+
+You can setup a number of UI options as follows:
+
+```
+const ui = {
+  avatar: false,
+  condensed: false,
+};
+
+export { ui };
+```
+
 ## Storybook registration
 
 To use the plugin you need to register the plugin and add a decorator, like most Storybook plugins.
