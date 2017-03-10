@@ -8,4 +8,8 @@ const slack = {
   endPoint: '<YOUR_ENDPOINT>',
 };
 
-export { db, slack };
+const ui = {
+  avatar: true,
+};
+
+export { db, slack, ui };

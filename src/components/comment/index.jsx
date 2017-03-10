@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { createHash, formatToHTML } from '../../utils';
+import { ui } from 'blabbr-config'; // eslint-disable-line
 import './styles.css';
 
 const Comment = ({
@@ -17,11 +18,29 @@ const Comment = ({
   const emailHash = createHash(emailId);
   const output = formatToHTML(comment);
 
-  return (<article className="blabbr-comment">
+  let showAvatar;
+  if (ui) {
+    showAvatar = !!ui.avatar;
+  } else {
+    showAvatar = true;
+  }
+
+  let classes = 'blabbr-comment';
+  if (showAvatar) {
+    classes += ' withAvatar';
+  }
+
+  return (<article className={classes}>
     <header>
       <h2>{`${username}`}</h2>
       <time dateTime={timestamp}>{timestamp}</time>
-      <img className="avatar" src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`} alt={`${username}'s Gravatar`} />
+      { showAvatar &&
+        <img
+          className="avatar"
+          src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`}
+          alt={`${username}'s Gravatar`}
+        />
+      }
 
       <span className="controls">
         { !!currentUserIsOwner &&

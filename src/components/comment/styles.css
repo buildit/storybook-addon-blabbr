@@ -3,7 +3,7 @@
   /* Box model */
   position: relative;
   min-height: 5rem; /* Same as gravatar height + 2x padding! */
-  padding: 0.5rem 0.5rem 0.5rem 5rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
   font-family:
     -apple-system,
     ".SFNSText-Regular",
@@ -13,9 +13,18 @@
     "Helvetica Neue",
      "Lucida Grande",
      sans-serif;
+  font-size: 0.8em;
+  box-sizing: border-box;
+  width: 100%;
+  vertical-align: middle;
+  outline: none;
+  border: 1px solid rgb(247, 244, 244);
+  border-radius: 2px;
+  color: rgb(85, 85, 85);
+}
 
-  /* Visual */
-  border: 1px solid #ccc;
+.blabbr-comment.withAvatar {
+  padding-left: 5rem;
 }
 
 .blabbr-comment header {

@@ -41,6 +41,22 @@ export { slack };
 
 ```
 
+### UI Options
+
+You can setup a number of UI options as follows:
+
+```
+const ui = {
+  avatar: false,
+  ...
+};
+
+export { ui };
+```
+
+The available options are:
+- `avatar`: `true`/`false` to show avatars or not
+
 ## Storybook registration
 
 To use the plugin you need to register the plugin and add a decorator, like most Storybook plugins.

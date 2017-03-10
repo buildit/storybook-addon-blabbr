@@ -17,9 +17,19 @@
 
 .blabbr-submitComment textarea {
   min-height: 3em;
-  font-size: 1em;
+  font-size: 0.8em;
   padding: 0.5rem;
   box-sizing: border-box;
-  border: 1px solid #ccc;
   width: 100%;
+  vertical-align: middle;
+  outline: none;
+  border: 1px solid rgb(247, 244, 244);
+  border-radius: 2px;
+  color: rgb(85, 85, 85);
+}
+
+.blabbr-submitComment h2 {
+  font-size: 1em;
+  padding: 0;
+  margin: 0 0 10px 0;
 }
