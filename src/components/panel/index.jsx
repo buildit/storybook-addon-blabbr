@@ -386,15 +386,15 @@ export default class Panel extends Component {
     const commentCount = this.allComments.length;
 
     const commentCountView = commentCount ?
-      <span className="comment-count text-muted">{ commentCount }</span> : null;
+      <span className="comment-count text-muted tile">{ commentCount }</span> : null;
 
     return (
-      <section className="panel-container">
+      <section className="blabbr-panel-container">
         <AlertContainer ref={a => (global.msg = a)} {...this.alertOptions} />
-        <header>
-          <OnlineIndicator isOnline={isUserOnline} />
-          { isUserAuthenticated && commentCountView }
-        </header>
+        <ul className="tiles">
+          <li>{ isUserAuthenticated && commentCountView }</li>
+          <li><OnlineIndicator isOnline={isUserOnline} /></li>
+        </ul>
 
         { !isUserAuthenticated &&
           <Register

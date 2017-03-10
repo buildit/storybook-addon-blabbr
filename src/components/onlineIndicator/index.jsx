@@ -1,11 +1,19 @@
 import React, { PropTypes } from 'react';
+import ReactTooltip from 'react-tooltip';
 import './styles.css';
 
 const OnlineIndicator = ({
   isOnline,
 }) => {
-  const indicatorClass = isOnline ? 'status-indicator online' : 'status-indicator offline';
-  return <span className={indicatorClass}>{ isOnline ? 'v' : 'x' }</span>;
+  const indicatorClass = isOnline ? 'blabbr-status-indicator online' : 'blabbr-status-indicator offline';
+  const tooltip = isOnline ? 'Online' : 'Could not connect to server';
+  return (
+    <div data-tip data-for="blabbr-indicator-tooltip" className={indicatorClass}>
+      <ReactTooltip id="blabbr-indicator-tooltip" place="left" type="dark" effect="solid">
+        {tooltip}
+      </ReactTooltip>
+    </div>
+  );
 };
 
 OnlineIndicator.propTypes = {

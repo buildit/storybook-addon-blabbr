@@ -1,4 +1,4 @@
-.panel-container {
+.blabbr-panel-container {
   padding: 5px 10px 10px 10px;
   width: 100%;
   font-family:
@@ -13,26 +13,21 @@
    color: #444;
 }
 
-header h2 {
+.blabbr-panel-container ul.tiles {
   display: inline-block;
-  width: auto;
-  vertical-align: top;
+  float: right;
+  margin-top: -5px;
+  margin-right: -10px;
+  font-size: 0.8em;
+  font-weight: lighter;
 }
 
-header .online,
-header .offline {
+.blabbr-panel-container ul.tiles li {
   display: inline-block;
-  vertical-align: top;
-}
-
-header .status-indicator {
-  float: right;
-  clear: both;
-  margin-right: -5px;
-}
-
-header .comment-count {
-  float: right;
-  margin-right: 0.25em;
-  color: #777; /* text-muted */
+  padding: 2px 3px 2px 3px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #777;
+  background: rgb(244, 244, 244);
+  margin-left: 1px;
 }
