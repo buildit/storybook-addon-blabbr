@@ -10,7 +10,6 @@ const slack = {
 
 const ui = {
   avatar: true,
-  condensed: false,
 };
 
 export { db, slack, ui };

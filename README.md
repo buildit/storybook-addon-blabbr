@@ -48,11 +48,14 @@ You can setup a number of UI options as follows:
 ```
 const ui = {
   avatar: false,
-  condensed: false,
+  ...
 };
 
 export { ui };
 ```
+
+The available options are:
+- `avatar`: `true`/`false` to show avatars or not
 
 ## Storybook registration
 

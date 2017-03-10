@@ -386,16 +386,12 @@ export default class Panel extends Component {
     const commentCount = this.allComments.length;
 
     const commentCountView = commentCount ?
-      (<span className="comment-count text-muted">
-        Total comments: { commentCount }
-      </span>) :
-      null;
+      <span className="comment-count text-muted">{ commentCount }</span> : null;
 
     return (
       <section className="panel-container">
         <AlertContainer ref={a => (global.msg = a)} {...this.alertOptions} />
         <header>
-          <h2>Comments</h2>
           <OnlineIndicator isOnline={isUserOnline} />
           { isUserAuthenticated && commentCountView }
         </header>

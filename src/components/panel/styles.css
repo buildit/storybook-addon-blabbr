@@ -1,5 +1,5 @@
 .panel-container {
-  padding: 0 20px;
+  padding: 5px 10px 10px 10px;
   width: 100%;
   font-family:
     -apple-system,
@@ -12,6 +12,7 @@
      sans-serif;
    color: #444;
 }
+
 header h2 {
   display: inline-block;
   width: auto;
@@ -27,13 +28,11 @@ header .offline {
 header .status-indicator {
   float: right;
   clear: both;
-  margin-top: 20px;
-  color: #777; /* text-muted */
+  margin-right: -5px;
 }
 
 header .comment-count {
-  font-size: 13px;
   float: right;
-  clear: both;
+  margin-right: 0.25em;
   color: #777; /* text-muted */
 }

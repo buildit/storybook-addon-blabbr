@@ -13,9 +13,14 @@
     "Helvetica Neue",
      "Lucida Grande",
      sans-serif;
-
-  /* Visual */
-  border: 1px solid #ccc;
+  font-size: 0.8em;
+  box-sizing: border-box;
+  width: 100%;
+  vertical-align: middle;
+  outline: none;
+  border: 1px solid rgb(247, 244, 244);
+  border-radius: 2px;
+  color: rgb(85, 85, 85);
 }
 
 .blabbr-comment.withAvatar {

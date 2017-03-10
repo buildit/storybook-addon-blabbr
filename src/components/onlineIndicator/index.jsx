@@ -4,20 +4,8 @@ import './styles.css';
 const OnlineIndicator = ({
   isOnline,
 }) => {
-  const indicatorClass = isOnline ? 'online' : 'offline';
-
-  return (
-    <div className="status-indicator">
-      <span>Connection status: </span>
-      <span className={indicatorClass}>
-        {
-          isOnline ?
-            <span>Online</span> :
-            <span>Offline</span>
-        }
-      </span>
-    </div>
-  );
+  const indicatorClass = isOnline ? 'status-indicator online' : 'status-indicator offline';
+  return <span className={indicatorClass}>{ isOnline ? 'v' : 'x' }</span>;
 };
 
 OnlineIndicator.propTypes = {
