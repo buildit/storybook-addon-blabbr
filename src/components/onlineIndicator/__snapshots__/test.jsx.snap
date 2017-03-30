@@ -1,29 +1,25 @@
-exports[`test Offline indicator renderes correctly 1`] = `
+exports[`test Online indicator renders correctly when system is offline 1`] = `
 <div
-  className="status-indicator">
-  <span>
-    Connection status: 
-  </span>
-  <span
-    className="offline">
-    <span>
-      Offline
-    </span>
-  </span>
+  className="blabbr-status-indicator offline"
+  data-for="blabbr-indicator-tooltip"
+  data-tip={true}>
+  <wrapper
+    className="__react_component_tooltip place-top type-dark "
+    data-id="tooltip">
+    
+  </wrapper>
 </div>
 `;
 
-exports[`test Online indicator renderes correctly 1`] = `
+exports[`test Online indicator renders correctly when system is online 1`] = `
 <div
-  className="status-indicator">
-  <span>
-    Connection status: 
-  </span>
-  <span
-    className="online">
-    <span>
-      Online
-    </span>
-  </span>
+  className="blabbr-status-indicator online"
+  data-for="blabbr-indicator-tooltip"
+  data-tip={true}>
+  <wrapper
+    className="__react_component_tooltip place-top type-dark "
+    data-id="tooltip">
+    
+  </wrapper>
 </div>
 `;

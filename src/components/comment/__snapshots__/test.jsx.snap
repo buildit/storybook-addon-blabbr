@@ -1,6 +1,6 @@
 exports[`test Comment renders correctly 1`] = `
 <article
-  className="blabbr-comment">
+  className="blabbr-comment withAvatar">
   <header>
     <h2>
       username

@@ -1,17 +1,17 @@
 import React from 'react';
 import renderer from 'react-test-renderer'; // eslint-disable-line
-import Offline from './';
+import OnlineIndicator from './';
 
-test('Offline indicator renderes correctly', () => {
+test('Online indicator renders correctly when system is offline', () => {
   const tree = renderer.create(
-    <Offline isOnline={false} />,
+    <OnlineIndicator isOnline={false} />,
   ).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test('Online indicator renderes correctly', () => {
+test('Online indicator renders correctly when system is online', () => {
   const tree = renderer.create(
-    <Offline isOnline />,
+    <OnlineIndicator isOnline />,
   ).toJSON();
   expect(tree).toMatchSnapshot();
 });
