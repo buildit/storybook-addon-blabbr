@@ -83,8 +83,9 @@ export const postComment = ({
   }));
 };
 
-export const updateComment = (commentId, userComment) => {
+export const updateComment = (commentId, userCommentText) => {
   const timestampId = `${new Date().getTime()}`;
+  const userComment = userCommentText && userCommentText.trim();
 
   return db.find({
     selector: {

@@ -46,7 +46,7 @@ const SubmitComment = ({
             onClick={onCommentCancel}
             title="Cancel"
           >
-            Remove
+            Cancel
           </button>,
         ]
           :
