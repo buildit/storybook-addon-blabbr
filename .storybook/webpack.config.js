@@ -7,7 +7,7 @@ module.exports = {
 		preLoaders: [],
 
 		loaders: [
-			{ test: /\.(js|jsx)$/, exclude: [ /node_modules/ ], loader: 'babel' },
+			{ test: /\.(js)$/, exclude: [ /node_modules/ ], loader: 'babel' },
 			{ test: /\.(png|jpg|gif|svg)$/, loader: 'file-loader' },
       { test: /\.css$/, loader: 'style-loader!css-loader' }
 		]
@@ -15,7 +15,7 @@ module.exports = {
 
 	resolve: {
 		root: path.resolve(__dirname),
-		extensions: ['', '.js', '.jsx'],
+		extensions: ['', '.js'],
     alias: {
       'blabbr-config': path.join(path.resolve(__dirname), '../config/blabbr-config.js')
     }
