@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import AlertContainer from 'react-alert';
-import { getVersions, getComments, postComment, deleteComment, updateComment } from '../api';
+import { getComments, postComment, deleteComment, updateComment } from '../api';
 import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
