@@ -15,7 +15,7 @@ const dbEmitter = new EventEmitter();
 
 db.createIndex({
   index: {
-    fields: ['componentId', 'timestamp'],
+    fields: ['componentId', 'timestamp', 'version'],
   },
 });
 

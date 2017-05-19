@@ -15,6 +15,7 @@ const Comment = ({
   edited,
   lastUpdated,
   version,
+  activeVersion,
 }) => {
   const emailHash = createHash(emailId);
   const output = formatToHTML(comment);
@@ -80,6 +81,7 @@ Comment.propTypes = {
   edited: PropTypes.bool,
   lastUpdated: PropTypes.string,
   version: PropTypes.string,
+  activeVersion: PropTypes.string,
 };
 
 export default Comment;

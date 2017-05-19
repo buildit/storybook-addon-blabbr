@@ -17,6 +17,8 @@ const Comments = ({
   onUserCommentDelete,
   onShowAllComments,
   isShowingAllComments,
+  activeVersion,
+  versions,
 }) => {
   const commentsComponents = comments.map((comment) => {
     const timestamp = getTimestamp(comment.timestamp);
@@ -56,6 +58,7 @@ const Comments = ({
         edited={comment.edited}
         lastUpdated={lastUpdated}
         version={comment.version}
+        activeVersion={activeVersion}
       />);
 
     return commentOrSubmit;
@@ -98,6 +101,8 @@ Comments.propTypes = {
   onUserCommentDelete: PropTypes.func.isRequired,
   isShowingAllComments: PropTypes.bool.isRequired,
   onShowAllComments: PropTypes.func.isRequired,
+  activeVersion: PropTypes.string.isRequired,
+  versions: PropTypes.array.isRequired,
 };
 
 Comment.defaultProps = {
