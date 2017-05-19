@@ -7,6 +7,7 @@ import Register from '../register';
 import SubmitComment from '../submitComment';
 import OnlineIndicator from '../onlineIndicator';
 import { dbEventManager } from '../api/db';
+import { version } from 'blabbr-config'; // eslint-disable-line
 import './styles.css';
 
 function wasActionPerformedByMe(key, obj) {
@@ -204,7 +205,7 @@ export default class Panel extends Component {
   }
 
   onStoryChangeHandler(kind, story) {
-    const activeVersion = '0_0_1'; // TEMP
+    const activeVersion = version;
     const activeComponent = cleanToken(kind);
     const activeStory = cleanToken(story);
 
