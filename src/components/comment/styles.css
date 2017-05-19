@@ -41,7 +41,11 @@
   font-size: 1em;
 }
 
-.blabbr-comment header time {
+.blabbr-comment header .blabbr-time {
+  margin-left: 1em;
+}
+
+.blabbr-comment header .blabbr-version {
   margin-left: 1em;
 }
 

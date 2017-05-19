@@ -33,8 +33,12 @@ const Comment = ({
 
   return (<article className={classes}>
     <header>
-      <h2>{`${username} v${version}`}</h2>
-      <time dateTime={timestamp}>{timestamp}</time>
+      <h2>{`${username}`}</h2>
+
+      <span className="blabbr-time">at <time dateTime={timestamp}>{timestamp}</time></span>
+
+      <span className="blabbr-version">about {`v${version}`}</span>
+
       { showAvatar &&
         <img
           className="avatar"
