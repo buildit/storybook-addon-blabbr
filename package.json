@@ -4,6 +4,7 @@
   "description": "Component review and commenting for React Storybook",
   "main": "dist/index.js",
   "scripts": {
+    "start": "npm run storybook",
     "storybook": "start-storybook -p 9001",
     "lint": "eslint src --ext .js",
     "transpile": "babel ./src --out-dir dist --copy-files",
