@@ -1,0 +1,54 @@
+<div id="blabbr-version-history">
+</div>
+<script>
+const versionHistoryLinks = document.getElementById('blabbr-version-history');
+
+const path = window.parent.location.pathname;
+const currentVersion = path.substr(1, path.length - 2);
+
+function processVersions(data) {
+  data.forEach(function(version){
+    if(version === currentVersion){
+      // No link
+      const el = ocument.createElement('strong');
+      el.appendChild(document.createTextNode(version));
+      versionHistoryLinks.appendChild(el);
+    }
+    else{
+      // Link :-)
+      const link = document.createElement('a');
+
+      const url = window.parent.location;
+      const versionUrl = `${url.protocol}//${url.hostname}:${url.port}/${version}/${url.search}${url.hash}`;
+
+      link.href = versionUrl;
+      link.target = '_parent';
+      link.appendChild(document.createTextNode(version));
+
+      versionHistoryLinks.appendChild(link);
+    }
+  });
+}
+
+function getVersions() {
+  processVersions(["0.1.0", "0.2.0", "0.3.0", "0.4.0", "0.5.0"]);
+  return;
+  const url = window.parent.location;
+  const location = `${url.protocol}//${url.hostname}:${url.port}/versions.json`;
+  fetch(location).then(data => {
+    processVersions(data);
+  }).catch();
+}
+
+getVersions();
+</script>
+<style>
+  #blabbr-version-history > * {
+    display: inline-block;
+    padding: 0.3em;
+    border: 1px solid grey;
+    border-radius: 0.5em;
+    margin: 0 0.5em;
+  }
+
+</style>
