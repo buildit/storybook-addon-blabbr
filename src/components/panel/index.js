@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import AlertContainer from 'react-alert';
-import { getComments, postComment, deleteComment, updateComment } from '../api';
+import { getVersions, getComments, postComment, deleteComment, updateComment } from '../api';
 import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
@@ -17,6 +17,11 @@ function wasActionPerformedByMe(key, obj) {
   }
   return isKeyFound;
 }
+
+const extractVersions = (data) => {
+  const entries = (data && data.map(item => item.version)) || [];
+  return new Set(entries);
+};
 
 export default class Panel extends Component {
   constructor(...args) {
@@ -264,6 +269,7 @@ export default class Panel extends Component {
     }
     this.setState({
       comments: isShowingAllComments ? this.allComments : this.filteredComments,
+      versions: extractVersions(comments),
       isShowingAllComments,
     });
   }
@@ -386,6 +392,8 @@ export default class Panel extends Component {
       commentIdBeingEdited,
       isShowingAllComments,
       isUserOnline,
+      activeVersion,
+      versions,
     } = this.state;
 
     const commentCount = this.allComments.length;
@@ -429,6 +437,8 @@ export default class Panel extends Component {
             onUserCommentDelete={this.onUserCommentDelete}
             currentUser={userEmail}
             comments={comments}
+            activeVersion={activeVersion}
+            versions={versions}
             commentIdBeingEdited={commentIdBeingEdited}
             isShowingAllComments={isShowingAllComments}
             onShowAllComments={this.onShowAllComments}
