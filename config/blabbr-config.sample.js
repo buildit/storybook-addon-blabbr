@@ -12,6 +12,8 @@ const ui = {
   avatar: true,
 };
 
-const version = require('../package.json').version;
+const version = '<YOUR_VERSION_NO>';
+// or
+// const version = require('../package.json').version;
 
 export { db, slack, ui, version };

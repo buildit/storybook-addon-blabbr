@@ -57,6 +57,22 @@ export { ui };
 The available options are:
 - `avatar`: `true`/`false` to show avatars or not
 
+### Version
+
+You can set the version of the project/library you are working against using
+
+```
+const version = `<YOUR_VERSION_NO>`;
+```
+
+Alternatively you can tie it to the version specified in `package.json` like this:
+
+```
+const version = require('../package.json').version;
+```
+
+Ensure the path to `package.json` is correct relative to your blabbr config.
+
 ## Storybook registration
 
 To use the plugin you need to register the plugin and add a decorator, like most Storybook plugins.
