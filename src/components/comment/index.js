@@ -14,6 +14,7 @@ const Comment = ({
   onUserCommentDelete,
   edited,
   lastUpdated,
+  version,
 }) => {
   const emailHash = createHash(emailId);
   const output = formatToHTML(comment);
@@ -32,7 +33,7 @@ const Comment = ({
 
   return (<article className={classes}>
     <header>
-      <h2>{`${username}`}</h2>
+      <h2>{`${username} v${version}`}</h2>
       <time dateTime={timestamp}>{timestamp}</time>
       { showAvatar &&
         <img
@@ -74,6 +75,7 @@ Comment.propTypes = {
   onUserCommentDelete: PropTypes.func.isRequired,
   edited: PropTypes.bool,
   lastUpdated: PropTypes.string,
+  version: PropTypes.string,
 };
 
 export default Comment;

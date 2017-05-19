@@ -55,6 +55,7 @@ const Comments = ({
         commentId={comment._id}
         edited={comment.edited}
         lastUpdated={lastUpdated}
+        version={comment.version}
       />);
 
     return commentOrSubmit;

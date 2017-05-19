@@ -8,7 +8,7 @@ export const getComments = (component, story, version = '0_0_1') =>
        $and: [
           { componentId: component },
           { stateId: story },
-          { version },
+          // { version },
        ],
      },
      sort: [

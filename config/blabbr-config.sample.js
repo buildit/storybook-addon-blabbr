@@ -12,4 +12,6 @@ const ui = {
   avatar: true,
 };
 
-export { db, slack, ui };
+const version = require('../package.json').version;
+
+export { db, slack, ui, version };
