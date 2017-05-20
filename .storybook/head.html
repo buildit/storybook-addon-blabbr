@@ -6,15 +6,14 @@ const versionHistoryLinks = document.getElementById('blabbr-version-history');
 const path = window.parent.location.pathname;
 const currentVersion = path.substr(1, path.length - 2);
 
-function processVersions(data) {
+const processVersions = data => {
   data.forEach(function(version){
     if(version === currentVersion){
       // No link
       const el = ocument.createElement('strong');
       el.appendChild(document.createTextNode(version));
       versionHistoryLinks.appendChild(el);
-    }
-    else{
+    } else {
       // Link :-)
       const link = document.createElement('a');
 
@@ -30,14 +29,15 @@ function processVersions(data) {
   });
 }
 
-function getVersions() {
-  processVersions(["0.1.0", "0.2.0", "0.3.0", "0.4.0", "0.5.0"]);
-  return;
+const getVersions = () => {
   const url = window.parent.location;
   const location = `${url.protocol}//${url.hostname}:${url.port}/versions.json`;
-  fetch(location).then(data => {
-    processVersions(data);
-  }).catch();
+  fetch(location).then(response => {
+    if (response.ok) {
+      response.json().then(data => processVersions(data));
+    }
+  }).catch(() => {
+  });
 }
 
 getVersions();
