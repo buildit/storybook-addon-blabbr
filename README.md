@@ -15,6 +15,8 @@ You can configure various aspects of the plugin by creating a configuration file
 or, if you don't have a `webpack.config.js` in your `.storybook` folder, extend the base config to have the above alias setup. Please see the
 [Storybook documentation](https://getstorybook.io/docs/react-storybook/configurations/custom-webpack-config#full-control-mode) on how to do this.
 
+By default a sample config file, `blabbr-config.sample.js` is copied into the `.storybook` folder after installing the package.
+
 ### DB
 
 Currently it is setup to work with CouchDB and uses PouchDB as the library and API over Couch. To configure the connection to CouchDB (either a local CouchDB or hosted on Cloudant) you need to add the following to your config:
@@ -98,9 +100,11 @@ There is currently no formatting available in the comments section. However, the
 
 ## Versioning support
 
-When starting blabbr will attemp to get a list of versions available from the root of the host. It looks for
+On startup, blabbr will attemp to get a list of versions available from the root of the host. It looks for
 a file `versions.json` and expects to find an array with the versions listed. You can mock this using the provided
 `versions.json` in `.storybook/`. This is used to populate the navigation section at the top of the story panel.
+
+The navigation is added via `head.html`. This is copied into your `.storybook` folder *if a `head.html` does not already exist*. If it does you can find what you need to add in the package `config` directory.
 
 ## Post-install script
 
