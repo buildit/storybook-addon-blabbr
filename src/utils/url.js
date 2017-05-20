@@ -21,3 +21,12 @@ export const getStorybookVersions = () => {
 
   return makeRequest(fileLocation);
 };
+
+export const versionLink = (version) => {
+  if (!window || !window.parent) {
+    return '';
+  }
+
+  const url = window.parent.location;
+  return `${url.protocol}//${url.hostname}:${url.port}/${version}/${url.search}${url.hash}`;
+};

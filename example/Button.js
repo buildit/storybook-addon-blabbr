@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Button = ({ disabled, label, onClick }) => (
   <button disabled={disabled} onClick={onClick}>
@@ -8,9 +9,9 @@ const Button = ({ disabled, label, onClick }) => (
 
 Button.displayName = 'Button';
 Button.propTypes = {
-  label: React.PropTypes.string.isRequired,
-  disabled: React.PropTypes.bool,
-  onClick: React.PropTypes.func,
+  label: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 Button.defaultProps = {

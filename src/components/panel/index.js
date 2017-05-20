@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AlertContainer from 'react-alert';
 import { getComments, postComment, deleteComment, updateComment } from '../api';
 import { hasStorage, cleanToken, getStorybookVersions } from '../../utils';
@@ -163,9 +164,7 @@ export default class Panel extends Component {
     e.stopPropagation();
 
     this.setState({ commentIdBeingEdited: e.target.id });
-    const commentBeingEdited = this.allComments.find((comment) => {
-      return comment._id === e.target.id;
-    });
+    const commentBeingEdited = this.allComments.find(comment => comment._id === e.target.id);
     this.setState({ userCommentBeingUpdated: commentBeingEdited.comment });
     this.userActions.edited[e.target.id] = true;
   }

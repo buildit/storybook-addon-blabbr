@@ -1,5 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { createHash, formatToHTML } from '../../utils';
+import { versionLink } from '../../utils/url';
 import { ui } from 'blabbr-config'; // eslint-disable-line
 import './styles.css';
 
@@ -38,7 +40,9 @@ const Comment = ({
 
       <span className="blabbr-time">at <time dateTime={timestamp}>{timestamp}</time></span>
 
-      <span className="blabbr-version">about {`v${version}`}</span>
+      <span className="blabbr-version">about {
+        (version === activeVersion) ? `v${version}` : <a href={versionLink(version)}>v{version}</a>
+      }</span>
 
       { showAvatar &&
         <img
