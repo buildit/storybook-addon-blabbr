@@ -259,7 +259,6 @@ export default class Panel extends Component {
   }
 
   processServerVersions(data) {
-    console.log(data);
     this.setState({ serverVersions: data });
   }
 
