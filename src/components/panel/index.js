@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AlertContainer from 'react-alert';
 import { getComments, postComment, deleteComment, updateComment } from '../api';
-import { hasStorage, cleanToken } from '../../utils';
+import { hasStorage, cleanToken, getStorybookVersions } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
@@ -54,11 +54,12 @@ export default class Panel extends Component {
     this.isDeletedByMe = this.isDeletedByMe.bind(this);
     this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
     this.processComments = this.processComments.bind(this);
+    this.processServerVersions = this.processServerVersions.bind(this);
 
     this.state = {
       activeComponent: null,
       activeStory: null,
-      activeVersion: null,
+      activeVersion: version || "version_not_set",
       eventName: null,
       user: {
         isUserAuthenticated: false,
@@ -71,6 +72,8 @@ export default class Panel extends Component {
       userCommentBeingUpdated: null,
       commentIdBeingEdited: null,
       isUserOnline: navigator.onLine,
+      serverVersions: [],
+      versions: [],
     };
 
     this.commentChannelListener = null;
@@ -102,6 +105,9 @@ export default class Panel extends Component {
     storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
     dbEventManager.addOnlineListener();
     dbEventManager.subscribe('online', 'dbOnline', this.handleOnlineStatusChange);
+    getStorybookVersions()
+      .then(data => this.processServerVersions(data))
+      .catch();
   }
 
   componentWillUnmount() {
@@ -209,14 +215,12 @@ export default class Panel extends Component {
   }
 
   onStoryChangeHandler(kind, story) {
-    const activeVersion = version;
     const activeComponent = cleanToken(kind);
     const activeStory = cleanToken(story);
 
     this.setState({
       activeComponent,
       activeStory,
-      activeVersion,
       eventName: `${activeComponent}${activeStory}`,
       userComment: '',
       comments: [],
@@ -224,7 +228,7 @@ export default class Panel extends Component {
     this.filteredComments = [];
     this.allComments = [];
 
-    this.fetchComments(activeComponent, activeStory, activeVersion);
+    this.fetchComments(activeComponent, activeStory, this.state.activeVersion);
   }
 
   isDeletedByMe(dataKey) {
@@ -254,6 +258,11 @@ export default class Panel extends Component {
     return !idFound;
   }
 
+  processServerVersions(data) {
+    console.log(data);
+    this.setState({ serverVersions: data });
+  }
+
   processComments(data) {
     const comments = data.docs;
     const commentsLength = comments.length;
@@ -268,7 +277,7 @@ export default class Panel extends Component {
     }
     this.setState({
       comments: isShowingAllComments ? this.allComments : this.filteredComments,
-      versions: extractVersions(comments),
+      versions: [...extractVersions(comments)],
       isShowingAllComments,
     });
   }
@@ -363,7 +372,7 @@ export default class Panel extends Component {
       userEmail,
       component: activeComponent,
       story: activeStory,
-      version: activeVersion || '0_0_1',
+      version: activeVersion,
       eventName,
     }).then((data) => {
       if (data.success) {

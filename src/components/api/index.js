@@ -3,7 +3,7 @@ import { slack } from 'blabbr-config'; // eslint-disable-line
 
 // Return all the comments for the particular component and story
 // NOTE: Version is ignored for now, all comments are returned
-export const getComments = (component, story, version = '0_0_1') =>
+export const getComments = (component, story, version = 'version_not_set') =>
   // returns a promise
    db.find({
      selector: {
