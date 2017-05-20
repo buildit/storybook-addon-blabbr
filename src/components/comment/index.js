@@ -34,8 +34,6 @@ const Comment = ({
     classes += ' withAvatar';
   }
 
-  console.log(versionLink);
-
   return (<article className={classes}>
     <header>
       <h2>{`${username}`}</h2>

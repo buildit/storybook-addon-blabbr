@@ -296,7 +296,6 @@ export default class Panel extends Component {
       } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
         global.msg.info('A comment was edited.');
       }
-      console.log('added2');
       this.updateView(activeComponent, activeStory, activeVersion);
     });
   }
@@ -372,7 +371,6 @@ export default class Panel extends Component {
       } else {
         global.msg.error(data.msg);
       }
-      console.log('added1');
       this.updateView(activeComponent, activeStory, activeVersion);
       this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
     }).catch(() => {
