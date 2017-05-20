@@ -10,7 +10,8 @@
     "transpile": "babel ./src --out-dir dist --copy-files",
     "test": "jest",
     "build": "npm run lint && npm run test && npm run transpile",
-    "prepublish": "rm -fr dist && npm run transpile"
+    "prepublish": "rm -fr dist && npm run transpile",
+    "postinstall": "echo need to do something here"
   },
   "repository": {
     "type": "git",
