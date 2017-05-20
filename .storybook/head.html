@@ -1,14 +1,14 @@
 <div id="blabbr-version-history">
 </div>
+
 <script>
 const versionHistoryLinks = document.getElementById('blabbr-version-history');
-
 const path = window.parent.location.pathname;
 const currentVersion = path.substr(1, path.length - 2);
 
 const processVersions = data => {
-  data.forEach(function(version){
-    if(version === currentVersion){
+  data.forEach((version) => {
+    if (version === currentVersion) {
       // No link
       const el = ocument.createElement('strong');
       el.appendChild(document.createTextNode(version));
@@ -16,7 +16,6 @@ const processVersions = data => {
     } else {
       // Link :-)
       const link = document.createElement('a');
-
       const url = window.parent.location;
       const versionUrl = `${url.protocol}//${url.hostname}:${url.port}/${version}/${url.search}${url.hash}`;
 
@@ -32,11 +31,13 @@ const processVersions = data => {
 const getVersions = () => {
   const url = window.parent.location;
   const location = `${url.protocol}//${url.hostname}:${url.port}/versions.json`;
+
   fetch(location).then(response => {
     if (response.ok) {
       response.json().then(data => processVersions(data));
     }
   }).catch(() => {
+    // Ignore. Maybe we want to remove the div?
   });
 }
 
