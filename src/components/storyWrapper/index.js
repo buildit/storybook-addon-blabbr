@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class StoryWrapper extends React.Component {
   constructor(props) {
@@ -40,8 +41,8 @@ class StoryWrapper extends React.Component {
 }
 
 StoryWrapper.propTypes = {
-  channel: React.PropTypes.object.isRequired,
-  children: React.PropTypes.node.isRequired,
+  channel: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default StoryWrapper;

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { createHash, formatToHTML } from '../../utils';
 import { versionLink } from '../../utils/url';
 import { ui } from 'blabbr-config'; // eslint-disable-line
