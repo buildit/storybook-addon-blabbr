@@ -108,4 +108,4 @@ The navigation is added via `head.html`. This is copied into your `.storybook` f
 
 ## Post-install script
 
-TBC
+As mentioned in the sections above, a post install script will copy a `blabbr-config.sample.js` and a `head.html` file into your `.storybook` folder.
