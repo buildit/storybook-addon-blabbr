@@ -28,9 +28,6 @@ export default class Panel extends Component {
   constructor(...args) {
     super(...args);
 
-    // this.onFocusTabHandler = this.onFocusTabHandler.bind(this);
-    // this.props.channel.on('blabbrFocusTab', this.onFocusTabHandler);
-
     this.onStoryChangeHandler = this.onStoryChangeHandler.bind(this);
     this.fetchComments = this.fetchComments.bind(this);
     this.onUserNameChange = this.onUserNameChange.bind(this);
@@ -120,11 +117,6 @@ export default class Panel extends Component {
     }
     dbEventManager.removeOnlineListener();
   }
-
-  // onFocusTabHandler() {
-  //   // Focus the panel via the URL
-  //   // Can we do this? There is nothing in API for it...
-  // }
 
   onUserNameChange(e) {
     const { user } = this.state;
