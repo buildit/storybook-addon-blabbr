@@ -9,6 +9,7 @@
     "lint": "eslint src --ext .js",
     "transpile": "babel ./src --out-dir dist --copy-files",
     "test": "jest",
+    "test-storybook": "storyshots",
     "build": "npm run lint && npm run test && npm run transpile",
     "prepublish": "rm -fr dist && npm run transpile",
     "postinstall": "node scripts/postinstall"
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@kadira/storybook": "^2.35.2",
     "@kadira/storybook-addon-knobs": "^1.7.1",
+    "@kadira/storyshots": "^2.1.0",
     "babel-cli": "^6.18.0",
     "babel-jest": "^20.0.3",
     "babel-loader": "^7.0.0",
