@@ -1,5 +1,5 @@
 import React from 'react';
-import addons from '@kadira/storybook-addons';
+import addons from '@kadira/storybook-addons'; // eslint-disable-line
 import { StoryWrapper } from './components';
 
 function wrapStory(channel, storyFn, context) {
