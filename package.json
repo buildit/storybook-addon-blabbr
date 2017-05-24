@@ -11,7 +11,8 @@
     "test": "jest",
     "build": "npm run lint && npm run test && npm run transpile",
     "prepublish": "rm -fr dist && npm run transpile",
-    "postinstall": "node scripts/postinstall"
+    "postinstall": "node scripts/postinstall",
+    "copyhead": "node scripts/head"
   },
   "repository": {
     "type": "git",
