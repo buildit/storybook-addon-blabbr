@@ -1,14 +1,14 @@
-module.exports.promptExisting = [
-];
-
+// Create new config vs copy sample file options
 const configVsSampleOptions = ['Create new config', 'Copy sample file'];
 const createConfig = answers => answers &&
                                 answers.configureBlabbr &&
                                 answers.configVsSample === configVsSampleOptions[0];
 module.exports.createConfig = createConfig;
 
+// Do we want slack integration?
 const createSlackConfig = answers => createConfig(answers) && answers.slackConfig;
 
+// The questions
 module.exports.prompts = [
   {
     type: 'confirm',
