@@ -40,16 +40,8 @@ if (foundConfig) {
   console.log(chalk.white(`Could not find .storybook folder in ${projectPath}.`));
 }
 
-inquirer.prompt(prompts.promptExisting).then((configureAnswer) => {
-  if (configureAnswer.configureBlabbr) {
-    inquirer.prompt(prompts.prompts).then((answers) => {
-      if (prompts.createConfig(answers)) {
-        console.log('Creating new config');
-      } else {
-        console.log('Just copying sample');
-      }
-    });
-  }
+inquirer.prompt(prompts.prompts).then((answers) => {
+  console.log(answers);
 });
 
 //   // Check for head.html
