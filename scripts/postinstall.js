@@ -35,14 +35,14 @@ fs.access(projectSB, fs.constants.W_OK, (err) => {
 });
 
 if (foundConfig) {
-  console.log(chalk.white(`A config has been detected in ${projectSB}. You can either leave it or overwrite it.`));
+  console.log(chalk.white(`A config has been detected in ${projectSB}.`));
 } else {
   console.log(chalk.white(`Could not find .storybook folder in ${projectPath}.`));
+  inquirer.prompt(prompts.prompts).then((answers) => {
+    console.log(answers);
+  });
 }
 
-inquirer.prompt(prompts.prompts).then((answers) => {
-  console.log(answers);
-});
 
 //   // Check for head.html
 //   const headHTML = 'head.html';

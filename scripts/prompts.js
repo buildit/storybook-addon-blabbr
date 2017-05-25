@@ -14,7 +14,7 @@ module.exports.prompts = [
     type: 'confirm',
     name: 'configureBlabbr',
     message: 'Do you want to configure blabbr?',
-    default: false,
+    default: true,
   },
   {
     when: props => props.configureBlabbr,
@@ -50,7 +50,7 @@ module.exports.prompts = [
     type: 'confirm',
     name: 'slackConfig',
     message: 'Do you want to add slack integration?',
-    default: false,
+    default: true,
   },
   {
     when: props => createSlackConfig(props),
@@ -64,7 +64,14 @@ module.exports.prompts = [
     type: 'confirm',
     name: 'showAvatar',
     message: 'Do you want to show user avatars (from gravatar) in comments?',
-    default: false,
+    default: true,
+  },
+  {
+    when: props => createConfig(props),
+    type: 'confirm',
+    name: 'versionSupport',
+    message: 'Do you want to support different versions of the styleguide?',
+    default: true,
   },
 
   // Ask for versions
