@@ -1,48 +1,31 @@
 /* eslint-disable no-console */
-
 const chalk = require('chalk');
 const path = require('path');
 const fs = require('fs-extra');
 const inquirer = require('inquirer');
-
 const prompts = require('./prompts');
 
-// Add sample config or generate via q&a?
-// If copy then check for path and copy
-// If generate ask for DB
-// Ask for slack
-// Ask for UI avatar
-// Ask for versions
-
-// Do you want to add the head?
-// - check if path exists
-// - create?
-// - check if head exists
-// - copy?
-// - if exists then just copy as temp file and ask to manually merge
-
 // Check if there is a .storybook dir in projectPath
-const thisPath = process.cwd();
-const projectPath = path.join(thisPath, '../../..');
-const projectSB = path.join(projectPath, '.storybook');
+const currentDir = process.cwd();
+const consumerDirectory = path.join(currentDir, '../../..');
+const storybookDirectory = path.join(consumerDirectory, '.storybook');
 
-console.log(chalk.blue(`Checking for .storybook in ${projectPath}`));
+console.log(chalk.blue(`Checking for .storybook in ${consumerDirectory}`));
 let foundConfig = true;
-fs.access(projectSB, fs.constants.W_OK, (err) => {
+fs.access(storybookDirectory, fs.constants.W_OK, (err) => {
   if (err) {
     foundConfig = false;
   }
 });
 
 if (foundConfig) {
-  console.log(chalk.white(`A config has been detected in ${projectSB}.`));
+  console.log(chalk.white(`A config has been detected in ${storybookDirectory}.`));
 } else {
-  console.log(chalk.white(`Could not find .storybook folder in ${projectPath}.`));
+  console.log(chalk.white(`Could not find .storybook folder in ${consumerDirectory}.`));
   inquirer.prompt(prompts.prompts).then((answers) => {
     console.log(answers);
   });
 }
-
 
 //   // Check for head.html
 //   const headHTML = 'head.html';

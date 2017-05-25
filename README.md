@@ -19,7 +19,7 @@ By default a sample config file, `blabbr-config.sample.js` is copied into the `.
 
 ### DB
 
-Currently it is setup to work with CouchDB and uses PouchDB as the library and API over Couch. To configure the connection to CouchDB (either a local CouchDB or hosted on Cloudant) you need to add the following to your config:
+Currently it is setup to work with CouchDB and uses PouchDB as the library and API over Couch. To configure the connection to CouchDB (either a local CouchDB or hosted on [Cloudant](https://cloudant.com/)) you need to add the following to your config:
 
 ```
 const db = {
@@ -27,6 +27,7 @@ const db = {
   pwd: '<YOUR_API_PASSWORD>',
   host: '<YOUR_HOST_NAME>',
 };
+
 export { db };
 ```
 
@@ -40,8 +41,9 @@ const slack = {
 };
 
 export { slack };
-
 ```
+
+We have the #ds-demo channel in Slack for testing (ask one of the team for access) which can be posted to using: `https://hooks.slack.com/services/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`
 
 ### UI Options
 
