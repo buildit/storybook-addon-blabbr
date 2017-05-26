@@ -1,7 +1,7 @@
 // Initialize PouchDB
 import PouchDB from 'pouchdb-browser';
 import * as pouchDBFind from 'pouchdb-find';
-import { db as dbConfig } from 'blabbr-config'; // eslint-disable-line
+import { dbConfig } from '../../utils/config'; // eslint-disable-line
 import { EventEmitter } from 'events';
 
 PouchDB.plugin(pouchDBFind);
