@@ -16,23 +16,19 @@ const copyFiles = (local) => {
       return;
     }
 
-    // console.log(chalk.dim(`Copying sample config file to ${storybookDirectory}`));
     fs.copy(path.join(`${currentDir}`, 'config', blabbrConfig),
             path.join(`${storybookDirectory}`, blabbrConfig),
             { overwrite: true })
       .then(() => {
-        // console.log(chalk.green.dim(`Copied ${blabbrConfig} into ${storybookDirectory}`));
         console.log(chalk.bgBlue(`You must now edit ${blabbrConfig} and rename to blabbr-config.js`));
       })
       .catch(() => console.log(chalk.red(`Could not copy
         ${path.join(`${currentDir}`, 'config', blabbrConfig)} into ${storybookDirectory}`)));
 
-    // console.log(chalk.dim(`Copying sample head file to ${storybookDirectory}`));
     fs.copy(path.join(`${currentDir}`, 'config', head),
             path.join(`${storybookDirectory}`, head),
             { overwrite: true })
       .then(() => {
-        // console.log(chalk.green.dim(`Copied ${head} into ${storybookDirectory}`));
         console.log(chalk.bgBlue(`You must now merge ${head} into head.html`));
       })
       .catch(() => console.log(chalk.red(`Could not copy
