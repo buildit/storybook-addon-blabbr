@@ -31,6 +31,8 @@ const db = {
 export { db };
 ```
 
+If using Cloudant, you will need to create a user with `_reader` and `_writer` permissions which will generate a key and password. You also need to visit the _CORS_ tab of the _Account_ section and accept connections from all domains.
+
 ### Slack
 
 If you would like to see all comments on a slack channel then setup the slack integration and add the following to your config file:
