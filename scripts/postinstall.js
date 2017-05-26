@@ -2,9 +2,7 @@
 const chalk = require('chalk');
 const path = require('path');
 const fs = require('fs-extra');
-const inquirer = require('inquirer');
-const prompts = require('./prompts');
-const { copyFiles } = require('./copy-files');
+const { buildConfig } = require('./config-builder');
 
 // Check if there is a .storybook dir in projectPath
 const currentDir = process.cwd();
@@ -13,32 +11,20 @@ const storybookDirectory = path.join(consumerDirectory, '.storybook');
 const configPath = path.join(storybookDirectory, 'blabbr-config.js');
 
 const force = process.argv[2];
-let foundConfig = true;
+
 if (force && force === 'force') {
-  foundConfig = false;
+  buildConfig(force);
 } else {
   // First check if we can find an existing storybook config
-  console.log(chalk.blue(`Checking for config in ${consumerDirectory}`));
+  console.log(chalk.blue(`Checking for config in ${storybookDirectory}`));
   fs.access(configPath, fs.constants.W_OK, (err) => {
     if (err) {
-      foundConfig = false;
+      console.log(chalk.white(`Could not find .storybook folder in ${consumerDirectory}.`));
+      buildConfig();
+      return;
     }
-  });
-}
 
-if (foundConfig) {
-  // If we found one then skip everything.
-  console.log(chalk.white(`A config has been detected in ${storybookDirectory}.`));
-} else {
-  // If not, ask if the user wants to create one.
-  console.log(chalk.white(`Could not find .storybook folder in ${consumerDirectory}.`));
-  inquirer.prompt(prompts.prompts).then((answers) => {
-    if (prompts.createConfig(answers)) {
-      // Generate config
-    } else if (answers.configureBlabbr) {
-      // Just copy the samlpe files
-      copyFiles(force);
-    }
+    console.log(chalk.white(`A config has been detected in ${storybookDirectory}.`));
   });
 }
 
