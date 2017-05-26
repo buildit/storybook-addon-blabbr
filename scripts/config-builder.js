@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const chalk = require('chalk');
-// const path = require('path');
-// const fs = require('fs-extra');
+const path = require('path');
+const fs = require('fs-extra');
 const inquirer = require('inquirer');
 const prompts = require('./prompts');
 const { copyFiles } = require('./copy-files');
@@ -9,7 +9,43 @@ const { copyFiles } = require('./copy-files');
 const buildConfig = (local) => {
   inquirer.prompt(prompts.prompts).then((answers) => {
     if (prompts.createConfig(answers)) {
+      const currentDir = process.cwd();
+      const consumerDirectory = path.join(currentDir, local ? '.' : '../../..');
+      const storybookDirectory = path.join(consumerDirectory, '.storybook');
+      const blabbrConfig = 'blabbr-config.js';
+      const head = 'head.sample.html';
+      let exportsString = 'db';
       // Generate config
+      const out = fs.createWriteStream(path.join(storybookDirectory, blabbrConfig));
+      out.write('const db = {\n');
+      out.write(`\tuser: '${answers.dbUser}',\n`);
+      out.write(`\tpwd: '${answers.dbPwd}',\n`);
+      out.write(`\thost: '${answers.dbEndpoint}'\n`);
+      out.write('};\n');
+
+      if (answers.slackConfig) {
+        out.write('const slack = {\n');
+        out.write(`\tendPoint: '${answers.slackEndpoint}'\n`);
+        out.write('};\n');
+        exportsString += ', slack';
+      }
+
+      out.write('const ui = {\n');
+      out.write(`\tavatar: ${answers.showAvatar}\n`);
+      out.write('};\n');
+      exportsString += ', ui';
+
+      if (answers.versionSupport) {
+        out.write("const version = require('../package.json').version;\n");
+        out.write("// or const version = '<YOUR_VERSION_NO>';\n");
+        exportsString += ', version';
+
+        // Copy the head
+        // Copy a versions file
+      }
+
+      out.write(`export { ${exportsString} };\n`);
+      out.end();
     } else if (answers.configureBlabbr) {
       // Just copy the samlpe files
       copyFiles(local);
