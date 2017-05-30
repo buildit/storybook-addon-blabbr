@@ -5,3 +5,4 @@ dist
 .DS_Store
 config/blabbr-config.js
 .storybook/blabbr-config.sample.js
+.storybook/blabbr-config.js

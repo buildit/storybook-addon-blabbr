@@ -40,9 +40,11 @@ const Comment = ({
 
       <span className="blabbr-time">at <time dateTime={timestamp}>{timestamp}</time></span>
 
-      <span className="blabbr-version">about {
-        (version === activeVersion) ? `v${version}` : <a href={versionLink(version)}>v{version}</a>
-      }</span>
+      { version &&
+        <span className="blabbr-version">about {
+          (version === activeVersion) ? `v${version}` : <a href={versionLink(version)}>v{version}</a>
+        }</span>
+      }
 
       { showAvatar &&
         <img
@@ -59,13 +61,13 @@ const Comment = ({
           </button>
         }
         { !!currentUserIsOwner &&
-        <button
-          id={commentId}
-          onClick={onUserCommentDelete}
-        >
-              Remove
-            </button>
-          }
+          <button
+            id={commentId}
+            onClick={onUserCommentDelete}
+          >
+            Remove
+          </button>
+        }
       </span>
     </header>
     {output}

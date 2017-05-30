@@ -3,7 +3,7 @@
   /* Box model */
   position: relative;
   min-height: 5rem; /* Same as gravatar height + 2x padding! */
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  padding: 1rem;
   font-family:
     -apple-system,
     ".SFNSText-Regular",
@@ -24,12 +24,12 @@
 }
 
 .blabbr-comment.withAvatar {
-  padding-left: 5rem;
+  padding-left: 6rem;
 }
 
 .blabbr-comment header {
   /* Typography */
-  font-size: 0.8em;
+  font-size: 1em;
 }
 
 .blabbr-comment header h2 {
@@ -61,8 +61,8 @@
 .blabbr-comment header img {
   /* Box model */
   position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
+  top: 1rem;
+  left: 1rem;
   width: 4rem;
   height: 4rem;
 
@@ -85,4 +85,14 @@
 .blabbr-comment {
   /* Box model */
   margin-bottom: 1rem;
+}
+
+.blabbr-comment p {
+  font-size: 1.4em;
+  line-height: 1.5em;
+  font-family: Georgia;
+}
+
+.blabbr-comment .controls button {
+  margin-right: 6px;
 }
