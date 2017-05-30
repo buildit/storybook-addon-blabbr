@@ -1,7 +1,9 @@
 .blabbr-submitComment {
-  /* Box model */
   position: relative;
-  padding: 0;
+  padding: 0 0 16px;
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid #eeeeee;
   font-family:
     -apple-system,
     ".SFNSText-Regular",
@@ -11,13 +13,11 @@
     "Helvetica Neue",
      "Lucida Grande",
      sans-serif;
-
-  margin-bottom: 1em;
 }
 
 .blabbr-submitComment textarea {
-  min-height: 3em;
-  font-size: 0.8em;
+  min-height: 5em;
+  font-size: 1.25em;
   padding: 0.5rem;
   box-sizing: border-box;
   width: 100%;
@@ -30,6 +30,7 @@
 
 .blabbr-submitComment h2 {
   font-size: 1em;
+  font-weight: normal;
   padding: 0;
-  margin: 0 0 10px 0;
+  margin: 12px 0 8px 2px;
 }

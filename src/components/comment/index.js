@@ -64,6 +64,7 @@ const Comment = ({
           <button
             id={commentId}
             onClick={onUserCommentDelete}
+            className="remove"
           >
             Remove
           </button>

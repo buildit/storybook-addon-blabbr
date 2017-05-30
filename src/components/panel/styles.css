@@ -1,3 +1,23 @@
+button {
+  display: inline-block;
+  padding: 10px 22px 10px 22px;
+  margin: 12px 0;
+  margin-bottom: 10px;
+  border: 1px solid #16a085;
+  border-width: 1px 1px 3px;
+  color: #FFF;
+  background: #1abc9c;
+  font-size: 18px;
+  text-align: center;
+  font-style: normal;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus {
+  background: #16a085;
+}
+
 .blabbr-panel-container {
   padding: 5px 10px 10px 10px;
   width: 100%;
