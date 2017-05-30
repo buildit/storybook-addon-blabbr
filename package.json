@@ -1,6 +1,6 @@
 {
   "name": "@buildit/storybook-addon-blabbr",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Component review and commenting for React Storybook",
   "main": "dist/index.js",
   "bin": {
