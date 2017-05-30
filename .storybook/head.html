@@ -10,18 +10,18 @@ const currentVersion = path.substr(1, path.length - 2);
 const processVersions = data => {
   const url = window.parent.location;
 
+  // Assuming that the version numbers are appended to the bottom of the list...
   data.reverse().forEach((version) => {
     if (version === currentVersion) {
-      // No link
-      const el = ocument.createElement('strong');
+      // No link for current version
+      const el = document.createElement('strong');
       el.appendChild(document.createTextNode(version));
       versionHistoryLinks.appendChild(el);
     } else {
-      // Link :-)
+      // Link
       const link = document.createElement('a');
-      const versionUrl = `${url.protocol}//${url.hostname}:${url.port}/${version}/${url.search}${url.hash}`;
 
-      link.href = versionUrl;
+      link.href = `${url.protocol}//${url.hostname}:${url.port}/${version}/${url.search}${url.hash}`;
       link.target = '_parent';
       link.appendChild(document.createTextNode(version));
 

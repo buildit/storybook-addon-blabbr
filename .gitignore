@@ -3,6 +3,7 @@ npm-debug.log
 dist
 .idea/
 .DS_Store
-config/blabbr-config.js
+blabbr-config.js
 .storybook/blabbr-config.sample.js
 .storybook/blabbr-config.js
+.storybook/head.sample.html
