@@ -13,6 +13,7 @@ const configPath = path.join(storybookDirectory, 'blabbr-config.js');
 const force = process.argv[2];
 
 if (force && force === 'force') {
+  console.log(chalk.bgRed('Force config flag set'));
   buildConfig(force);
 } else {
   // First check if we can find an existing storybook config
