@@ -19,10 +19,11 @@ const Register = ({
       <form>
         <div>
           <label htmlFor="blabbr-userName">
-            User name:
+            Display name:
           </label>
           <input
             id="blabbr-userName"
+            type="text"
             value={userName || ''}
             onChange={onUserNameChange}
           />
@@ -33,6 +34,7 @@ const Register = ({
           </label>
           <input
             id="blabbr-email"
+            type="text"
             value={userEmail || ''}
             onChange={onUserEmailChange}
           />
