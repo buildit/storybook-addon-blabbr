@@ -4,18 +4,19 @@
   "description": "Component review and commenting for React Storybook",
   "main": "dist/index.js",
   "bin": {
-    "blabbr-config": "./scripts/configure.js"
+    "blabbr-config": "./.bin/configure.js"
   },
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 9001 -s ./.storybook",
     "lint": "eslint src --ext .js",
-    "transpile": "babel ./src --out-dir dist --copy-files",
+    "transpile:code": "babel ./src --out-dir dist --copy-files",
+    "transpile:scripts": "babel ./scripts --out-dir .bin",
     "test": "jest",
-    "build": "npm run lint && npm run test && npm run transpile",
-    "prepublish": "rm -fr dist && npm run transpile",
-    "configure": "node scripts/configure force",
-    "postinstall": "node scripts/check-config"
+    "build": "npm run lint && npm run test && npm run transpile:code",
+    "prepublish": "rm -fr dist .bin && npm run transpile:code && npm run transpile:scripts",
+    "configure": "node .bin/configure.js",
+    "postinstall": "node .bin/check-config.js"
   },
   "repository": {
     "type": "git",

@@ -14,6 +14,6 @@ console.log(chalk.blue(`Checking for config in ${storybookDirectory}`));
 fs.access(configPath, fs.constants.W_OK, (err) => {
   if (err) {
     console.log(chalk.bgBlue(
-      'A valid configuration for blabbr could not be found. You can create one by running the blabbr-config script.'));
+      'A valid configuration for blabbr could not be found. You can create one by running "node node_modules/.bin/blabbr-config".'));
   }
 });

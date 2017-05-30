@@ -8,3 +8,4 @@ stub
 .eslintrc
 config/blabbr-config.js
 __mocks__
+scripts

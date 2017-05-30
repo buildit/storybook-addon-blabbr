@@ -6,11 +6,11 @@ const inquirer = require('inquirer');
 const prompts = require('./prompts');
 const { copyFiles } = require('./copy-files');
 
-const buildConfig = (local) => {
+const buildConfig = () => {
   inquirer.prompt(prompts.prompts).then((answers) => {
     if (prompts.createConfig(answers)) {
-      const currentDir = process.cwd();
-      const consumerDirectory = path.join(currentDir, local ? '.' : '../../..');
+      const currentDir = path.join(__dirname, '../');
+      const consumerDirectory = process.cwd();
       const storybookDirectory = path.join(consumerDirectory, '.storybook');
       const blabbrConfig = 'blabbr-config.js';
 
@@ -75,7 +75,7 @@ const buildConfig = (local) => {
       console.log(chalk.bgBlue(`Config created in ${storybookDirectory}`));
     } else if (answers.configureBlabbr) {
       // Just copy the samlpe files
-      copyFiles(local);
+      copyFiles();
       console.log(chalk.bgBlue('Do not forget to add the following to your storybook webpack config:'));
       console.log(chalk.bgBlue("  'blabbr-config': path.join(path.resolve(__dirname), '../config/blabbr-config.js'"));
     }

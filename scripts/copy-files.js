@@ -3,9 +3,9 @@ const chalk = require('chalk');
 const path = require('path');
 const fs = require('fs-extra');
 
-const copyFiles = (local) => {
-  const currentDir = process.cwd();
-  const consumerDirectory = path.join(currentDir, local ? '.' : '../../..');
+const copyFiles = () => {
+  const currentDir = path.join(__dirname, '../');
+  const consumerDirectory = process.cwd();
   const storybookDirectory = path.join(consumerDirectory, '.storybook');
   const blabbrConfig = 'blabbr-config.sample.js';
   const head = 'head.sample.html';
