@@ -1,8 +1,73 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const Register = ({
+class Register extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      validation: {
+        hasErrors: false,
+        errors: []
+      }
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.onRegisterSubmit();
+  }
+
+  render() {
+    const {
+      userName,
+      onUserNameChange,
+      userEmail,
+      onUserEmailChange
+    } = this.props;
+
+    return (
+      <section className="blabbr-register">
+        <h2>Register to add comments</h2>
+        <form>
+          <div>
+            <label htmlFor="blabbr-userName">
+              Display name:
+            </label>
+            <input
+              id="blabbr-userName"
+              type="text"
+              value={userName || ''}
+              onChange={onUserNameChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="blabbr-email">
+              Email:
+            </label>
+            <input
+              id="blabbr-email"
+              type="text"
+              value={userEmail || ''}
+              onChange={onUserEmailChange}
+            />
+          </div>
+          <button
+            type="submit"
+            onClick={this.handleSubmit}
+          >
+            Register
+          </button>
+        </form>
+      </section>
+    );
+  }
+}
+
+/*const Register = ({
   onUserNameChange,
   onUserEmailChange,
   onRegisterSubmit,
@@ -48,7 +113,7 @@ const Register = ({
       </form>
     </section>
   );
-};
+};*/
 
 
 Register.propTypes = {

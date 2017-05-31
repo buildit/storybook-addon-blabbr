@@ -128,9 +128,8 @@ export default class Panel extends Component {
     this.setState({ user: Object.assign(user, { userEmail: e.target.value }) });
   }
 
-  onRegisterSubmit(e) {
+  onRegisterSubmit() {
     const { user: { userName, userEmail } } = this.state;
-    e.preventDefault();
     this.registerUser(userName, userEmail);
   }
 
