@@ -1,5 +1,10 @@
 <div id="blabbr-version-history">
-  Versions
+  <div id="blabbr-version-history-dropdown">
+    <span id="blabbr-version-history-dropdown-top"></span>
+    <div id="blabbr-version-history-dropdown-content">
+      <p>Hello World!</p>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -12,6 +17,7 @@ const processVersions = data => {
 
   data.reverse().forEach((version) => {
     if (version === currentVersion) {
+      const topView = document.getElementById('blabbr-version-history');
       // No link
       const el = ocument.createElement('strong');
       el.appendChild(document.createTextNode(version));
@@ -78,5 +84,24 @@ getVersions();
 
   #blabbr-version-history > a:visited {
     color: rgb(68, 68, 68);
+  }
+
+  #blabbr-version-history-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  #blabbr-version-history-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+
+  #blabbr-version-history-dropdown:hover #blabbr-version-history-dropdown-content {
+    display: block;
   }
 </style>

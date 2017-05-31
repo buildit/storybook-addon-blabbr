@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Versions from '../versions';
+import { version } from '../../utils/config';
 
 class StoryWrapper extends React.Component {
   constructor(props) {
@@ -16,8 +18,11 @@ class StoryWrapper extends React.Component {
   }
 
   render() {
+    const versionDropdown = version && <Versions activeVersion={version} />;
+
     return (
       <div>
+        { versionDropdown }
         {this.props.children}
       </div>
     );

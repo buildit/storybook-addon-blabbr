@@ -1,22 +1,23 @@
 <div id="blabbr-version-history">
-  Versions
+  <div class="dropdown">
+    <button class="dropbtn" id="blabbr-version-history-dropbtn">Versions</button>
+    <div class="dropdown-content" id="blabbr-version-history-dropdown-content">
+    </div>
+  </div>
 </div>
 
 <script>
-const versionHistoryLinks = document.getElementById('blabbr-version-history');
-const path = window.parent.location.pathname;
-const currentVersion = path.substr(1, path.length - 2);
-
 const processVersions = data => {
+  const path = window.parent.location.pathname;
+  const currentVersion = path.substr(1, path.length - 2);
   const url = window.parent.location;
+  const versionHistoryLinks = document.getElementById('blabbr-version-history-dropdown-content');
 
   // Assuming that the version numbers are appended to the bottom of the list...
   data.reverse().forEach((version) => {
     if (version === currentVersion) {
-      // No link for current version
-      const el = document.createElement('strong');
-      el.appendChild(document.createTextNode(version));
-      versionHistoryLinks.appendChild(el);
+      const dropbtn = document.getElementById('blabbr-version-history-dropbtn');
+      dropbtn.value = version;
     } else {
       // Link
       const link = document.createElement('a');
@@ -61,22 +62,55 @@ getVersions();
     font-size: 15px;
   }
 
-  #blabbr-version-history > a {
-    display: inline-block;
+  #blabbr-version-history .dropbtn {
+    /*background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;*/
+    cursor: pointer;
     padding: 0.3em;
     border: 1px solid rgb(236, 236, 236);
     background: rgb(255, 255, 255);
     margin: 0 0.5em 0 0;
+    color: rgb(68, 68, 68);
+  }
+
+  /* The container <div> - needed to position the dropdown content */
+  #blabbr-version-history .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Dropdown Content (Hidden by Default) */
+  #blabbr-version-history .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* Links inside the dropdown */
+  #blabbr-version-history .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
     text-decoration: none;
-    color: rgb(68, 68, 68);
+    display: block;
   }
 
-  #blabbr-version-history > a:hover {
-    background: rgb(236, 236, 236);
-    text-decoration: underline;
+  /* Change color of dropdown links on hover */
+  #blabbr-version-history .dropdown-content a:hover {background-color: #f1f1f1}
+
+  /* Show the dropdown menu on hover */
+  #blabbr-version-history .dropdown:hover .dropdown-content {
+    display: block;
   }
 
-  #blabbr-version-history > a:visited {
-    color: rgb(68, 68, 68);
+  /* Change the background color of the dropdown button when the dropdown content is shown */
+  #blabbr-version-history .dropdown:hover .dropbtn {
+    color: rgb(247, 247, 247);
+    background: rgb(68, 68, 68);
   }
 </style>
