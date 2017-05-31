@@ -30,10 +30,7 @@ export default class Panel extends Component {
 
     this.onStoryChangeHandler = this.onStoryChangeHandler.bind(this);
     this.fetchComments = this.fetchComments.bind(this);
-    this.onUserNameChange = this.onUserNameChange.bind(this);
     this.listenForCommentChanges = this.listenForCommentChanges.bind(this);
-    this.onUserEmailChange = this.onUserEmailChange.bind(this);
-    this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
     this.onUserCommentChange = this.onUserCommentChange.bind(this);
     this.onUserCommentEditCancel = this.onUserCommentEditCancel.bind(this);
@@ -52,6 +49,9 @@ export default class Panel extends Component {
     this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
     this.processComments = this.processComments.bind(this);
     this.processServerVersions = this.processServerVersions.bind(this);
+
+    this.handleRegisterChange = this.handleRegisterChange.bind(this);
+    this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
 
     this.state = {
       activeComponent: null,
@@ -118,20 +118,23 @@ export default class Panel extends Component {
     dbEventManager.removeOnlineListener();
   }
 
-  onUserNameChange(e) {
+  handleRegisterChange(key, value) {
     const { user } = this.state;
-    this.setState({ user: Object.assign(user, { userName: e.target.value }) });
+
+    this.setState({
+      user: Object.assign(
+        {},
+        user,
+        { [key]: value }
+      )
+    });
   }
 
-  onUserEmailChange(e) {
-    const { user } = this.state;
-    this.setState({ user: Object.assign(user, { userEmail: e.target.value }) });
-  }
-
-  onRegisterSubmit() {
+  handleRegisterSubmit() {
     const { user: { userName, userEmail } } = this.state;
+
     this.registerUser(userName, userEmail);
-  }
+  }  
 
   onUserCommentChange(e) {
     this.setState({ userComment: e.target.value });
@@ -407,9 +410,8 @@ export default class Panel extends Component {
 
         { !isUserAuthenticated &&
           <Register
-            onUserNameChange={this.onUserNameChange}
-            onUserEmailChange={this.onUserEmailChange}
-            onRegisterSubmit={this.onRegisterSubmit}
+            handleChange={this.handleRegisterChange}
+            handleSubmit={this.handleRegisterSubmit}
             userName={userName}
             userEmail={userEmail}
           />

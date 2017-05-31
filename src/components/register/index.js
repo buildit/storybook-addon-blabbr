@@ -9,16 +9,55 @@ class Register extends Component {
     this.state = {
       validation: {
         hasErrors: false,
-        errors: []
+        errors: {}
       }
     };
 
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.resetErrors = this.resetErrors.bind(this);
+  }
+
+  validateForm() {
+    if (!username || username.length < 3) {
+      
+    }
+
+    return false;
+  }
+
+  resetErrors() {
+    this.setState({
+      validation: {
+        hasErrors: false,
+        errors: {}
+      }
+    });
+  }
+
+  handleChange(event) {
+    this.resetErrors();
+
+    const { name, value } = event.target;
+    this.props.handleChange(name, value);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onRegisterSubmit();
+
+    const validationErrors = this.validateForm();
+
+    if (!validationErrors) {
+      this.props.handleSubmit();
+      return;
+    }
+
+    this.setState({
+      validation: {
+        hasErrors: true,
+        errors: validationErrors
+      }
+    });
   }
 
   render() {
@@ -39,9 +78,10 @@ class Register extends Component {
             </label>
             <input
               id="blabbr-userName"
+              name="userName"
               type="text"
               value={userName || ''}
-              onChange={onUserNameChange}
+              onChange={this.handleChange}
             />
           </div>
           <div>
@@ -50,9 +90,10 @@ class Register extends Component {
             </label>
             <input
               id="blabbr-email"
+              name="userEmail"
               type="text"
               value={userEmail || ''}
-              onChange={onUserEmailChange}
+              onChange={this.handleChange}
             />
           </div>
           <button
@@ -68,9 +109,8 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  onUserNameChange: PropTypes.func.isRequired,
-  onUserEmailChange: PropTypes.func.isRequired,
-  onRegisterSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   userName: PropTypes.string.isRequired,
   userEmail: PropTypes.string.isRequired,
 };
