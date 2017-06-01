@@ -47,7 +47,6 @@ const Comments = ({
       />)
       :
       (<Comment
-        // TODO Change 'on' to 'handle'
         key={comment._id}
         handleEditUserComment={handleEditUserComment}
         handleDeleteUserComment={handleDeleteUserComment}
