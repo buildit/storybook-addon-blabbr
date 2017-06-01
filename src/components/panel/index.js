@@ -47,15 +47,14 @@ export default class Panel extends Component {
     this.handleRegisterChange = this.handleRegisterChange.bind(this);
     this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
     
-    this.handleUserCommentChange = this.handleUserCommentChange.bind(this);
-    // TODO Change to handleUserCommentSubmit
-    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+    this.handleNewUserCommentChange = this.handleNewUserCommentChange.bind(this);
+    this.handleNewUserCommentSubmit = this.handleNewUserCommentSubmit.bind(this);
 
     this.handleEditUserCommentChange = this.handleEditUserCommentChange.bind(this);
     this.handleEditUserCommentSubmit = this.handleEditUserCommentSubmit.bind(this);
     // TODO Change all onUser to handleEditUserComment...
-    this.onUserCommentEditCancel = this.onUserCommentEditCancel.bind(this);
-    this.onUserCommentEdit = this.onUserCommentEdit.bind(this);
+    this.handleEditUserCommentCancel = this.handleEditUserCommentCancel.bind(this);
+    this.handleEditUserComment = this.handleEditUserComment.bind(this);
 
     this.state = {
       activeComponent: null,
@@ -140,11 +139,11 @@ export default class Panel extends Component {
     this.registerUser(userName, userEmail);
   }  
 
-  handleUserCommentChange(userComment) {
+  handleNewUserCommentChange(userComment) {
     this.setState({ userComment });
   }
 
-  handleCommentSubmit() {
+  handleNewUserCommentSubmit() {
     const { userComment } = this.state;
 
     this.addComment(userComment && userComment.trim());
@@ -168,8 +167,8 @@ export default class Panel extends Component {
 
     this.setState({ userCommentBeingUpdated: null, commentIdBeingEdited: null });
   }
-  
-  onUserCommentEdit(e) {
+
+  handleEditUserComment(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -179,7 +178,7 @@ export default class Panel extends Component {
     this.userActions.edited[e.target.id] = true;
   }
 
-  onUserCommentEditCancel(e) {
+  handleEditUserCommentCancel(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -411,29 +410,29 @@ export default class Panel extends Component {
 
         { !isUserAuthenticated &&
           <Register
-            handleChange={this.handleRegisterChange}
-            handleSubmit={this.handleRegisterSubmit}
             userName={userName}
             userEmail={userEmail}
+            handleChange={this.handleRegisterChange}
+            handleSubmit={this.handleRegisterSubmit}
           />
         }
 
         { !!isUserAuthenticated &&
           <SubmitComment
             userComment={userComment}
-            handleChange={this.handleUserCommentChange}
-            handleSubmit={this.handleCommentSubmit}
+            handleChange={this.handleNewUserCommentChange}
+            handleSubmit={this.handleNewUserCommentSubmit}
           />
         }
 
         { !!isUserAuthenticated && !!comments &&
           <Comments
+            // TODO Update all keys
             userCommentBeingUpdated={userCommentBeingUpdated}
             onUserCommentUpdate={this.handleEditUserCommentChange}
-            onUserCommentEdit={this.onUserCommentEdit}
-            // TODO Change to handleSubmit? Check in Comments
+            onUserCommentEdit={this.handleEditUserComment}
             onUserCommentEditSave={this.handleEditUserCommentSubmit}
-            onUserCommentEditCancel={this.onUserCommentEditCancel}
+            onUserCommentEditCancel={this.handleEditUserCommentCancel}
             onUserCommentDelete={this.onUserCommentDelete}
             currentUser={userEmail}
             comments={comments}
