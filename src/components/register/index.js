@@ -8,64 +8,60 @@ class Register extends Component {
 
     this.state = {
       validation: {
-        hasErrors: false,
-        errors: {}
+        userName: false,
+        userEmail: false
       }
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.resetErrors = this.resetErrors.bind(this);
-  }
-
-  validateForm() {
-    if (!username || username.length < 3) {
-      
-    }
-
-    return false;
-  }
-
-  resetErrors() {
-    this.setState({
-      validation: {
-        hasErrors: false,
-        errors: {}
-      }
-    });
   }
 
   handleChange(event) {
-    this.resetErrors();
-
     const { name, value } = event.target;
+
+    this.showInputError(name);
     this.props.handleChange(name, value);
+  }
+
+  showInputError(name) {
+    const validity = this.refs[name].validity;
+
+    if (!validity.valid) {
+      this.setState({
+        validation: Object.assign({},
+          this.state.validation,
+          { [name]: true }
+        )
+      });
+    } else {
+      this.setState({
+        validation: Object.assign({},
+          this.state.validation,
+          { [name]: false }
+        )
+      });
+    }
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    const validationErrors = this.validateForm();
+    const invalidForm = Object.keys(this.state.validation).reduce(
+      (accumulator, value) => {
+        return accumulator || this.state.validation[value];
+      }, false);
 
-    if (!validationErrors) {
+    if (!invalidForm) {
       this.props.handleSubmit();
       return;
     }
-
-    this.setState({
-      validation: {
-        hasErrors: true,
-        errors: validationErrors
-      }
-    });
   }
 
   render() {
     const {
       userName,
-      onUserNameChange,
-      userEmail,
-      onUserEmailChange
+      userEmail
     } = this.props;
 
     return (
@@ -73,28 +69,37 @@ class Register extends Component {
         <h2>Register to add comments</h2>
         <form>
           <div>
-            <label htmlFor="blabbr-userName">
+            <label id="userNameLabel" htmlFor="userName">
               Display name:
             </label>
             <input
-              id="blabbr-userName"
+              id="userName"
               name="userName"
+              ref="userName"
               type="text"
+              pattern=".{3,}"
               value={userName || ''}
               onChange={this.handleChange}
             />
+            { !!this.state.validation.userName &&
+              <div className="error">Display name must be at least 3 characters.</div>
+            }
           </div>
           <div>
-            <label htmlFor="blabbr-email">
+            <label id="userEmailLabel" htmlFor="userEmail">
               Email:
             </label>
             <input
-              id="blabbr-email"
+              id="userEmail"
               name="userEmail"
-              type="text"
+              ref="userEmail"
+              type="email"
               value={userEmail || ''}
               onChange={this.handleChange}
             />
+            { !!this.state.validation.userEmail &&
+              <div className="error">Please use a valid email address.</div>
+            }
           </div>
           <button
             type="submit"
