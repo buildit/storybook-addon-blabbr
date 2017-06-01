@@ -9,13 +9,13 @@ test('Comments render correctly', () => {
       commentIdBeingEdited="commentId123"
       userCommentBeingUpdated="updating comment"
       currentUser="currentUser"
-      onUserCommentUpdate={() => {}}
-      onUserCommentEdit={() => {}}
-      onUserCommentEditSave={() => {}}
-      onUserCommentEditCancel={() => {}}
-      onUserCommentDelete={() => {}}
+      handleEditUserComment={() => {}}
+      handleEditUserCommentChange={() => {}}
+      handleEditUserCommentSubmit={() => {}}
+      handleEditUserCommentCancel={() => {}}
+      handleDeleteUserComment={() => {}}
+      handleShowAllComments={() => {}}
       isShowingAllComments
-      onShowAllComments={() => {}}
     />,
   ).toJSON();
   expect(tree).toMatchSnapshot();

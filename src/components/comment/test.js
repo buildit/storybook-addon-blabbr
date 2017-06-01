@@ -11,8 +11,8 @@ test('Comment renders correctly', () => {
       comment="This is a comment"
       commentId="id123"
       currentUserIsOwner
-      onUserCommentEdit={() => {}}
-      onUserCommentDelete={() => {}}
+      handleEditUserComment={() => {}}
+      handleDeleteUserComment={() => {}}
       edited
       lastUpdated="2-Jan-17"
     />,
