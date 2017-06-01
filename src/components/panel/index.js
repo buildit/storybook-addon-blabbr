@@ -32,12 +32,10 @@ export default class Panel extends Component {
     this.fetchComments = this.fetchComments.bind(this);
     this.listenForCommentChanges = this.listenForCommentChanges.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
-    this.onUserCommentChange = this.onUserCommentChange.bind(this);
     this.onUserCommentEditCancel = this.onUserCommentEditCancel.bind(this);
     this.onUserCommentEditSave = this.onUserCommentEditSave.bind(this);
     this.onUserCommentUpdate = this.onUserCommentUpdate.bind(this);
     this.onUserCommentEdit = this.onUserCommentEdit.bind(this);
-    this.onCommentSubmit = this.onCommentSubmit.bind(this);
     this.addComment = this.addComment.bind(this);
     this.onUserCommentDelete = this.onUserCommentDelete.bind(this);
     this.onShowAllComments = this.onShowAllComments.bind(this);
@@ -52,6 +50,9 @@ export default class Panel extends Component {
 
     this.handleRegisterChange = this.handleRegisterChange.bind(this);
     this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
+    
+    this.handleUserCommentChange = this.handleUserCommentChange.bind(this);
+    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
 
     this.state = {
       activeComponent: null,
@@ -136,21 +137,19 @@ export default class Panel extends Component {
     this.registerUser(userName, userEmail);
   }  
 
-  onUserCommentChange(e) {
-    this.setState({ userComment: e.target.value });
+  handleUserCommentChange(userComment) {
+    this.setState({ userComment });
+  }
+
+  handleCommentSubmit() {
+    const { userComment } = this.state;
+
+    this.addComment(userComment && userComment.trim());
+    this.setState({ userComment: '' });
   }
 
   onUserCommentUpdate(e) {
     this.setState({ userCommentBeingUpdated: e.target.value });
-  }
-
-  onCommentSubmit(e) {
-    const { userComment } = this.state;
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.addComment(userComment && userComment.trim());
-    this.setState({ userComment: '' });
   }
 
   onUserCommentEdit(e) {
@@ -420,8 +419,8 @@ export default class Panel extends Component {
         { !!isUserAuthenticated &&
           <SubmitComment
             userComment={userComment}
-            onUserCommentChange={this.onUserCommentChange}
-            onCommentSubmit={this.onCommentSubmit}
+            handleChange={this.handleUserCommentChange}
+            handleSubmit={this.handleCommentSubmit}
           />
         }
 
