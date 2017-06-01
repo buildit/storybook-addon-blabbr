@@ -1,28 +1,42 @@
-exports[`test Comment renders correctly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment renders correctly 1`] = `
 <article
-  className="blabbr-comment withAvatar">
+  className="blabbr-comment withAvatar"
+>
   <header>
     <h2>
       username
     </h2>
-    <time
-      dateTime="1-Jan-17">
-      1-Jan-17
-    </time>
-    <img
-      alt="username\'s Gravatar"
-      className="avatar"
-      src="https://gravatar.com/avatar/7b707d018e06cb8c85737c876034a655?s=40&r=pg&d=retro" />
     <span
-      className="controls">
+      className="blabbr-time"
+    >
+      at 
+      <time
+        dateTime="1-Jan-17"
+      >
+        1-Jan-17
+      </time>
+    </span>
+    <img
+      alt="username's Gravatar"
+      className="avatar"
+      src="https://gravatar.com/avatar/7b707d018e06cb8c85737c876034a655?s=40&r=pg&d=retro"
+    />
+    <span
+      className="controls"
+    >
       <button
         id="id123"
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         Edit
       </button>
       <button
+        className="remove"
         id="id123"
-        onClick={[Function]}>
+        onClick={[Function]}
+      >
         Remove
       </button>
     </span>

@@ -1,8 +1,10 @@
-exports[`test Comments render correctly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comments render correctly 1`] = `
 <div>
   <div>
     <p>
-      No comments to show for this story
+      No comments to show for this story.
     </p>
   </div>
 </div>
