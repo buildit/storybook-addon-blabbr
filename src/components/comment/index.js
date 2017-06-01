@@ -5,6 +5,14 @@ import { versionLink } from '../../utils/url';
 import { ui } from 'blabbr-config'; // eslint-disable-line
 import './styles.css';
 
+const shouldShowAvatar = (ui) => {
+  if (ui) {
+    return !!ui.avatar
+  }
+
+  return true;
+}
+
 const Comment = ({
   username,
   emailId,
@@ -12,8 +20,8 @@ const Comment = ({
   comment,
   currentUserIsOwner,
   commentId,
-  onUserCommentEdit,
-  onUserCommentDelete,
+  handleEditUserComment,
+  handleDeleteUserComment,
   edited,
   lastUpdated,
   version,
@@ -22,17 +30,8 @@ const Comment = ({
   const emailHash = createHash(emailId);
   const output = formatToHTML(comment);
 
-  let showAvatar;
-  if (ui) {
-    showAvatar = !!ui.avatar;
-  } else {
-    showAvatar = true;
-  }
-
-  let classes = 'blabbr-comment';
-  if (showAvatar) {
-    classes += ' withAvatar';
-  }
+  const showAvatar = shouldShowAvatar(ui);
+  const classes = showAvatar ? 'blabbr-comment withAvatar' : 'blabbr-comment';
 
   return (<article className={classes}>
     <header>
@@ -56,14 +55,14 @@ const Comment = ({
 
       <span className="controls">
         { !!currentUserIsOwner &&
-          <button id={commentId} onClick={onUserCommentEdit}>
+          <button id={commentId} onClick={handleEditUserComment}>
             Edit
           </button>
         }
         { !!currentUserIsOwner &&
           <button
             id={commentId}
-            onClick={onUserCommentDelete}
+            onClick={handleDeleteUserComment}
             className="remove"
           >
             Remove
@@ -83,8 +82,8 @@ Comment.propTypes = {
   comment: PropTypes.string.isRequired,
   commentId: PropTypes.string.isRequired,
   currentUserIsOwner: PropTypes.bool.isRequired,
-  onUserCommentEdit: PropTypes.func.isRequired,
-  onUserCommentDelete: PropTypes.func.isRequired,
+  handleEditUserComment: PropTypes.func.isRequired,
+  handleDeleteUserComment: PropTypes.func.isRequired,
   edited: PropTypes.bool,
   lastUpdated: PropTypes.string,
   version: PropTypes.string,

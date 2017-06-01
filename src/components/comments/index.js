@@ -49,8 +49,8 @@ const Comments = ({
       (<Comment
         // TODO Change 'on' to 'handle'
         key={comment._id}
-        onUserCommentEdit={handleEditUserComment}
-        onUserCommentDelete={handleDeleteUserComment}
+        handleEditUserComment={handleEditUserComment}
+        handleDeleteUserComment={handleDeleteUserComment}
         currentUserIsOwner={currentUser === comment.userEmail}
         username={comment.userName}
         emailId={comment.userEmail}
