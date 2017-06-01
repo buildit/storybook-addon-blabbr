@@ -34,13 +34,13 @@ export default class Panel extends Component {
     this.verifyUser = this.verifyUser.bind(this);
     this.addComment = this.addComment.bind(this);
     this.updateView = this.updateView.bind(this);
+
     this.isNewComment = this.isNewComment.bind(this);
     this.isAddedByMe = this.isAddedByMe.bind(this);
     this.isEditedByMe = this.isEditedByMe.bind(this);
     this.isDeletedByMe = this.isDeletedByMe.bind(this);
+
     this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
-    this.processComments = this.processComments.bind(this);
-    this.processServerVersions = this.processServerVersions.bind(this);
 
     this.handleShowAllComments = this.handleShowAllComments.bind(this);
 
@@ -57,6 +57,9 @@ export default class Panel extends Component {
 
     this.handleDeleteUserComment = this.handleDeleteUserComment.bind(this);
 
+    this.processComments = this.processComments.bind(this);
+    this.processServerVersions = this.processServerVersions.bind(this);
+    
     this.state = {
       activeComponent: null,
       activeStory: null,
@@ -427,7 +430,6 @@ export default class Panel extends Component {
 
         { !!isUserAuthenticated && !!comments &&
           <Comments
-            // TODO Update all keys
             userCommentBeingUpdated={userCommentBeingUpdated}
             handleEditUserComment={this.handleEditUserComment}
             handleEditUserCommentChange={this.handleEditUserCommentChange}
