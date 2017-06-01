@@ -33,7 +33,6 @@ export default class Panel extends Component {
     this.listenForCommentChanges = this.listenForCommentChanges.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
     this.addComment = this.addComment.bind(this);
-    this.onUserCommentDelete = this.onUserCommentDelete.bind(this);
     this.onShowAllComments = this.onShowAllComments.bind(this);
     this.updateView = this.updateView.bind(this);
     this.isNewComment = this.isNewComment.bind(this);
@@ -50,11 +49,12 @@ export default class Panel extends Component {
     this.handleNewUserCommentChange = this.handleNewUserCommentChange.bind(this);
     this.handleNewUserCommentSubmit = this.handleNewUserCommentSubmit.bind(this);
 
+    this.handleEditUserComment = this.handleEditUserComment.bind(this);
     this.handleEditUserCommentChange = this.handleEditUserCommentChange.bind(this);
     this.handleEditUserCommentSubmit = this.handleEditUserCommentSubmit.bind(this);
-    // TODO Change all onUser to handleEditUserComment...
     this.handleEditUserCommentCancel = this.handleEditUserCommentCancel.bind(this);
-    this.handleEditUserComment = this.handleEditUserComment.bind(this);
+
+    this.handleDeleteUserComment = this.handleDeleteUserComment.bind(this);
 
     this.state = {
       activeComponent: null,
@@ -187,7 +187,7 @@ export default class Panel extends Component {
   }
 
 
-  onUserCommentDelete(e) {
+  handleDeleteUserComment(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -429,11 +429,11 @@ export default class Panel extends Component {
           <Comments
             // TODO Update all keys
             userCommentBeingUpdated={userCommentBeingUpdated}
-            onUserCommentUpdate={this.handleEditUserCommentChange}
-            onUserCommentEdit={this.handleEditUserComment}
-            onUserCommentEditSave={this.handleEditUserCommentSubmit}
-            onUserCommentEditCancel={this.handleEditUserCommentCancel}
-            onUserCommentDelete={this.onUserCommentDelete}
+            handleEditUserComment={this.handleEditUserComment}
+            handleEditUserCommentChange={this.handleEditUserCommentChange}
+            handleEditUserCommentSubmit={this.handleEditUserCommentSubmit}
+            handleEditUserCommentCancel={this.handleEditUserCommentCancel}
+            handleDeleteUserComment={this.handleDeleteUserComment}
             currentUser={userEmail}
             comments={comments}
             activeVersion={activeVersion}

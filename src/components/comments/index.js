@@ -11,11 +11,11 @@ const Comments = ({
   currentUser,
   commentIdBeingEdited,
   userCommentBeingUpdated,
-  onUserCommentEditCancel,
-  onUserCommentEditSave,
-  onUserCommentUpdate,
-  onUserCommentEdit,
-  onUserCommentDelete,
+  handleEditUserComment,
+  handleEditUserCommentChange,
+  handleEditUserCommentSubmit,
+  handleEditUserCommentCancel,
+  handleDeleteUserComment,
   onShowAllComments,
   isShowingAllComments,
   activeVersion,
@@ -38,18 +38,19 @@ const Comments = ({
       (<SubmitComment
         key={comment._id}
         userComment={userCommentBeingUpdatedFn}
-        handleChange={onUserCommentUpdate}
-        handleSubmit={onUserCommentEditSave}
-        onCommentCancel={onUserCommentEditCancel}
+        handleChange={handleEditUserCommentChange}
+        handleSubmit={handleEditUserCommentSubmit}
+        onCommentCancel={handleEditUserCommentCancel}
         title={'Edit comment'}
         comment={comment}
         type={'Edit'}
       />)
       :
       (<Comment
+        // TODO Change 'on' to 'handle'
         key={comment._id}
-        onUserCommentEdit={onUserCommentEdit}
-        onUserCommentDelete={onUserCommentDelete}
+        onUserCommentEdit={handleEditUserComment}
+        onUserCommentDelete={handleDeleteUserComment}
         currentUserIsOwner={currentUser === comment.userEmail}
         username={comment.userName}
         emailId={comment.userEmail}
@@ -95,11 +96,11 @@ Comments.propTypes = {
   commentIdBeingEdited: PropTypes.string,
   userCommentBeingUpdated: PropTypes.string,
   currentUser: PropTypes.string.isRequired,
-  onUserCommentUpdate: PropTypes.func.isRequired,
-  onUserCommentEdit: PropTypes.func.isRequired,
-  onUserCommentEditSave: PropTypes.func.isRequired,
-  onUserCommentEditCancel: PropTypes.func.isRequired,
-  onUserCommentDelete: PropTypes.func.isRequired,
+  handleEditUserComment: PropTypes.func.isRequired,
+  handleEditUserCommentChange: PropTypes.func.isRequired,
+  handleEditUserCommentSubmit: PropTypes.func.isRequired,
+  handleEditUserCommentCancel: PropTypes.func.isRequired,
+  handleDeleteUserComment: PropTypes.func.isRequired,
   isShowingAllComments: PropTypes.bool.isRequired,
   onShowAllComments: PropTypes.func.isRequired,
   activeVersion: PropTypes.string.isRequired,
