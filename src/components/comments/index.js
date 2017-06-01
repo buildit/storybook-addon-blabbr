@@ -38,8 +38,8 @@ const Comments = ({
       (<SubmitComment
         key={comment._id}
         userComment={userCommentBeingUpdatedFn}
-        onUserCommentChange={onUserCommentUpdate}
-        onCommentSubmit={onUserCommentEditSave}
+        handleChange={onUserCommentUpdate}
+        handleSubmit={onUserCommentEditSave}
         onCommentCancel={onUserCommentEditCancel}
         title={'Edit comment'}
         comment={comment}

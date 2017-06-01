@@ -29,7 +29,7 @@ class SubmitCommentForm extends Component {
         hasErrors: true
       });
     } else {
-      this.props.handleSubmit();
+      this.props.handleSubmit(event.target.id);
     }
   }
 
