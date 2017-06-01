@@ -33,7 +33,6 @@ export default class Panel extends Component {
     this.listenForCommentChanges = this.listenForCommentChanges.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
     this.addComment = this.addComment.bind(this);
-    this.onShowAllComments = this.onShowAllComments.bind(this);
     this.updateView = this.updateView.bind(this);
     this.isNewComment = this.isNewComment.bind(this);
     this.isAddedByMe = this.isAddedByMe.bind(this);
@@ -42,6 +41,8 @@ export default class Panel extends Component {
     this.handleOnlineStatusChange = this.handleOnlineStatusChange.bind(this);
     this.processComments = this.processComments.bind(this);
     this.processServerVersions = this.processServerVersions.bind(this);
+
+    this.handleShowAllComments = this.handleShowAllComments.bind(this);
 
     this.handleRegisterChange = this.handleRegisterChange.bind(this);
     this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
@@ -150,6 +151,16 @@ export default class Panel extends Component {
     this.setState({ userComment: '' });
   }
 
+  handleEditUserComment(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.setState({ commentIdBeingEdited: e.target.id });
+    const commentBeingEdited = this.allComments.find(comment => comment._id === e.target.id);
+    this.setState({ userCommentBeingUpdated: commentBeingEdited.comment });
+    this.userActions.edited[e.target.id] = true;
+  }
+
   handleEditUserCommentChange(userComment) {
     this.setState({ userCommentBeingUpdated: userComment });
   }
@@ -168,16 +179,6 @@ export default class Panel extends Component {
     this.setState({ userCommentBeingUpdated: null, commentIdBeingEdited: null });
   }
 
-  handleEditUserComment(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.setState({ commentIdBeingEdited: e.target.id });
-    const commentBeingEdited = this.allComments.find(comment => comment._id === e.target.id);
-    this.setState({ userCommentBeingUpdated: commentBeingEdited.comment });
-    this.userActions.edited[e.target.id] = true;
-  }
-
   handleEditUserCommentCancel(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -185,7 +186,6 @@ export default class Panel extends Component {
     this.setState({ commentIdBeingEdited: null });
     delete this.userActions.edited[e.target.id];
   }
-
 
   handleDeleteUserComment(e) {
     e.preventDefault();
@@ -201,7 +201,7 @@ export default class Panel extends Component {
     });
   }
 
-  onShowAllComments() {
+  handleShowAllComments() {
     this.setState({
       comments: this.allComments,
       isShowingAllComments: true,
@@ -440,7 +440,7 @@ export default class Panel extends Component {
             versions={versions}
             commentIdBeingEdited={commentIdBeingEdited}
             isShowingAllComments={isShowingAllComments}
-            onShowAllComments={this.onShowAllComments}
+            handleShowAllComments={this.handleShowAllComments}
           />
         }
       </section>

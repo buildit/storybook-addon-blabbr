@@ -16,7 +16,7 @@ const Comments = ({
   handleEditUserCommentSubmit,
   handleEditUserCommentCancel,
   handleDeleteUserComment,
-  onShowAllComments,
+  handleShowAllComments,
   isShowingAllComments,
   activeVersion,
   versions,
@@ -67,7 +67,7 @@ const Comments = ({
   });
 
   const showAllCommentsLink = !isShowingAllComments ?
-    (<button style={{ marginBottom: 20 }} onClick={onShowAllComments}>
+    (<button style={{ marginBottom: 20 }} onClick={handleShowAllComments}>
       Show all comments
     </button>) :
     null;
@@ -101,8 +101,8 @@ Comments.propTypes = {
   handleEditUserCommentSubmit: PropTypes.func.isRequired,
   handleEditUserCommentCancel: PropTypes.func.isRequired,
   handleDeleteUserComment: PropTypes.func.isRequired,
+  handleShowAllComments: PropTypes.func.isRequired,
   isShowingAllComments: PropTypes.bool.isRequired,
-  onShowAllComments: PropTypes.func.isRequired,
   activeVersion: PropTypes.string.isRequired,
   versions: PropTypes.array.isRequired,
 };
