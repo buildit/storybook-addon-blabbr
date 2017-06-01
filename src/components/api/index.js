@@ -1,5 +1,5 @@
 import db from './db';
-import { slack } from 'blabbr-config'; // eslint-disable-line
+import { slack } from '../../utils/config'; // eslint-disable-line
 
 // Return all the comments for the particular component and story
 // NOTE: Version is ignored for now, all comments are returned

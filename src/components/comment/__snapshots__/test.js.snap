@@ -18,6 +18,12 @@ exports[`Comment renders correctly 1`] = `
         1-Jan-17
       </time>
     </span>
+    <span
+      className="blabbr-version"
+    >
+      about 
+      vundefined
+    </span>
     <img
       alt="username's Gravatar"
       className="avatar"

@@ -4,80 +4,11 @@ Component reviewer and approver for React Storybook.
 
 ## Configuration
 
-You can configure various aspects of the plugin by creating a configuration file anywhere in your project and then setting up the webpack config to resolve it. To do that either add the following to the `resolve` section in your `webpack.config.js` file in `.storybook/`:
+You can configure blabbr by running the configure script. After installation you should see a message with the command to start the configuration script. You can either copy sample files into your local storybook configuration folder and then edit them _or_ you can create the configuration via an interactive session. To start the script just run:
 
 ```
-  alias: {
-    'blabbr-config': path.join(path.resolve(__dirname), '../<PATH_TO_YOUR_CONFIG>')
-  }
+node node_modules/.bin/blabbr-config
 ```
-
-or, if you don't have a `webpack.config.js` in your `.storybook` folder, extend the base config to have the above alias setup. Please see the
-[Storybook documentation](https://getstorybook.io/docs/react-storybook/configurations/custom-webpack-config#full-control-mode) on how to do this.
-
-By default a sample config file, `blabbr-config.sample.js` is copied into the `.storybook` folder after installing the package.
-
-### DB
-
-Currently it is setup to work with CouchDB and uses PouchDB as the library and API over Couch. To configure the connection to CouchDB (either a local CouchDB or hosted on [Cloudant](https://cloudant.com/)) you need to add the following to your config:
-
-```
-const db = {
-  user: '<YOUR_API_KEY>',
-  pwd: '<YOUR_API_PASSWORD>',
-  host: '<YOUR_HOST_NAME>',
-};
-
-export { db };
-```
-
-If using Cloudant, you will need to create a user with `_reader` and `_writer` permissions which will generate a key and password. You also need to visit the _CORS_ tab of the _Account_ section and accept connections from all domains.
-
-### Slack
-
-If you would like to see all comments on a slack channel then setup the slack integration and add the following to your config file:
-
-```
-const slack = {
-  endPoint: '<YOUR_ENDPOINT>',
-};
-
-export { slack };
-```
-
-We have the #ds-demo channel in Slack for testing (ask one of the team for access) which can be posted to using: `https://hooks.slack.com/services/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`
-
-### UI Options
-
-You can setup a number of UI options as follows:
-
-```
-const ui = {
-  avatar: false,
-  ...
-};
-
-export { ui };
-```
-
-The available options are:
-- `avatar`: `true`/`false` to show avatars or not
-
-### Version
-
-You can set the version of the project/library you are working against using
-
-```
-const version = `<YOUR_VERSION_NO>`;
-```
-
-Alternatively you can tie it to the version specified in `package.json` like this:
-
-```
-const version = require('../package.json').version;
-```
-
-Ensure the path to `package.json` is correct relative to your blabbr config.
 
 ## Storybook registration
 
@@ -104,12 +35,8 @@ There is currently no formatting available in the comments section. However, the
 
 ## Versioning support
 
-On startup, blabbr will attemp to get a list of versions available from the root of the host. It looks for
+If you configured blabbr to support versions, on startup, it  will attempt to get a list of versions available from the root of the host. It looks for
 a file `versions.json` and expects to find an array with the versions listed. You can mock this using the provided
 `versions.json` in `.storybook/`. This is used to populate the navigation section at the top of the story panel.
 
 The navigation is added via `head.html`. This is copied into your `.storybook` folder *if a `head.html` does not already exist*. If it does you can find what you need to add in the package `config` directory.
-
-## Post-install script
-
-As mentioned in the sections above, a post install script will copy a `blabbr-config.sample.js` and a `head.html` file into your `.storybook` folder.

@@ -8,7 +8,7 @@ import Register from '../register';
 import SubmitComment from '../submitComment';
 import OnlineIndicator from '../onlineIndicator';
 import { dbEventManager } from '../api/db';
-import { version } from 'blabbr-config'; // eslint-disable-line
+import { version } from '../../utils/config'; // eslint-disable-line
 import './styles.css';
 
 function wasActionPerformedByMe(key, obj) {
