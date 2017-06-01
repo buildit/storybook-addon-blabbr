@@ -82,7 +82,7 @@ const Comments = ({
       >
         { comments.length ?
           commentsComponents :
-          <p key="no-comments">No comments to show for this story</p>
+          <p key="no-comments">No comments to show for this story.</p>
         }
       </ReactCSSTransitionGroup>
       {showAllCommentsLink}

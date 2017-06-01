@@ -6,11 +6,55 @@
     Roboto,
     "Segoe UI",
     "Helvetica Neue",
-     "Lucida Grande",
-     sans-serif;
+    "Lucida Grande",
+    sans-serif;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.blabbr-register h2 {
+  font-weight: normal;
+  text-align: center;
+}
+
+.blabbr-register form div {
+  margin-bottom: 1.25em;
 }
 
 .blabbr-register label {
+  display: block;
   width: 15em;
-  display: inline-block;
+  margin-bottom: 0.25em;
+}
+
+.blabbr-register input {
+  display: block;
+}
+
+.blabbr-register input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 0.5em 0;
+  font-size: 1.5em;
+}
+
+.blabbr-register button {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  padding: 19px 39px 18px 39px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  border: 1px solid #16a085;
+  border-width: 1px 1px 3px;
+  color: #FFF;
+  background: #1abc9c;
+  font-size: 18px;
+  text-align: center;
+  font-style: normal;
+}
+
+.blabbr-register button:focus,
+.blabbr-register button:hover {
+  background: #16a085;
 }

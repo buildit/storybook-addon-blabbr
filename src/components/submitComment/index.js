@@ -6,7 +6,7 @@ const SubmitComment = ({
   onUserCommentChange,
   onCommentSubmit,
   userComment,
-  title = 'Submit a comment',
+  title = 'Add a comment:',
   type = 'Add',
   onCommentCancel,
   comment = {},
