@@ -22,7 +22,7 @@ class StoryWrapper extends React.Component {
         if (response.ok) {
           response.json().then((data) => {
             this.setState({
-              versions: data.reverse(),
+              versions: data,
             });
           });
         }

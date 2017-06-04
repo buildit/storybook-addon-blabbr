@@ -1,4 +1,4 @@
-button {
+.blabbr-panel-container button {
   display: inline-block;
   padding: 10px 22px 10px 22px;
   margin: 12px 0;
@@ -13,8 +13,8 @@ button {
   cursor: pointer;
 }
 
-button:hover,
-button:focus {
+.blabbr-panel-container button:hover,
+.blabbr-panel-container button:focus {
   background: #16a085;
 }
 
