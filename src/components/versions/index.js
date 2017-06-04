@@ -6,18 +6,20 @@ import './styles.css';
 const Versions = ({
   versions,
 }) => {
-  if (version && !versions) {
+  if (!version || !versions || (versions && versions.length === 0)) {
     return null;
   }
 
   const url = window.parent.location;
 
+  // We are reversing the versions array as the assumption is that
+  // newer versions are appended to the bottom of the file
   return (
     <div id="blabbr-version-history">
       <div className="dropdown">
         <button className="dropbtn" >{version}</button>
         <div className="dropdown-content">
-          {versions.map(v => (
+          {versions.reverse().map(v => (
             <a
               href={`${url.protocol}//${url.hostname}:${url.port}/${v}/${url.search}${url.hash}`}
               target="_parent"
