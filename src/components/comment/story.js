@@ -12,8 +12,8 @@ storiesOf('Comment')
       timestamp={'22 Jan 2017, 18:02'}
       commentId={'123'}
       currentUserIsOwner
-      onUserCommentEdit={() => false}
-      onUserCommentDelete={() => true}
+      handleEditUserComment={() => false}
+      handleDeleteUserComment={() => true}
     />
   ))
   .add('Long comment', () => (
@@ -24,6 +24,6 @@ storiesOf('Comment')
       timestamp={'22 Jan 2017, 18:02'}
       commentId={'123'}
       currentUserIsOwner
-      onUserCommentEdit={() => false}
-      onUserCommentDelete={() => true}
+      handleEditUserComment={() => false}
+      handleDeleteUserComment={() => true}
   />));

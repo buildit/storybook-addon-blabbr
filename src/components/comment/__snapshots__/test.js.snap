@@ -39,6 +39,7 @@ exports[`Comment renders correctly 1`] = `
         Edit
       </button>
       <button
+        className="remove"
         id="id123"
         onClick={[Function]}
       >
