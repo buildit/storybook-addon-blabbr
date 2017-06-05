@@ -3,7 +3,7 @@ import { slack } from '../../utils/config'; // eslint-disable-line
 
 // Return all the comments for the particular component and story
 // NOTE: Version is ignored for now, all comments are returned
-export const getComments = (component, story, version = 'version_not_set') =>
+export const getComments = (component, story/* , version = 'version_not_set' */) =>
   // returns a promise
    db.find({
      selector: {
@@ -55,7 +55,8 @@ export const postComment = ({
     const myHeaders = new Headers();
     const payload = {
       username: userName,
-      text: `${record.userName} just commented on component <${window.location.href}|${record.componentId}>: ${record.comment}`,
+      text: `${record.userName} just commented on component` +
+        `<${window.location.href}|${record.componentId}>: ${record.comment}`,
     };
 
     const myInit = {
@@ -123,7 +124,7 @@ export const deleteComment = commentId => db.find({
 }).then((data) => {
   if (data.docs && data.docs.length) {
     const record = data.docs[0];
-    record._deleted = true;
+    record._deleted = true; // eslint-disable-line no-underscore-dangle
     return db.put(record).then((result) => {
       if (result.ok) {
         return {

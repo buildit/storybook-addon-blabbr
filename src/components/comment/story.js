@@ -26,4 +26,5 @@ storiesOf('Comment')
       currentUserIsOwner
       handleEditUserComment={() => false}
       handleDeleteUserComment={() => true}
-  />));
+    />
+  ));

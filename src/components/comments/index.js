@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Comment from '../comment';
-import SubmitComment from '../submitComment';
+import SubmitCommentForm from '../submitComment';
 import { getTimestamp } from '../../utils';
 import './styles.css';
 
@@ -35,7 +35,7 @@ const Comments = ({
     }
 
     const commentOrSubmit = !!beingEdited === true ?
-      (<SubmitComment
+      (<SubmitCommentForm
         key={comment._id}
         userComment={userCommentBeingUpdatedFn}
         handleChange={handleEditUserCommentChange}
