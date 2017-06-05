@@ -52,29 +52,12 @@ export const postComment = ({
   };
 
   postSlackComment(
-    record.userName,
-    record.comment,
-    record.componentId,
+    userName,
+    userComment,
+    component,
     window.location.href
   );
 
-  // if (slack && slack.endPoint) {
-  //   // Slack
-  //   const myHeaders = new Headers();
-  //   const payload = {
-  //     username: userName,
-  //     text: `${record.userName} just commented on component <${window.location.href}|${record.componentId}>: ${record.comment}`,
-  //   };
-
-  //   const myInit = {
-  //     method: 'POST',
-  //     headers: myHeaders,
-  //     body: JSON.stringify(payload),
-  //   };
-  //   fetch(slack.endPoint, myInit);
-  // }
-
-  // return
   return db.put(record).then((data) => {
     if (data.ok) {
       return {
