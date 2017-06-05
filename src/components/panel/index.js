@@ -46,7 +46,7 @@ export default class Panel extends Component {
 
     this.handleRegisterChange = this.handleRegisterChange.bind(this);
     this.handleRegisterSubmit = this.handleRegisterSubmit.bind(this);
-    
+
     this.handleNewUserCommentChange = this.handleNewUserCommentChange.bind(this);
     this.handleNewUserCommentSubmit = this.handleNewUserCommentSubmit.bind(this);
 
@@ -59,7 +59,7 @@ export default class Panel extends Component {
 
     this.processComments = this.processComments.bind(this);
     this.processServerVersions = this.processServerVersions.bind(this);
-    
+
     this.state = {
       activeComponent: null,
       activeStory: null,
@@ -141,7 +141,7 @@ export default class Panel extends Component {
     const { user: { userName, userEmail } } = this.state;
 
     this.registerUser(userName, userEmail);
-  }  
+  }
 
   handleNewUserCommentChange(userComment) {
     this.setState({ userComment });
