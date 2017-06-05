@@ -2,6 +2,53 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
+const FormTitle = (props) => {
+  const { type, title, userName, userEmail } = props;
+
+  return type === 'Edit' ?
+      <h2>{title}: <span>{`${userName} - ${userEmail}`}</span></h2>
+      :
+      <h2>{title}</h2>
+    ;
+}
+
+const UpdateOrCancelButtons = (props) => {
+  return (
+    <div>
+      <button
+        key={'save'}
+        type="submit"
+        id={props._id}
+        style={{ marginRight: 10 }}
+        onClick={props.handleSubmit}
+        title="Update"
+      >
+        Update
+      </button>
+      <button
+        key={'cancel'}
+        id={props._id}
+        onClick={props.handleCancel}
+        title="Cancel"
+      >
+        Cancel
+      </button>
+    </div>
+  );
+}
+
+const SubmitButton = (props) => {
+   return (
+    <button
+      type="submit"
+      onClick={props.handleSubmit}
+      title="Submit"
+    >
+      Submit
+    </button>
+  );
+}
+
 class SubmitCommentForm extends Component {
   constructor(props) {
     super(props);
@@ -45,17 +92,10 @@ class SubmitCommentForm extends Component {
       userName = ''
     } = comment;
 
-    const formTitle =
-      type === 'Edit' ?
-        <h2>{title}: <span>{`${userName} - ${userEmail}`}</span></h2>
-        :
-        <h2>{title}</h2>
-      ;
-
     return (
       <section className="blabbr-submitComment">
         <form>
-          {formTitle}
+          <FormTitle type={type} title={title} userName={userName} userEmail={userEmail} />
           <textarea
             value={userComment}
             onChange={this.handleChange}
@@ -64,35 +104,10 @@ class SubmitCommentForm extends Component {
           { this.state.hasErrors && 
             <div className="error">You need to enter a comment.</div>
           }
-          { type === 'Edit' ?
-          [
-            <button
-              key={'save'}
-              type="submit"
-              id={_id}
-              style={{ marginRight: 10 }}
-              onClick={this.handleSubmit}
-              title="Update"
-            >
-              Update
-            </button>,
-            <button
-              key={'cancel'}
-              id={_id}
-              onClick={onCommentCancel}
-              title="Cancel"
-            >
-              Cancel
-            </button>,
-          ]
+          { type === 'Edit' ? 
+            <UpdateOrCancelButtons _id={_id} handleSubmit={this.handleSubmit} handleCancel={onCommentCancel} /> 
             :
-          <button
-            type="submit"
-            onClick={this.handleSubmit}
-            title="Submit"
-          >
-            Submit
-          </button>
+            <SubmitButton _id={_id} handleSubmit={this.handleSubmit} />
           }
         </form>
       </section>
