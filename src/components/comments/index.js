@@ -102,7 +102,6 @@ Comments.propTypes = {
   handleShowAllComments: PropTypes.func.isRequired,
   isShowingAllComments: PropTypes.bool.isRequired,
   activeVersion: PropTypes.string.isRequired,
-  versions: PropTypes.array.isRequired,
 };
 
 Comment.defaultProps = {

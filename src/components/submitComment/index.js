@@ -6,15 +6,28 @@ const FormTitle = (props) => {
   const { type, title, userName, userEmail } = props;
 
   return type === 'Edit' ?
-      <h2>{title}: <span>{`${userName} - ${userEmail}`}</span></h2>
-      :
-      <h2>{title}</h2>
-    ;
-}
+    <h2>{title}: <span>{`${userName} - ${userEmail}`}</span></h2>
+    :
+    <h2>{title}</h2>;
+};
+
+FormTitle.propTypes = {
+  type: PropTypes.string,
+  title: PropTypes.string,
+  userName: PropTypes.string,
+  userEmail: PropTypes.string,
+};
+
+FormTitle.defaultProps = {
+  type: '',
+  title: '',
+  userName: '',
+  userEmail: '',
+};
 
 const UpdateOrCancelButtons = (props) => {
   const { _id, handleSubmit, handleCancel } = props;
-  
+
   return (
     <div>
       <button
@@ -37,31 +50,43 @@ const UpdateOrCancelButtons = (props) => {
       </button>
     </div>
   );
-}
+};
 
-const SubmitButton = (props) => {
-   return (
-    <button
-      type="submit"
-      onClick={props.handleSubmit}
-      title="Submit"
-    >
-      Submit
-    </button>
-  );
-}
+UpdateOrCancelButtons.propTypes = {
+  _id: PropTypes.string,
+  handleSubmit: PropTypes.func,
+  handleCancel: PropTypes.func,
+};
+
+const SubmitButton = props => (
+  <button
+    type="submit"
+    onClick={props.handleSubmit}
+    title="Submit"
+  >
+    Submit
+  </button>
+);
+
+SubmitButton.propTypes = {
+  handleSubmit: PropTypes.func,
+};
 
 class SubmitCommentForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      hasErrors: false
+      hasErrors: false,
+      userComment: '',
     };
   }
 
   handleChange = (event) => {
-    this.setState({ hasErrors: false });
+    this.setState({
+      hasErrors: false,
+      userComment: event.target.value,
+    });
     this.props.handleChange(event.target.value);
   }
 
@@ -69,11 +94,9 @@ class SubmitCommentForm extends Component {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!this.refs.userComment.value ||
-      this.refs.userComment.value.length < 1) {
-      this.setState({
-        hasErrors: true
-      });
+    if (!this.state.userComment ||
+      this.state.userComment.length < 1) {
+      this.setState({ hasErrors: true });
     } else {
       this.props.handleSubmit(event.target.id);
     }
@@ -85,13 +108,13 @@ class SubmitCommentForm extends Component {
       title = 'Add a comment:',
       type = 'Add',
       onCommentCancel,
-      comment = {}
+      comment = {},
     } = this.props;
 
     const {
       _id = null,
       userEmail = '',
-      userName = ''
+      userName = '',
     } = comment;
 
     return (
@@ -101,13 +124,16 @@ class SubmitCommentForm extends Component {
           <textarea
             value={userComment}
             onChange={this.handleChange}
-            ref="userComment"
           />
-          { this.state.hasErrors && 
+          { this.state.hasErrors &&
             <div className="error">You need to enter a comment.</div>
           }
-          { type === 'Edit' ? 
-            <UpdateOrCancelButtons _id={_id} handleSubmit={this.handleSubmit} handleCancel={onCommentCancel} /> 
+          { type === 'Edit' ?
+            <UpdateOrCancelButtons
+              _id={_id}
+              handleSubmit={this.handleSubmit}
+              handleCancel={onCommentCancel}
+            />
             :
             <SubmitButton _id={_id} handleSubmit={this.handleSubmit} />
           }
@@ -124,7 +150,7 @@ SubmitCommentForm.propTypes = {
   type: PropTypes.string,
   comment: PropTypes.object,
   onCommentCancel: PropTypes.func,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default SubmitCommentForm;
