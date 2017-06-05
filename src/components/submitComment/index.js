@@ -13,22 +13,24 @@ const FormTitle = (props) => {
 }
 
 const UpdateOrCancelButtons = (props) => {
+  const { _id, handleSubmit, handleCancel } = props;
+  
   return (
     <div>
       <button
         key={'save'}
         type="submit"
-        id={props._id}
+        id={_id}
         style={{ marginRight: 10 }}
-        onClick={props.handleSubmit}
+        onClick={handleSubmit}
         title="Update"
       >
         Update
       </button>
       <button
         key={'cancel'}
-        id={props._id}
-        onClick={props.handleCancel}
+        id={_id}
+        onClick={handleCancel}
         title="Cancel"
       >
         Cancel
