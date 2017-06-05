@@ -1,5 +1,6 @@
 import db from './db';
 import { slack } from '../../utils/config'; // eslint-disable-line
+import { postComment as postSlackComment } from './slack';
 
 // Return all the comments for the particular component and story
 // NOTE: Version is ignored for now, all comments are returned
@@ -50,21 +51,28 @@ export const postComment = ({
     eventName,
   };
 
-  if (slack && slack.endPoint) {
-    // Slack
-    const myHeaders = new Headers();
-    const payload = {
-      username: userName,
-      text: `${record.userName} just commented on component <${window.location.href}|${record.componentId}>: ${record.comment}`,
-    };
+  postSlackComment(
+    record.userName,
+    record.comment,
+    record.componentId,
+    window.location.href
+  );
 
-    const myInit = {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify(payload),
-    };
-    fetch(slack.endPoint, myInit);
-  }
+  // if (slack && slack.endPoint) {
+  //   // Slack
+  //   const myHeaders = new Headers();
+  //   const payload = {
+  //     username: userName,
+  //     text: `${record.userName} just commented on component <${window.location.href}|${record.componentId}>: ${record.comment}`,
+  //   };
+
+  //   const myInit = {
+  //     method: 'POST',
+  //     headers: myHeaders,
+  //     body: JSON.stringify(payload),
+  //   };
+  //   fetch(slack.endPoint, myInit);
+  // }
 
   // return
   return db.put(record).then((data) => {
