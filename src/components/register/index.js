@@ -12,16 +12,27 @@ class Register extends Component {
         userEmail: false
       }
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     const { name, value } = event.target;
 
     this.showInputError(name);
     this.props.handleChange(name, value);
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    const invalidForm = Object.keys(this.state.validation).reduce(
+      (accumulator, value) => {
+        return accumulator || this.state.validation[value];
+      }, false);
+
+    if (!invalidForm) {
+      this.props.handleSubmit();
+      return;
+    }
   }
 
   showInputError(name) {
@@ -41,20 +52,6 @@ class Register extends Component {
           { [name]: false }
         )
       });
-    }
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    const invalidForm = Object.keys(this.state.validation).reduce(
-      (accumulator, value) => {
-        return accumulator || this.state.validation[value];
-      }, false);
-
-    if (!invalidForm) {
-      this.props.handleSubmit();
-      return;
     }
   }
 

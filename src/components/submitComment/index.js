@@ -9,17 +9,14 @@ class SubmitCommentForm extends Component {
     this.state = {
       hasErrors: false
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ hasErrors: false });
     this.props.handleChange(event.target.value);
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
 
