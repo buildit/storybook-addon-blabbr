@@ -19,7 +19,6 @@ const Comments = ({
   handleShowAllComments,
   isShowingAllComments,
   activeVersion,
-  versions,
 }) => {
   const commentsComponents = comments.map((comment) => {
     const timestamp = getTimestamp(comment.timestamp);

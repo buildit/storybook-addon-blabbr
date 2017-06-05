@@ -124,7 +124,7 @@ export const deleteComment = commentId => db.find({
 }).then((data) => {
   if (data.docs && data.docs.length) {
     const record = data.docs[0];
-    record._deleted = true; // eslint-disable-line no-underscore-dangle
+    record._deleted = true;
     return db.put(record).then((result) => {
       if (result.ok) {
         return {
