@@ -11,6 +11,7 @@ const Versions = ({
   }
 
   const url = window.parent.location;
+  let counter = 0;
 
   // We are reversing the versions array as the assumption is that
   // newer versions are appended to the bottom of the file
@@ -23,6 +24,7 @@ const Versions = ({
             <a
               href={`${url.protocol}//${url.hostname}:${url.port}/${v}/${url.search}${url.hash}`}
               target="_parent"
+              key={`blabbrVersionLink${counter++}`}
             >
               {v}
             </a>))}
@@ -33,7 +35,11 @@ const Versions = ({
 };
 
 Versions.propTypes = {
-  versions: PropTypes.array.isRequired,
+  versions: PropTypes.array,
+};
+
+Versions.defaultProps = {
+  versions: [],
 };
 
 export default Versions;

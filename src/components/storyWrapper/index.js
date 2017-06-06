@@ -9,7 +9,7 @@ class StoryWrapper extends React.Component {
     super(props);
     this.state = {
       commentCount: 0,
-      versions: null
+      versions: null,
     };
   }
 
