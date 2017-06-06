@@ -1,5 +1,7 @@
 import { slack } from '../../utils/config';
 
+const getTimestamp = () => Math.floor(Date.now() / 1000);
+
 export const postComment = (
   { userName, userEmail },
   comment,
@@ -9,13 +11,13 @@ export const postComment = (
     username: 'Blabbr',
     attachments: [
       {
-        fallback: `${userName} just left a comment on ${componentName}.`,
+        fallback: `${userName} added a new comment to ${componentName}.`,
         color: '#36a64f',
         author_name: `${userName} (${userEmail})`,
-        title: `New comment on ${componentName}`,
+        title: `Added a new comment to ${componentName}`,
         title_link: componentUrl,
         text: comment,
-        ts: Date.now()
+        ts: getTimestamp()
       }
     ]
   };
@@ -32,13 +34,13 @@ export const editComment = (
     username: 'Blabbr',
     attachments: [
       {
-        fallback: `${userName} edited a comment on ${componentName}.`,
+        fallback: `${userName} edited their comment on ${componentName}.`,
         color: '#ffcc33',
         author_name: `${userName} (${userEmail})`,
         title: `Edited their comment on ${componentName}`,
         title_link: componentUrl,
         text: comment,
-        ts: Date.now()
+        ts: getTimestamp()
       }
     ]
   };
