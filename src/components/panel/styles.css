@@ -13,6 +13,10 @@ button {
   cursor: pointer;
 }
 
+.error {
+  color: #ff0000;
+}
+
 button:hover,
 button:focus {
   background: #16a085;

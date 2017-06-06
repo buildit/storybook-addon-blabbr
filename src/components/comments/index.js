@@ -11,12 +11,12 @@ const Comments = ({
   currentUser,
   commentIdBeingEdited,
   userCommentBeingUpdated,
-  onUserCommentEditCancel,
-  onUserCommentEditSave,
-  onUserCommentUpdate,
-  onUserCommentEdit,
-  onUserCommentDelete,
-  onShowAllComments,
+  handleEditUserComment,
+  handleEditUserCommentChange,
+  handleEditUserCommentSubmit,
+  handleEditUserCommentCancel,
+  handleDeleteUserComment,
+  handleShowAllComments,
   isShowingAllComments,
   activeVersion,
   versions,
@@ -38,9 +38,9 @@ const Comments = ({
       (<SubmitComment
         key={comment._id}
         userComment={userCommentBeingUpdatedFn}
-        onUserCommentChange={onUserCommentUpdate}
-        onCommentSubmit={onUserCommentEditSave}
-        onCommentCancel={onUserCommentEditCancel}
+        handleChange={handleEditUserCommentChange}
+        handleSubmit={handleEditUserCommentSubmit}
+        onCommentCancel={handleEditUserCommentCancel}
         title={'Edit comment'}
         comment={comment}
         type={'Edit'}
@@ -48,8 +48,8 @@ const Comments = ({
       :
       (<Comment
         key={comment._id}
-        onUserCommentEdit={onUserCommentEdit}
-        onUserCommentDelete={onUserCommentDelete}
+        handleEditUserComment={handleEditUserComment}
+        handleDeleteUserComment={handleDeleteUserComment}
         currentUserIsOwner={currentUser === comment.userEmail}
         username={comment.userName}
         emailId={comment.userEmail}
@@ -66,7 +66,7 @@ const Comments = ({
   });
 
   const showAllCommentsLink = !isShowingAllComments ?
-    (<button style={{ marginBottom: 20 }} onClick={onShowAllComments}>
+    (<button style={{ marginBottom: 20 }} onClick={handleShowAllComments}>
       Show all comments
     </button>) :
     null;
@@ -95,13 +95,13 @@ Comments.propTypes = {
   commentIdBeingEdited: PropTypes.string,
   userCommentBeingUpdated: PropTypes.string,
   currentUser: PropTypes.string.isRequired,
-  onUserCommentUpdate: PropTypes.func.isRequired,
-  onUserCommentEdit: PropTypes.func.isRequired,
-  onUserCommentEditSave: PropTypes.func.isRequired,
-  onUserCommentEditCancel: PropTypes.func.isRequired,
-  onUserCommentDelete: PropTypes.func.isRequired,
+  handleEditUserComment: PropTypes.func.isRequired,
+  handleEditUserCommentChange: PropTypes.func.isRequired,
+  handleEditUserCommentSubmit: PropTypes.func.isRequired,
+  handleEditUserCommentCancel: PropTypes.func.isRequired,
+  handleDeleteUserComment: PropTypes.func.isRequired,
+  handleShowAllComments: PropTypes.func.isRequired,
   isShowingAllComments: PropTypes.bool.isRequired,
-  onShowAllComments: PropTypes.func.isRequired,
   activeVersion: PropTypes.string.isRequired,
   versions: PropTypes.array.isRequired,
 };
