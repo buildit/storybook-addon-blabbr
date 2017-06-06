@@ -13,6 +13,10 @@
   cursor: pointer;
 }
 
+.blabbr-panel-container .error {
+  color: #ff0000;
+}
+
 .blabbr-panel-container button:hover,
 .blabbr-panel-container button:focus {
   background: #16a085;

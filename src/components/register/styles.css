@@ -31,7 +31,8 @@
   display: block;
 }
 
-.blabbr-register input[type="text"] {
+.blabbr-register input[type="text"],
+.blabbr-register input[type="email"] {
   width: 100%;
   padding: 10px;
   margin: 0.5em 0;
