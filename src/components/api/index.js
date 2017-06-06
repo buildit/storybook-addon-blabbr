@@ -75,14 +75,20 @@ export const postComment = ({
   }));
 };
 
-export const updateComment = (commentId, userCommentText) => {
+export const updateComment = ({
+  commentId,
+  component,
+  userCommentText,
+  userEmail,
+  userName,
+}) => {
   const timestampId = `${new Date().getTime()}`;
   const userComment = userCommentText && userCommentText.trim();
 
   editSlackComment(
     { userName, userEmail },
     userComment,
-    { componentName: commentId, componentUrl: window.location.href }
+    { componentName: component, componentUrl: window.location.href }
   );
 
   return db.find({

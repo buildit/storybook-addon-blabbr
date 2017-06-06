@@ -27,7 +27,7 @@ const extractVersions = (data) => {
 export default class Panel extends Component {
   constructor(...args) {
     super(...args);
-    
+
     this.state = {
       activeComponent: null,
       activeStory: null,
@@ -57,7 +57,7 @@ export default class Panel extends Component {
       time: 3000,
       transition: 'fade',
     };
-    
+
     this.userActions = {
       added: {},
       removed: {},
@@ -109,7 +109,7 @@ export default class Panel extends Component {
     const { user: { userName, userEmail } } = this.state;
 
     this.registerUser(userName, userEmail);
-  }  
+  }
 
   handleNewUserCommentChange = (userComment) => {
     this.setState({ userComment });
@@ -139,13 +139,7 @@ export default class Panel extends Component {
   handleEditUserCommentSubmit = (commentId) => {
     const { userCommentBeingUpdated } = this.state;
 
-    updateComment(commentId, userCommentBeingUpdated).then((data) => {
-      if (data.success) {
-        global.msg.success(data.msg);
-      } else {
-        global.msg.error(data.msg);
-      }
-    });
+    this.editComment(commentId, userCommentBeingUpdated);
 
     this.setState({ userCommentBeingUpdated: null, commentIdBeingEdited: null });
   }
@@ -351,6 +345,27 @@ export default class Panel extends Component {
     });
 
     this.setState({ userComment: '' });
+  }
+
+  editComment = (commentId, editedComment) => {
+    const {
+      activeComponent,
+      user: { userName, userEmail },
+    } = this.state;
+
+    updateComment({
+      commentId,
+      component: activeComponent,
+      userCommentText: editedComment,
+      userEmail,
+      userName,
+    }).then((data) => {
+      if (data.success) {
+        global.msg.success(data.msg);
+      } else {
+        global.msg.error(data.msg);
+      }
+    });
   }
 
   render() {
