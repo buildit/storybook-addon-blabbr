@@ -2,11 +2,13 @@ import { slack } from '../../utils/config';
 
 const getTimestamp = () => Math.floor(Date.now() / 1000);
 
-export const postComment = (
-  { userName, userEmail },
+export const postComment = ({
+  userName,
+  userEmail,
   comment,
-  { componentName, componentUrl }
-) => {
+  componentName,
+  componentUrl,
+}) => {
   const payload = {
     username: 'Blabbr',
     attachments: [
@@ -17,7 +19,7 @@ export const postComment = (
         title: `Added a new comment to ${componentName}`,
         title_link: componentUrl,
         text: comment,
-        ts: getTimestamp()
+        ts: getTimestamp(),
       }
     ]
   };
@@ -25,11 +27,13 @@ export const postComment = (
   return makeRequest(payload);
 }
 
-export const editComment = (
-  { userName, userEmail },
+export const editComment = ({
+  userName,
+  userEmail,
   comment,
-  { componentName, componentUrl }
-) => {
+  componentName,
+  componentUrl,
+}) => {
   const payload = {
     username: 'Blabbr',
     attachments: [
@@ -40,7 +44,7 @@ export const editComment = (
         title: `Edited their comment on ${componentName}`,
         title_link: componentUrl,
         text: comment,
-        ts: getTimestamp()
+        ts: getTimestamp(),
       }
     ]
   };

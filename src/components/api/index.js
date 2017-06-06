@@ -51,11 +51,13 @@ export const postComment = ({
     eventName,
   };
 
-  postSlackComment(
-    { userName, userEmail },
-    userComment,
-    { componentName: component, componentUrl: window.location.href }
-  );
+  postSlackComment({
+    userName,
+    userEmail,
+    comment: userComment,
+    componentName: component,
+    componentUrl: window.location.href,
+  });
 
   return db.put(record).then((data) => {
     if (data.ok) {
@@ -85,11 +87,13 @@ export const updateComment = ({
   const timestampId = `${new Date().getTime()}`;
   const userComment = userCommentText && userCommentText.trim();
 
-  editSlackComment(
-    { userName, userEmail },
-    userComment,
-    { componentName: component, componentUrl: window.location.href }
-  );
+  editSlackComment({
+    userName,
+    userEmail,
+    comment: userComment,
+    componentName: component,
+    componentUrl: window.location.href,
+  });
 
   return db.find({
     selector: {
