@@ -1,6 +1,6 @@
 import db from './db';
 import { slack } from '../../utils/config'; // eslint-disable-line
-import { postComment as postSlackComment } from './slack';
+import { postComment as postSlackComment, editComment as editSlackComment } from './slack';
 
 // Return all the comments for the particular component and story
 // NOTE: Version is ignored for now, all comments are returned
@@ -52,10 +52,9 @@ export const postComment = ({
   };
 
   postSlackComment(
-    userName,
+    { userName, userEmail },
     userComment,
-    component,
-    window.location.href
+    { componentName: component, componentUrl: window.location.href }
   );
 
   return db.put(record).then((data) => {
@@ -79,6 +78,12 @@ export const postComment = ({
 export const updateComment = (commentId, userCommentText) => {
   const timestampId = `${new Date().getTime()}`;
   const userComment = userCommentText && userCommentText.trim();
+
+  editSlackComment(
+    { userName, userEmail },
+    userComment,
+    { componentName: commentId, componentUrl: window.location.href }
+  );
 
   return db.find({
     selector: {
