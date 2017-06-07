@@ -63,21 +63,25 @@ function updateIndicator() {
 }
 
 function addOnlineListener() {
+console.log('adding online listener');
   // Update the online status icon based on connectivity
   window.addEventListener('online', updateIndicator, false);
   window.addEventListener('offline', updateIndicator, false);
 }
 
 function removeOnlineListener() {
+console.log('removing online listener');
   window.removeEventListener('online', updateIndicator, false);
   window.removeEventListener('offline', updateIndicator, false);
 }
 
 dbEmitter.on('change', (data) => {
+console.log('changechangechange');
   fireListeners('change', data);
 });
 
 const subscribe = (eventType, eventName, listener) => {
+console.log('subscribing', eventType, eventName);
   if (!dbEvents[eventType]) {
     return "No such event type, please use 'change'/'online'/'denied'/'complete'/'error'";
   }
@@ -85,22 +89,22 @@ const subscribe = (eventType, eventName, listener) => {
   let eventListener = null;
 
   if (eventType === 'change') {
-    eventListener = db.changes({
-      since: 'now',
-      live: true,
-      include_docs: true,
-      filter(doc) {
-        return doc.eventName === eventName;
-      },
-    }).on('change', (data) => {
-      dbEmitter.emit('change', data);
-    }).on('error', (err) => {
-      dbEmitter.emit('error', err);
-    });
+    // eventListener = db.changes({
+    //   since: 'now',
+    //   live: true,
+    //   include_docs: true,
+    //   filter(doc) {
+    //     return doc.eventName === eventName;
+    //   },
+    // }).on('change', (data) => {
+    //   dbEmitter.emit('change', data);
+    // }).on('error', (err) => {
+    //   dbEmitter.emit('error', err);
+    // });
   }
 
   dbEvents[eventType].push({ eventId, eventListener, eventName, listener });
-
+console.log('events collection', dbEvents);
   // unique id returned
   return eventId;
 };
@@ -111,22 +115,19 @@ const unsubscribe = (eventType, eventId) => {
   }
   let eventRemoved = false;
 
-  if (dbEvents[eventType]) {
-    for (let i = 0, l = dbEvents[eventType].length; i < l; i++) {
-      if (dbEvents[eventType][i].eventId === eventId) {
-        if (dbEvents[eventType][i].eventListener) {
-          dbEvents[eventType][i].eventListener.cancel();
-          dbEvents[eventType][i].eventListener.removeAllListeners('change');
-          dbEvents[eventType][i].eventListener.removeAllListeners('error');
-          dbEvents[eventType][i].eventListener = null;
-        }
-        dbEvents[eventType].splice(i, 1);
-        eventRemoved = true;
-        break;
-      }
+  dbEvents[eventType] = dbEvents[eventType].filter((event) => {
+    if (event.eventId === eventId) {
+      // event.eventListener.cancel();
+      // What were these for? Why isn't cancel good enough?
+      // event.eventListener.removeAllListeners('change');
+      // event.eventListener.removeAllListeners('error');
+      return false;
     }
-  }
-  return eventRemoved;
+
+    return true;
+  });
+
+  return true;
 };
 
 export const dbEventManager = {
