@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createHash, formatToHTML } from '../../utils';
+import marked from 'marked';
+
+import { createHash } from '../../utils';
 import { versionLink } from '../../utils/url';
 import { ui } from '../../utils/config'; // eslint-disable-line
 import './styles.css';
@@ -11,7 +13,7 @@ const shouldShowAvatar = (ui) => {
   }
 
   return true;
-}
+};
 
 const Comment = ({
   username,
@@ -28,7 +30,7 @@ const Comment = ({
   activeVersion,
 }) => {
   const emailHash = createHash(emailId);
-  const output = formatToHTML(comment);
+  const output = marked(comment);
 
   const showAvatar = shouldShowAvatar(ui);
   const classes = showAvatar ? 'blabbr-comment withAvatar' : 'blabbr-comment';
@@ -70,7 +72,7 @@ const Comment = ({
         }
       </span>
     </header>
-    {output}
+    <div dangerouslySetInnerHTML={{ __html: output }} />
     {edited && <p><small>(edited - {lastUpdated})</small></p>}
   </article>);
 };
