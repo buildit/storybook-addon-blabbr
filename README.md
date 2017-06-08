@@ -38,5 +38,3 @@ There is currently no formatting available in the comments section. However, the
 If you configured blabbr to support versions, on startup, it  will attempt to get a list of versions available from the root of the host. It looks for
 a file `versions.json` and expects to find an array with the versions listed. You can mock this using the provided
 `versions.json` in `.storybook/`. This is used to populate the navigation section at the top of the story panel.
-
-The navigation is added via `head.html`. This is copied into your `.storybook` folder *if a `head.html` does not already exist*. If it does you can find what you need to add in the package `config` directory.

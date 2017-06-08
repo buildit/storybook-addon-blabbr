@@ -5,11 +5,6 @@ import { withComments } from '../src/';
 
 addDecorator(withKnobs);
 addDecorator(withComments);
-addDecorator((story) => (
-	<div style={{padding: '10px'}}>
-		{story()}
-	</div>
-));
 
 // Now go through all the stories in the src tree
 function requireAll(context) {

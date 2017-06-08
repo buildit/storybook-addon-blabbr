@@ -40,24 +40,6 @@ inquirer.prompt(prompts.prompts).then((answers) => {
       out.write("// or const version = '<YOUR_VERSION_NO>';\n");
       exportsString += ', version';
 
-      // Copy the head
-      fs.access(path.join(storybookDirectory, 'head.html'), fs.constants.R_OK, (err) => {
-        const head = 'head.sample.html';
-        if (err) {
-          // If it does not exist just copy over
-          fs.copy(path.join(`${currentDir}`, 'config', head),
-                  path.join(`${storybookDirectory}`, 'head.html'));
-          return;
-        }
-        // If it does exist then copy aside and prompt
-        fs.copy(path.join(`${currentDir}`, 'config', head),
-                path.join(`${storybookDirectory}`, head))
-          .then(() => {
-            console.log(chalk.bgBlue('Existing head.html found, copied the config into head.sample.html. You must now merge them.'));
-          })
-          .catch(() => console.log(chalk.red(`Could not copy
-            ${path.join(`${currentDir}`, 'config', head)} into ${storybookDirectory}`)));
-      });
       // Copy a versions file
       fs.access(path.join(storybookDirectory, 'versions.json'), fs.constants.R_OK, (err) => {
         const versions = 'versions.sample.json';
