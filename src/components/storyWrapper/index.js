@@ -35,7 +35,7 @@ class StoryWrapper extends React.Component {
   render() {
     return (
       <div id="blabbr-storyWrapper">
-        <Versions versions={this.state.versions}/>
+        <Versions versions={this.state.versions} />
         <div id="blabbr-storyWrapper-content">
           {this.props.children}
         </div>
