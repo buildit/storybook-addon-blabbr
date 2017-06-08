@@ -4,10 +4,26 @@ Component reviewer and approver for React Storybook.
 
 ## Configuration
 
-You can configure blabbr by running the configure script. After installation you should see a message with the command to start the configuration script. You can either copy sample files into your local storybook configuration folder and then edit them _or_ you can create the configuration via an interactive session. To start the script just run:
+blabbr expects to find a `storybook-config.json` configuration file at the root of your host, for static builds, or inside your storybook setup folder (generally `.storybook`). This should look like this:
 
 ```
-node node_modules/.bin/blabbr-config
+{
+  "storybook": {
+    "blabbr": {
+      "db": {
+        "user": "keditheapplaselaysiester",
+        "pwd": "98344304f66e9adb20f8c6f82038ea93681e2a8a",
+        "host": "jonathan-ec.cloudant.com/blabbr"
+      },
+      "slack": {
+        "endPoint": "https://hooks.slack.com/services/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"
+      },
+      "ui": {
+        "avatar": true
+      }
+    }
+  }
+}
 ```
 
 ## Storybook registration
@@ -28,7 +44,4 @@ addDecorator(withComments);
 
 ## Comment formatting
 
-There is currently no formatting available in the comments section. However, the editor does two things:
-
-1. Retains multi-line format
-2. Parses hyperlinks. So if you type `http://www.yoururl.com` in the box this will be shown as a link.
+Comments are formatted using the [marked](https://www.npmjs.com/package/marked) package.
