@@ -27,7 +27,7 @@ const extractVersions = (data) => {
 export default class Panel extends Component {
   constructor(...args) {
     super(...args);
-    
+
     this.state = {
       activeComponent: null,
       activeStory: null,
@@ -57,7 +57,7 @@ export default class Panel extends Component {
       time: 3000,
       transition: 'fade',
     };
-    
+
     this.userActions = {
       added: {},
       removed: {},
@@ -109,7 +109,7 @@ export default class Panel extends Component {
     const { user: { userName, userEmail } } = this.state;
 
     this.registerUser(userName, userEmail);
-  }  
+  }
 
   handleNewUserCommentChange = (userComment) => {
     this.setState({ userComment });
