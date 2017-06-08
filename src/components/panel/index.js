@@ -27,11 +27,11 @@ const extractVersions = (data) => {
 export default class Panel extends Component {
   constructor(...args) {
     super(...args);
-    
+
     this.state = {
       activeComponent: null,
       activeStory: null,
-      activeVersion: version || "version_not_set",
+      activeVersion: version || 'version_not_set',
       eventName: null,
       user: {
         isUserAuthenticated: false,
@@ -57,7 +57,7 @@ export default class Panel extends Component {
       time: 3000,
       transition: 'fade',
     };
-    
+
     this.userActions = {
       added: {},
       removed: {},
@@ -93,6 +93,23 @@ export default class Panel extends Component {
     dbEventManager.removeOnlineListener();
   }
 
+  onStoryChangeHandler = (kind, story) => {
+    const activeComponent = cleanToken(kind);
+    const activeStory = cleanToken(story);
+
+    this.setState({
+      activeComponent,
+      activeStory,
+      eventName: `${activeComponent}${activeStory}`,
+      userComment: '',
+      comments: [],
+    });
+    this.filteredComments = [];
+    this.allComments = [];
+
+    this.fetchComments(activeComponent, activeStory, this.state.activeVersion);
+  }
+
   handleRegisterChange = (key, value) => {
     const { user } = this.state;
 
@@ -100,8 +117,8 @@ export default class Panel extends Component {
       user: Object.assign(
         {},
         user,
-        { [key]: value }
-      )
+        { [key]: value },
+      ),
     });
   }
 
@@ -109,7 +126,7 @@ export default class Panel extends Component {
     const { user: { userName, userEmail } } = this.state;
 
     this.registerUser(userName, userEmail);
-  }  
+  }
 
   handleNewUserCommentChange = (userComment) => {
     this.setState({ userComment });
@@ -179,34 +196,11 @@ export default class Panel extends Component {
     });
   }
 
-  onStoryChangeHandler = (kind, story) => {
-    const activeComponent = cleanToken(kind);
-    const activeStory = cleanToken(story);
+  isDeletedByMe = dataKey => wasActionPerformedByMe(dataKey, this.userActions.removed);
 
-    this.setState({
-      activeComponent,
-      activeStory,
-      eventName: `${activeComponent}${activeStory}`,
-      userComment: '',
-      comments: [],
-    });
-    this.filteredComments = [];
-    this.allComments = [];
+  isEditedByMe = dataKey => wasActionPerformedByMe(dataKey, this.userActions.edited);
 
-    this.fetchComments(activeComponent, activeStory, this.state.activeVersion);
-  }
-
-  isDeletedByMe = (dataKey) => {
-    return wasActionPerformedByMe(dataKey, this.userActions.removed);
-  }
-
-  isEditedByMe = (dataKey) => {
-    return wasActionPerformedByMe(dataKey, this.userActions.edited);
-  }
-
-  isAddedByMe = (dataKey) => {
-    return wasActionPerformedByMe(dataKey, this.userActions.added);
-  }
+  isAddedByMe = dataKey => wasActionPerformedByMe(dataKey, this.userActions.added);
 
   isNewComment = (dataKey) => {
     const comments = this.allComments;
