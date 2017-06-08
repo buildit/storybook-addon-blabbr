@@ -39,16 +39,6 @@ inquirer.prompt(prompts.prompts).then((answers) => {
       out.write("const version = require('../package.json').version;\n");
       out.write("// or const version = '<YOUR_VERSION_NO>';\n");
       exportsString += ', version';
-
-      // Copy a versions file
-      fs.access(path.join(storybookDirectory, 'versions.json'), fs.constants.R_OK, (err) => {
-        const versions = 'versions.sample.json';
-        if (err) {
-          // If it does not exist just copy over
-          fs.copy(path.join(`${currentDir}`, 'config', versions),
-                  path.join(`${storybookDirectory}`, 'versions.json'));
-        }
-      });
     }
 
     out.write(`export { ${exportsString} };\n`);
