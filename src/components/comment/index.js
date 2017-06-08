@@ -4,12 +4,12 @@ import marked from 'marked';
 
 import { createHash } from '../../utils';
 import { versionLink } from '../../utils/url';
-import { ui } from '../../utils/config'; // eslint-disable-line
+import { ui as uiConfig } from '../../utils/config'; // eslint-disable-line
 import './styles.css';
 
-const shouldShowAvatar = (ui) => {
-  if (ui) {
-    return !!ui.avatar
+const shouldShowAvatar = () => {
+  if (uiConfig) {
+    return !!uiConfig.avatar;
   }
 
   return true;
@@ -32,7 +32,7 @@ const Comment = ({
   const emailHash = createHash(emailId);
   const output = marked(comment);
 
-  const showAvatar = shouldShowAvatar(ui);
+  const showAvatar = shouldShowAvatar();
   const classes = showAvatar ? 'blabbr-comment withAvatar' : 'blabbr-comment';
 
   return (<article className={classes}>
@@ -79,7 +79,7 @@ const Comment = ({
 
 Comment.propTypes = {
   emailId: PropTypes.string.isRequired,
-  username: PropTypes.string,
+  username: PropTypes.string.isRequired,
   timestamp: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
   commentId: PropTypes.string.isRequired,
@@ -90,6 +90,13 @@ Comment.propTypes = {
   lastUpdated: PropTypes.string,
   version: PropTypes.string,
   activeVersion: PropTypes.string,
+};
+
+Comment.defaultProps = {
+  edited: false,
+  lastUpdated: '',
+  version: '',
+  activeVersion: '',
 };
 
 export default Comment;
