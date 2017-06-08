@@ -48,6 +48,8 @@
   },
   "homepage": "https://github.com/buildit/storybook-addon-blabbr#readme",
   "devDependencies": {
+    "@kadira/storybook": "^2.35.2",
+    "@kadira/storybook-addons": "^1.6.1",
     "babel-cli": "^6.18.0",
     "babel-jest": "^20.0.3",
     "babel-loader": "^7.0.0",
