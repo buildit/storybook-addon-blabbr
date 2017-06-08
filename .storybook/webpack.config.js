@@ -15,10 +15,7 @@ module.exports = {
 
 	resolve: {
 		root: path.resolve(__dirname),
-		extensions: ['', '.js'],
-    alias: {
-      'blabbr-config': path.join(path.resolve(__dirname), './blabbr-config.js')
-    }
+		extensions: ['', '.js']
 	},
 
 	plugins: [

@@ -1,3 +1,23 @@
-import { db as dbConfig, slack, ui, version } from 'blabbr-config'; // eslint-disable-line
+
+
+let configFile = null;
+
+const dbConfig = () => {
+  if (configFile) {
+
+  }
+};
+
+const slack = () => {
+
+};
+
+const ui = () => {
+
+};
+
+const version = () => {
+
+};
 
 export { dbConfig, slack, ui, version };
