@@ -8,7 +8,6 @@ const copyFiles = () => {
   const consumerDirectory = process.cwd();
   const storybookDirectory = path.join(consumerDirectory, '.storybook');
   const blabbrConfig = 'blabbr-config.sample.js';
-  const head = 'head.sample.html';
 
   fs.access(storybookDirectory, fs.constants.W_OK, (err) => {
     if (err) {
@@ -24,15 +23,6 @@ const copyFiles = () => {
       })
       .catch(() => console.log(chalk.red(`Could not copy
         ${path.join(`${currentDir}`, 'config', blabbrConfig)} into ${storybookDirectory}`)));
-
-    fs.copy(path.join(`${currentDir}`, 'config', head),
-            path.join(`${storybookDirectory}`, head),
-            { overwrite: true })
-      .then(() => {
-        console.log(chalk.bgBlue(`You must now merge ${head} into head.html`));
-      })
-      .catch(() => console.log(chalk.red(`Could not copy
-        ${path.join(`${currentDir}`, 'config', head)} into ${storybookDirectory}`)));
   });
 };
 

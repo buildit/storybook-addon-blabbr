@@ -9,15 +9,15 @@ class Register extends Component {
     this.state = {
       validation: {
         userName: false,
-        userEmail: false
-      }
+        userEmail: false,
+      },
     };
   }
 
   handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, validity, value } = event.target;
 
-    this.showInputError(name);
+    this.showInputError(name, validity);
     this.props.handleChange(name, value);
   }
 
@@ -25,32 +25,29 @@ class Register extends Component {
     event.preventDefault();
 
     const invalidForm = Object.keys(this.state.validation).reduce(
-      (accumulator, value) => {
-        return accumulator || this.state.validation[value];
-      }, false);
+      (accumulator, value) => accumulator || this.state.validation[value],
+      false,
+    );
 
     if (!invalidForm) {
       this.props.handleSubmit();
-      return;
     }
   }
 
-  showInputError(name) {
-    const validity = this.refs[name].validity;
-
+  showInputError(name, validity) {
     if (!validity.valid) {
       this.setState({
         validation: Object.assign({},
           this.state.validation,
-          { [name]: true }
-        )
+          { [name]: true },
+        ),
       });
     } else {
       this.setState({
         validation: Object.assign({},
           this.state.validation,
-          { [name]: false }
-        )
+          { [name]: false },
+        ),
       });
     }
   }
@@ -58,7 +55,7 @@ class Register extends Component {
   render() {
     const {
       userName,
-      userEmail
+      userEmail,
     } = this.props;
 
     return (
@@ -72,7 +69,6 @@ class Register extends Component {
             <input
               id="userName"
               name="userName"
-              ref="userName"
               type="text"
               pattern=".{3,}"
               value={userName || ''}
@@ -89,7 +85,6 @@ class Register extends Component {
             <input
               id="userEmail"
               name="userEmail"
-              ref="userEmail"
               type="email"
               value={userEmail || ''}
               onChange={this.handleChange}

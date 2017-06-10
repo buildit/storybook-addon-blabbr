@@ -4,7 +4,7 @@ import { postComment as postSlackComment, editComment as editSlackComment } from
 
 // Return all the comments for the particular component and story
 // NOTE: Version is ignored for now, all comments are returned
-export const getComments = (component, story, version = 'version_not_set') =>
+export const getComments = (component, story/* , version = 'version_not_set' */) =>
   // returns a promise
    db.find({
      selector: {

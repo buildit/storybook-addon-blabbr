@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createHash, formatToHTML } from '../../utils';
+import marked from 'marked';
+
+import { createHash } from '../../utils';
 import { versionLink } from '../../utils/url';
-import { ui } from '../../utils/config'; // eslint-disable-line
+import { ui as uiConfig } from '../../utils/config'; // eslint-disable-line
 import './styles.css';
 
-const shouldShowAvatar = (ui) => {
-  if (ui) {
-    return !!ui.avatar
+const shouldShowAvatar = () => {
+  if (uiConfig) {
+    return !!uiConfig.avatar;
   }
 
   return true;
-}
+};
 
 const Comment = ({
   username,
@@ -28,9 +30,9 @@ const Comment = ({
   activeVersion,
 }) => {
   const emailHash = createHash(emailId);
-  const output = formatToHTML(comment);
+  const output = marked(comment);
 
-  const showAvatar = shouldShowAvatar(ui);
+  const showAvatar = shouldShowAvatar();
   const classes = showAvatar ? 'blabbr-comment withAvatar' : 'blabbr-comment';
 
   return (<article className={classes}>
@@ -70,14 +72,14 @@ const Comment = ({
         }
       </span>
     </header>
-    {output}
+    <div dangerouslySetInnerHTML={{ __html: output }} />
     {edited && <p><small>(edited - {lastUpdated})</small></p>}
   </article>);
 };
 
 Comment.propTypes = {
   emailId: PropTypes.string.isRequired,
-  username: PropTypes.string,
+  username: PropTypes.string.isRequired,
   timestamp: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
   commentId: PropTypes.string.isRequired,
@@ -88,6 +90,13 @@ Comment.propTypes = {
   lastUpdated: PropTypes.string,
   version: PropTypes.string,
   activeVersion: PropTypes.string,
+};
+
+Comment.defaultProps = {
+  edited: false,
+  lastUpdated: '',
+  version: '',
+  activeVersion: '',
 };
 
 export default Comment;

@@ -1,6 +1,8 @@
 {
   "extends": ["airbnb"],
+  "parser": "babel-eslint",
   "env": {
+    "es6": true,
     "browser": true,
     "node": true,
     "jest": true
@@ -10,7 +12,8 @@
     "react/forbid-prop-types": 1,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/require-default-props": 1,
-    "no-underscore-dangle": 1,
+    "comma-dangle": 0,
+    "no-underscore-dangle": 0,
     "no-plusplus": 0,
     "no-unused-expressions": ["error", { "allowShortCircuit": true }]
   }
