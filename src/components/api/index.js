@@ -1,5 +1,6 @@
 import db from './db';
 import { slack } from '../../utils/config'; // eslint-disable-line
+import { postComment as postSlackComment, editComment as editSlackComment } from './slack';
 
 // Return all the comments for the particular component and story
 // NOTE: Version is ignored for now, all comments are returned
@@ -50,24 +51,14 @@ export const postComment = ({
     eventName,
   };
 
-  if (slack && slack.endPoint) {
-    // Slack
-    const myHeaders = new Headers();
-    const payload = {
-      username: userName,
-      text: `${record.userName} just commented on component` +
-        `<${window.location.href}|${record.componentId}>: ${record.comment}`,
-    };
+  postSlackComment({
+    userName,
+    userEmail,
+    comment: userComment,
+    componentName: component,
+    componentUrl: window.location.href,
+  });
 
-    const myInit = {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify(payload),
-    };
-    fetch(slack.endPoint, myInit);
-  }
-
-  // return
   return db.put(record).then((data) => {
     if (data.ok) {
       return {
@@ -86,9 +77,23 @@ export const postComment = ({
   }));
 };
 
-export const updateComment = (commentId, userCommentText) => {
+export const updateComment = ({
+  commentId,
+  component,
+  userCommentText,
+  userEmail,
+  userName,
+}) => {
   const timestampId = `${new Date().getTime()}`;
   const userComment = userCommentText && userCommentText.trim();
+
+  editSlackComment({
+    userName,
+    userEmail,
+    comment: userComment,
+    componentName: component,
+    componentUrl: window.location.href,
+  });
 
   return db.find({
     selector: {

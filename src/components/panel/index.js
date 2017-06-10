@@ -156,13 +156,7 @@ export default class Panel extends Component {
   handleEditUserCommentSubmit = (commentId) => {
     const { userCommentBeingUpdated } = this.state;
 
-    updateComment(commentId, userCommentBeingUpdated).then((data) => {
-      if (data.success) {
-        global.msg.success(data.msg);
-      } else {
-        global.msg.error(data.msg);
-      }
-    });
+    this.editComment(commentId, userCommentBeingUpdated);
 
     this.setState({ userCommentBeingUpdated: null, commentIdBeingEdited: null });
   }
@@ -345,6 +339,27 @@ export default class Panel extends Component {
     });
 
     this.setState({ userComment: '' });
+  }
+
+  editComment = (commentId, editedComment) => {
+    const {
+      activeComponent,
+      user: { userName, userEmail },
+    } = this.state;
+
+    updateComment({
+      commentId,
+      component: activeComponent,
+      userCommentText: editedComment,
+      userEmail,
+      userName,
+    }).then((data) => {
+      if (data.success) {
+        global.msg.success(data.msg);
+      } else {
+        global.msg.error(data.msg);
+      }
+    });
   }
 
   render() {
