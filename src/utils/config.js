@@ -1,5 +1,3 @@
-
-
 let configFile = null;
 
 const dbConfig = () => {

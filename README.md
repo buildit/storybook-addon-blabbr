@@ -11,12 +11,12 @@ blabbr expects to find a `storybook-config.json` configuration file at the root 
   "storybook": {
     "blabbr": {
       "db": {
-        "user": "keditheapplaselaysiester",
-        "pwd": "98344304f66e9adb20f8c6f82038ea93681e2a8a",
-        "host": "jonathan-ec.cloudant.com/blabbr"
+        "user": "username",
+        "pwd": "password",
+        "host": "db-endpoint"
       },
       "slack": {
-        "endPoint": "https://hooks.slack.com/services/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"
+        "endPoint": "http://your-slack-endpoint"
       },
       "ui": {
         "avatar": true

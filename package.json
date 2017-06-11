@@ -13,9 +13,7 @@
     "transpile": "babel ./src --out-dir dist --copy-files",
     "test": "jest",
     "build": "npm run lint && npm run test && npm run transpile",
-    "prepublish": "rm -fr dist && npm run transpile",
-    "configure": "node ./scripts/configure.js",
-    "postinstall": "node ./scripts/check-config.js"
+    "prepublish": "rm -fr dist && npm run transpile"
   },
   "repository": {
     "type": "git",
