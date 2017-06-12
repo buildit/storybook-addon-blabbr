@@ -32,9 +32,3 @@ There is currently no formatting available in the comments section. However, the
 
 1. Retains multi-line format
 2. Parses hyperlinks. So if you type `http://www.yoururl.com` in the box this will be shown as a link.
-
-## Versioning support
-
-If you configured blabbr to support versions, on startup, it  will attempt to get a list of versions available from the root of the host. It looks for
-a file `versions.json` and expects to find an array with the versions listed. You can mock this using the provided
-`versions.json` in `.storybook/`. This is used to populate the navigation section at the top of the story panel.
