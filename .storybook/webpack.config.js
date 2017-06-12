@@ -8,7 +8,6 @@ module.exports = {
 
 		loaders: [
 			{ test: /\.(js)$/, exclude: [ /node_modules/ ], loader: 'babel' },
-			{ test: /\.(png|jpg|gif|svg)$/, loader: 'file-loader' },
       { test: /\.css$/, loader: 'style-loader!css-loader' }
 		]
 	},
@@ -17,9 +16,6 @@ module.exports = {
 		root: path.resolve(__dirname),
 		extensions: ['', '.js']
 	},
-
-	plugins: [
-	],
 
 	devServer: {
 		stats: 'minimal'

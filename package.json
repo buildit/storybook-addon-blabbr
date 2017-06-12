@@ -54,7 +54,6 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
-    "file-loader": "^0.11.1",
     "jest": "^20.0.3",
     "json-loader": "^0.5.4",
     "prop-types": "^15",
@@ -80,7 +79,6 @@
     "@kadira/storybook": "^2.35.2",
     "@kadira/storybook-addons": "^1.6.1",
     "css-loader": "^0.28.1",
-    "file-loader": "^0.11.1",
     "prop-types": "^15",
     "react": "^15",
     "react-dom": "^15",
@@ -88,9 +86,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
-      "blabbr-config": "<rootDir>/.storybook/blabbr-config.js"
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
     }
   }
 }
