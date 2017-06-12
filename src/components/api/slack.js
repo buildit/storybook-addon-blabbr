@@ -2,6 +2,18 @@ import { slack } from '../../utils/config';
 
 const getTimestamp = () => Math.floor(Date.now() / 1000);
 
+const makeRequest = (payload) => {
+  const requestHeaders = new Headers();
+
+  const requestConfig = {
+    method: 'POST',
+    headers: requestHeaders,
+    body: JSON.stringify(payload),
+  };
+
+  return fetch(slack.endPoint, requestConfig);
+};
+
 export const postComment = ({
   userName,
   userEmail,
@@ -25,7 +37,7 @@ export const postComment = ({
   };
 
   return makeRequest(payload);
-}
+};
 
 export const editComment = ({
   userName,
@@ -50,16 +62,4 @@ export const editComment = ({
   };
 
   return makeRequest(payload);
-}
-
-const makeRequest = (payload) => {
-  const requestHeaders = new Headers();
-
-  const requestConfig = {
-    method: 'POST',
-    headers: requestHeaders,
-    body: JSON.stringify(payload),
-  };
-
-  return fetch(slack.endPoint, requestConfig);
-}
+};
