@@ -2,7 +2,7 @@ import { slack } from '../../utils/config';
 
 const getTimestamp = () => Math.floor(Date.now() / 1000);
 
-const makeRequest = (payload) => {
+const makeRequest = payload => {
   const requestHeaders = new Headers();
 
   const requestConfig = {
@@ -32,8 +32,8 @@ export const postComment = ({
         title_link: componentUrl,
         text: comment,
         ts: getTimestamp(),
-      }
-    ]
+      },
+    ],
   };
 
   return makeRequest(payload);
@@ -57,8 +57,8 @@ export const editComment = ({
         title_link: componentUrl,
         text: comment,
         ts: getTimestamp(),
-      }
-    ]
+      },
+    ],
   };
 
   return makeRequest(payload);

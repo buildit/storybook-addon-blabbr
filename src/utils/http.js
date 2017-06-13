@@ -1,4 +1,4 @@
-export const verifyStatus = (response) => {
+export const verifyStatus = response => {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -7,13 +7,12 @@ export const verifyStatus = (response) => {
   throw error;
 };
 
-export const parseJSON = (response) => {
+export const parseJSON = response => {
   if (response.status !== 204) {
     return response.json();
   }
   return '{}';
 };
 
-export const makeRequest = (url, options = {}) => fetch(url, options)
-                                                    .then(verifyStatus)
-                                                    .then(parseJSON);
+export const makeRequest = (url, options = {}) =>
+  fetch(url, options).then(verifyStatus).then(parseJSON);

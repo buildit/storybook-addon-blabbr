@@ -35,46 +35,49 @@ const Comment = ({
   const showAvatar = shouldShowAvatar();
   const classes = showAvatar ? 'blabbr-comment withAvatar' : 'blabbr-comment';
 
-  return (<article className={classes}>
-    <header>
-      <h2>{`${username}`}</h2>
+  return (
+    <article className={classes}>
+      <header>
+        <h2>{`${username}`}</h2>
 
-      <span className="blabbr-time">at <time dateTime={timestamp}>{timestamp}</time></span>
+        <span className="blabbr-time">
+          at <time dateTime={timestamp}>{timestamp}</time>
+        </span>
 
-      { version &&
-        <span className="blabbr-version">about {
-          (version === activeVersion) ? `v${version}` : <a href={versionLink(version)}>v{version}</a>
-        }</span>
-      }
+        {version &&
+          <span className="blabbr-version">
+            about{' '}
+            {version === activeVersion
+              ? `v${version}`
+              : <a href={versionLink(version)}>v{version}</a>}
+          </span>}
 
-      { showAvatar &&
-        <img
-          className="avatar"
-          src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`}
-          alt={`${username}'s Gravatar`}
-        />
-      }
+        {showAvatar &&
+          <img
+            className="avatar"
+            src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`}
+            alt={`${username}'s Gravatar`}
+          />}
 
-      <span className="controls">
-        { !!currentUserIsOwner &&
-          <button id={commentId} onClick={handleEditUserComment}>
-            Edit
-          </button>
-        }
-        { !!currentUserIsOwner &&
-          <button
-            id={commentId}
-            onClick={handleDeleteUserComment}
-            className="remove"
-          >
-            Remove
-          </button>
-        }
-      </span>
-    </header>
-    <div dangerouslySetInnerHTML={{ __html: output }} />
-    {edited && <p><small>(edited - {lastUpdated})</small></p>}
-  </article>);
+        <span className="controls">
+          {!!currentUserIsOwner &&
+            <button id={commentId} onClick={handleEditUserComment}>
+              Edit
+            </button>}
+          {!!currentUserIsOwner &&
+            <button
+              id={commentId}
+              onClick={handleDeleteUserComment}
+              className="remove"
+            >
+              Remove
+            </button>}
+        </span>
+      </header>
+      <div dangerouslySetInnerHTML={{ __html: output }} />
+      {edited && <p><small>(edited - {lastUpdated})</small></p>}
+    </article>
+  );
 };
 
 Comment.propTypes = {

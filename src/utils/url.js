@@ -22,7 +22,7 @@ export const getStorybookVersions = () => {
   return makeRequest(fileLocation);
 };
 
-export const versionLink = (version) => {
+export const versionLink = version => {
   if (!window || !window.parent) {
     return '';
   }

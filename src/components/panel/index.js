@@ -19,7 +19,7 @@ function wasActionPerformedByMe(key, obj) {
   return isKeyFound;
 }
 
-const extractVersions = (data) => {
+const extractVersions = data => {
   const entries = (data && data.map(item => item.version)) || [];
   return new Set(entries);
 };
@@ -74,9 +74,16 @@ export default class Panel extends Component {
 
   componentDidMount() {
     const { storybook } = this.props;
-    storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
+    storybook.onStory &&
+      storybook.onStory((kind, story) =>
+        this.onStoryChangeHandler(kind, story)
+      );
     dbEventManager.addOnlineListener();
-    dbEventManager.subscribe('online', 'dbOnline', this.handleOnlineStatusChange);
+    dbEventManager.subscribe(
+      'online',
+      'dbOnline',
+      this.handleOnlineStatusChange
+    );
     getStorybookVersions()
       .then(data => this.processServerVersions(data))
       .catch();
@@ -108,95 +115,99 @@ export default class Panel extends Component {
     this.allComments = [];
 
     this.fetchComments(activeComponent, activeStory, this.state.activeVersion);
-  }
+  };
 
   handleRegisterChange = (key, value) => {
     const { user } = this.state;
 
     this.setState({
-      user: Object.assign(
-        {},
-        user,
-        { [key]: value },
-      ),
+      user: Object.assign({}, user, { [key]: value }),
     });
-  }
+  };
 
   handleRegisterSubmit = () => {
     const { user: { userName, userEmail } } = this.state;
 
     this.registerUser(userName, userEmail);
-  }
+  };
 
-  handleNewUserCommentChange = (userComment) => {
+  handleNewUserCommentChange = userComment => {
     this.setState({ userComment });
-  }
+  };
 
   handleNewUserCommentSubmit = () => {
     const { userComment } = this.state;
 
     this.addComment(userComment && userComment.trim());
     this.setState({ userComment: '' });
-  }
+  };
 
-  handleEditUserComment = (event) => {
+  handleEditUserComment = event => {
     event.preventDefault();
     event.stopPropagation();
 
     this.setState({ commentIdBeingEdited: event.target.id });
-    const commentBeingEdited = this.allComments.find(comment => comment._id === event.target.id);
+    const commentBeingEdited = this.allComments.find(
+      comment => comment._id === event.target.id
+    );
     this.setState({ userCommentBeingUpdated: commentBeingEdited.comment });
     this.userActions.edited[event.target.id] = true;
-  }
+  };
 
-  handleEditUserCommentChange = (userComment) => {
+  handleEditUserCommentChange = userComment => {
     this.setState({ userCommentBeingUpdated: userComment });
-  }
+  };
 
-  handleEditUserCommentSubmit = (commentId) => {
+  handleEditUserCommentSubmit = commentId => {
     const { userCommentBeingUpdated } = this.state;
 
     this.editComment(commentId, userCommentBeingUpdated);
 
-    this.setState({ userCommentBeingUpdated: null, commentIdBeingEdited: null });
-  }
+    this.setState({
+      userCommentBeingUpdated: null,
+      commentIdBeingEdited: null,
+    });
+  };
 
-  handleEditUserCommentCancel = (event) => {
+  handleEditUserCommentCancel = event => {
     event.preventDefault();
     event.stopPropagation();
 
     this.setState({ commentIdBeingEdited: null });
     delete this.userActions.edited[event.target.id];
-  }
+  };
 
-  handleDeleteUserComment = (event) => {
+  handleDeleteUserComment = event => {
     event.preventDefault();
     event.stopPropagation();
 
     this.userActions.removed[event.target.id] = true;
-    deleteComment(event.target.id).then((data) => {
+    deleteComment(event.target.id).then(data => {
       if (data.success) {
         global.msg.success(data.msg);
       } else {
         global.msg.error(data.msg);
       }
     });
-  }
+  };
 
   handleShowAllComments = () => {
     this.setState({
       comments: this.allComments,
       isShowingAllComments: true,
     });
-  }
+  };
 
-  isDeletedByMe = dataKey => wasActionPerformedByMe(dataKey, this.userActions.removed);
+  isDeletedByMe = dataKey =>
+    wasActionPerformedByMe(dataKey, this.userActions.removed);
 
-  isEditedByMe = dataKey => wasActionPerformedByMe(dataKey, this.userActions.edited);
+  isEditedByMe = dataKey =>
+    wasActionPerformedByMe(dataKey, this.userActions.edited);
 
-  isAddedByMe = dataKey => wasActionPerformedByMe(dataKey, this.userActions.added);
+  isAddedByMe = dataKey =>
+    wasActionPerformedByMe(dataKey, this.userActions.added);
 
-  isNewComment = (dataKey) => {
+  isNewComment = dataKey => {
     const comments = this.allComments;
     let idFound = false;
     let commentsLength;
@@ -209,13 +220,13 @@ export default class Panel extends Component {
       }
     }
     return !idFound;
-  }
+  };
 
-  processServerVersions = (data) => {
+  processServerVersions = data => {
     this.setState({ serverVersions: data });
-  }
+  };
 
-  processComments = (data) => {
+  processComments = data => {
     const comments = data.docs;
     const commentsLength = comments.length;
     const threshold = this.commentsThreshold;
@@ -232,7 +243,7 @@ export default class Panel extends Component {
       versions: [...extractVersions(comments)],
       isShowingAllComments,
     });
-  }
+  };
 
   listenForCommentChanges = (activeComponent, activeStory, activeVersion) => {
     const { eventName } = this.state;
@@ -244,36 +255,47 @@ export default class Panel extends Component {
     // register listeners
     // These listeners use userActions to only fire if you're
     // not the current user
-    this.commentChannelListener = dbEventManager.subscribe('change', eventName, (change) => {
-      const changedDoc = change.doc;
-      const changedRecordId = changedDoc._id;
-      const isDeleted = !!changedDoc._deleted;
-      const isNewRecord = this.isNewComment(changedRecordId);
+    this.commentChannelListener = dbEventManager.subscribe(
+      'change',
+      eventName,
+      change => {
+        const changedDoc = change.doc;
+        const changedRecordId = changedDoc._id;
+        const isDeleted = !!changedDoc._deleted;
+        const isNewRecord = this.isNewComment(changedRecordId);
 
-      if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
-        global.msg.info('A comment has been removed.');
-      } else if (!isDeleted && isNewRecord && !this.isAddedByMe(changedRecordId)) {
-        global.msg.info('A new comment was added.');
-      } else if (!isDeleted && !isNewRecord && !this.isEditedByMe(changedRecordId)) {
-        global.msg.info('A comment was edited.');
+        if (isDeleted && !this.isDeletedByMe(changedRecordId)) {
+          global.msg.info('A comment has been removed.');
+        } else if (
+          !isDeleted &&
+          isNewRecord &&
+          !this.isAddedByMe(changedRecordId)
+        ) {
+          global.msg.info('A new comment was added.');
+        } else if (
+          !isDeleted &&
+          !isNewRecord &&
+          !this.isEditedByMe(changedRecordId)
+        ) {
+          global.msg.info('A comment was edited.');
+        }
+        this.updateView(activeComponent, activeStory, activeVersion);
       }
-      this.updateView(activeComponent, activeStory, activeVersion);
-    });
-  }
+    );
+  };
 
   verifyUser = () => {
     const userName = localStorage.getItem('blabbr_userName');
     const userEmail = localStorage.getItem('blabbr_userEmail');
-    userName && userEmail &&
-      this.setState({ user: { userName, userEmail, isUserAuthenticated: true } });
-  }
+    userName &&
+      userEmail &&
+      this.setState({
+        user: { userName, userEmail, isUserAuthenticated: true },
+      });
+  };
 
   registerUser(username, email) {
-    const { user,
-      activeComponent,
-      activeStory,
-      activeVersion,
-    } = this.state;
+    const { user, activeComponent, activeStory, activeVersion } = this.state;
 
     localStorage.setItem('blabbr_userName', username);
     localStorage.setItem('blabbr_userEmail', email);
@@ -289,24 +311,25 @@ export default class Panel extends Component {
       this.updateView(activeComponent, activeStory, activeVersion);
       this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
     }
-  }
+  };
 
   updateView = (activeComponent, activeStory, activeVersion) => {
     getComments(activeComponent, activeStory, activeVersion)
-      .then((data) => {
+      .then(data => {
         this.processComments(data);
-      }).catch((error) => {
+      })
+      .catch(error => {
         global.msg.error(`Error: ${error.message}`);
       });
-  }
+  };
 
-  handleOnlineStatusChange = (data) => {
+  handleOnlineStatusChange = data => {
     this.setState({
       isUserOnline: data.isOnline,
     });
-  }
+  };
 
-  addComment = (userComment) => {
+  addComment = userComment => {
     const {
       user: { userName, userEmail },
       activeComponent,
@@ -326,26 +349,31 @@ export default class Panel extends Component {
       story: activeStory,
       version: activeVersion,
       eventName,
-    }).then((data) => {
-      if (data.success) {
-        global.msg.success(data.msg);
-      } else {
-        global.msg.error(data.msg);
-      }
-      this.updateView(activeComponent, activeStory, activeVersion);
-      this.listenForCommentChanges(activeComponent, activeStory, activeVersion);
-    }).catch(() => {
-      global.msg.error('An error occured while attempting to post your comment.');
-    });
+    })
+      .then(data => {
+        if (data.success) {
+          global.msg.success(data.msg);
+        } else {
+          global.msg.error(data.msg);
+        }
+        this.updateView(activeComponent, activeStory, activeVersion);
+        this.listenForCommentChanges(
+          activeComponent,
+          activeStory,
+          activeVersion
+        );
+      })
+      .catch(() => {
+        global.msg.error(
+          'An error occured while attempting to post your comment.'
+        );
+      });
 
     this.setState({ userComment: '' });
-  }
+  };
 
   editComment = (commentId, editedComment) => {
-    const {
-      activeComponent,
-      user: { userName, userEmail },
-    } = this.state;
+    const { activeComponent, user: { userName, userEmail } } = this.state;
 
     updateComment({
       commentId,
@@ -353,14 +381,14 @@ export default class Panel extends Component {
       userCommentText: editedComment,
       userEmail,
       userName,
-    }).then((data) => {
+    }).then(data => {
       if (data.success) {
         global.msg.success(data.msg);
       } else {
         global.msg.error(data.msg);
       }
     });
-  }
+  };
 
   render() {
     const {
@@ -377,35 +405,35 @@ export default class Panel extends Component {
 
     const commentCount = this.allComments.length;
 
-    const commentCountView = commentCount ?
-      <span className="comment-count text-muted tile">{ commentCount }</span> : null;
+    const commentCountView = commentCount
+      ? <span className="comment-count text-muted tile">{commentCount}</span>
+      : null;
 
     return (
       <section className="blabbr-panel-container">
         <AlertContainer ref={a => (global.msg = a)} {...this.alertOptions} />
         <ul className="tiles">
-          <li>{ isUserAuthenticated && commentCountView }</li>
+          <li>{isUserAuthenticated && commentCountView}</li>
           <li><OnlineIndicator isOnline={isUserOnline} /></li>
         </ul>
 
-        { !isUserAuthenticated &&
+        {!isUserAuthenticated &&
           <Register
             userName={userName}
             userEmail={userEmail}
             handleChange={this.handleRegisterChange}
             handleSubmit={this.handleRegisterSubmit}
-          />
-        }
+          />}
 
-        { !!isUserAuthenticated &&
+        {!!isUserAuthenticated &&
           <SubmitComment
             userComment={userComment}
             handleChange={this.handleNewUserCommentChange}
             handleSubmit={this.handleNewUserCommentSubmit}
-          />
-        }
+          />}
 
-        { !!isUserAuthenticated && !!comments &&
+        {!!isUserAuthenticated &&
+          !!comments &&
           <Comments
             userCommentBeingUpdated={userCommentBeingUpdated}
             handleEditUserComment={this.handleEditUserComment}
@@ -420,8 +448,7 @@ export default class Panel extends Component {
             commentIdBeingEdited={commentIdBeingEdited}
             isShowingAllComments={isShowingAllComments}
             handleShowAllComments={this.handleShowAllComments}
-          />
-        }
+          />}
       </section>
     );
   }

@@ -45,9 +45,11 @@ const fireListeners = (eventType, data) => {
   for (let i = 0, l = dbEvents[eventType].length; i < l; i++) {
     eventData = dbEvents[eventType][i];
 
-    if ((eventData.eventName === changedDoc.eventName ||
-      isStatusEvent === true) &&
-      eventData.listener) {
+    if (
+      (eventData.eventName === changedDoc.eventName ||
+        isStatusEvent === true) &&
+      eventData.listener
+    ) {
       eventData.listener(data);
     }
   }
@@ -73,7 +75,7 @@ function removeOnlineListener() {
   window.removeEventListener('offline', updateIndicator, false);
 }
 
-dbEmitter.on('change', (data) => {
+dbEmitter.on('change', data => {
   fireListeners('change', data);
 });
 
@@ -85,18 +87,21 @@ const subscribe = (eventType, eventName, listener) => {
   let eventListener = null;
 
   if (eventType === 'change') {
-    eventListener = db.changes({
-      since: 'now',
-      live: true,
-      include_docs: true,
-      filter(doc) {
-        return doc.eventName === eventName;
-      },
-    }).on('change', (data) => {
-      dbEmitter.emit('change', data);
-    }).on('error', (err) => {
-      dbEmitter.emit('error', err);
-    });
+    eventListener = db
+      .changes({
+        since: 'now',
+        live: true,
+        include_docs: true,
+        filter(doc) {
+          return doc.eventName === eventName;
+        },
+      })
+      .on('change', data => {
+        dbEmitter.emit('change', data);
+      })
+      .on('error', err => {
+        dbEmitter.emit('error', err);
+      });
   }
 
   dbEvents[eventType].push({ eventId, eventListener, eventName, listener });

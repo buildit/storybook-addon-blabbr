@@ -74,6 +74,7 @@
     "marked": "^0.3.6",
     "pouchdb-browser": "^6.1.1",
     "pouchdb-find": "^6.2.0",
+    "prettier": "^1.4.4",
     "react-addons-css-transition-group": "^15.4.2",
     "react-alert": "^2.0.1",
     "react-tooltip": "^3.2.7"

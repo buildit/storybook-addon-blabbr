@@ -14,49 +14,40 @@ class Register extends Component {
     };
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     const { name, validity, value } = event.target;
 
     this.showInputError(name, validity);
     this.props.handleChange(name, value);
-  }
+  };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
 
     const invalidForm = Object.keys(this.state.validation).reduce(
       (accumulator, value) => accumulator || this.state.validation[value],
-      false,
+      false
     );
 
     if (!invalidForm) {
       this.props.handleSubmit();
     }
-  }
+  };
 
   showInputError(name, validity) {
     if (!validity.valid) {
       this.setState({
-        validation: Object.assign({},
-          this.state.validation,
-          { [name]: true },
-        ),
+        validation: Object.assign({}, this.state.validation, { [name]: true }),
       });
     } else {
       this.setState({
-        validation: Object.assign({},
-          this.state.validation,
-          { [name]: false },
-        ),
+        validation: Object.assign({}, this.state.validation, { [name]: false }),
       });
     }
   }
 
   render() {
-    const {
-      userName,
-      userEmail,
-    } = this.props;
+    const { userName, userEmail } = this.props;
 
     return (
       <section className="blabbr-register">
@@ -74,9 +65,10 @@ class Register extends Component {
               value={userName || ''}
               onChange={this.handleChange}
             />
-            { !!this.state.validation.userName &&
-              <div className="error">Display name must be at least 3 characters.</div>
-            }
+            {!!this.state.validation.userName &&
+              <div className="error">
+                Display name must be at least 3 characters.
+              </div>}
           </div>
           <div>
             <label id="userEmailLabel" htmlFor="userEmail">
@@ -89,14 +81,10 @@ class Register extends Component {
               value={userEmail || ''}
               onChange={this.handleChange}
             />
-            { !!this.state.validation.userEmail &&
-              <div className="error">Please use a valid email address.</div>
-            }
+            {!!this.state.validation.userEmail &&
+              <div className="error">Please use a valid email address.</div>}
           </div>
-          <button
-            type="submit"
-            onClick={this.handleSubmit}
-          >
+          <button type="submit" onClick={this.handleSubmit}>
             Register
           </button>
         </form>

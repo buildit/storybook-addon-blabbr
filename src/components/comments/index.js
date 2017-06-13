@@ -20,55 +20,55 @@ const Comments = ({
   isShowingAllComments,
   activeVersion,
 }) => {
-  const commentsComponents = comments.map((comment) => {
+  const commentsComponents = comments.map(comment => {
     const timestamp = getTimestamp(comment.timestamp);
     const lastUpdated = getTimestamp(comment.lastUpdated);
     const beingEdited = comment._id === commentIdBeingEdited;
 
     let userCommentBeingUpdatedFn;
     if (beingEdited) {
-      userCommentBeingUpdatedFn =
-        userCommentBeingUpdated === null ? comment.comment : userCommentBeingUpdated;
+      userCommentBeingUpdatedFn = userCommentBeingUpdated === null
+        ? comment.comment
+        : userCommentBeingUpdated;
     } else {
       userCommentBeingUpdatedFn = userCommentBeingUpdated;
     }
 
-    const commentOrSubmit = !!beingEdited === true ?
-      (<SubmitCommentForm
-        key={comment._id}
-        userComment={userCommentBeingUpdatedFn}
-        handleChange={handleEditUserCommentChange}
-        handleSubmit={handleEditUserCommentSubmit}
-        onCommentCancel={handleEditUserCommentCancel}
-        title={'Edit comment'}
-        comment={comment}
-        type={'Edit'}
-      />)
-      :
-      (<Comment
-        key={comment._id}
-        handleEditUserComment={handleEditUserComment}
-        handleDeleteUserComment={handleDeleteUserComment}
-        currentUserIsOwner={currentUser === comment.userEmail}
-        username={comment.userName}
-        emailId={comment.userEmail}
-        timestamp={timestamp}
-        comment={comment.comment}
-        commentId={comment._id}
-        edited={comment.edited}
-        lastUpdated={lastUpdated}
-        version={comment.version}
-        activeVersion={activeVersion}
-      />);
+    const commentOrSubmit = !!beingEdited === true
+      ? <SubmitCommentForm
+          key={comment._id}
+          userComment={userCommentBeingUpdatedFn}
+          handleChange={handleEditUserCommentChange}
+          handleSubmit={handleEditUserCommentSubmit}
+          onCommentCancel={handleEditUserCommentCancel}
+          title={'Edit comment'}
+          comment={comment}
+          type={'Edit'}
+        />
+      : <Comment
+          key={comment._id}
+          handleEditUserComment={handleEditUserComment}
+          handleDeleteUserComment={handleDeleteUserComment}
+          currentUserIsOwner={currentUser === comment.userEmail}
+          username={comment.userName}
+          emailId={comment.userEmail}
+          timestamp={timestamp}
+          comment={comment.comment}
+          commentId={comment._id}
+          edited={comment.edited}
+          lastUpdated={lastUpdated}
+          version={comment.version}
+          activeVersion={activeVersion}
+        />;
 
     return commentOrSubmit;
   });
 
-  const showAllCommentsLink = !isShowingAllComments ?
-    (<button style={{ marginBottom: 20 }} onClick={handleShowAllComments}>
-      Show all comments
-    </button>) :
-    null;
+  const showAllCommentsLink = !isShowingAllComments
+    ? <button style={{ marginBottom: 20 }} onClick={handleShowAllComments}>
+        Show all comments
+      </button>
+    : null;
 
   return (
     <div>
@@ -79,10 +79,9 @@ const Comments = ({
         transitionLeaveTimeout={500}
         transitionAppear={false}
       >
-        { comments.length ?
-          commentsComponents :
-          <p key="no-comments">No comments to show for this story.</p>
-        }
+        {comments.length
+          ? commentsComponents
+          : <p key="no-comments">No comments to show for this story.</p>}
       </ReactCSSTransitionGroup>
       {showAllCommentsLink}
     </div>
