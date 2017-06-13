@@ -18,6 +18,8 @@ const getConfig = () => {
               reject('Invalid config');
             }
           });
+        } else {
+          reject('Error getting config');
         }
       }).catch(() => {
         reject('Error getting config');

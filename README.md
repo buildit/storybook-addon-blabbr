@@ -21,10 +21,15 @@ blabbr expects to find a `storybook-config.json` configuration file at the root 
       "ui": {
         "avatar": true
       }
+    },
+    "versions": {
+      "regex": "\/([^\/]+?)\/?$"
     }
   }
 }
 ```
+
+The `versions` part is the same as in the [versions addon](https://github.com/buildit/storybook-addon-versions) and the above pattern will work for the format `http://localhost:port/<version>/` so for example, version `0.1.2` would be expected to be found like this `http://mystorybook/0.1.2/`.
 
 ## Storybook registration
 

@@ -37,7 +37,6 @@ export const postComment = ({
       }
     ]
   };
-
   return makeRequest(payload);
 };
 
