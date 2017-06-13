@@ -1,5 +1,4 @@
 import db from './db';
-import { slack } from '../../utils/config'; // eslint-disable-line
 import { postComment as postSlackComment, editComment as editSlackComment } from './slack';
 
 // Return all the comments for the particular component and story

@@ -1,81 +1,115 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import marked from 'marked';
-
 import { createHash } from '../../utils';
-import { versionLink } from '../../utils/url';
-import { ui as uiConfig } from '../../utils/config'; // eslint-disable-line
+import { ui as uiConfig, versions } from '../../utils/config';
 import './styles.css';
 
-const shouldShowAvatar = () => {
-  if (uiConfig) {
-    return !!uiConfig.avatar;
+const generateLink = (url, regex, target) => {
+  if (url && regex && target) {
+    const path = url.pathname;
+    if (path && path !== '/' && regex) {
+      const r = new RegExp(regex, 'i');
+      const currentVersion = r.exec(path)[1];
+      const result = url.pathname.replace(currentVersion, target);
+      return `${url.protocol}//${url.hostname}:${url.port}${result}${url.search}${url.hash}`;
+    }
   }
 
-  return true;
+  return '#';
 };
 
-const Comment = ({
-  username,
-  emailId,
-  timestamp,
-  comment,
-  currentUserIsOwner,
-  commentId,
-  handleEditUserComment,
-  handleDeleteUserComment,
-  edited,
-  lastUpdated,
-  version,
-  activeVersion,
-}) => {
-  const emailHash = createHash(emailId);
-  const output = marked(comment);
+class Comment extends React.Component {
+  constructor() {
+    super();
 
-  const showAvatar = shouldShowAvatar();
-  const classes = showAvatar ? 'blabbr-comment withAvatar' : 'blabbr-comment';
+    this.state = {
+      showAvatar: false,
+      regex: '',
+    };
+  }
 
-  return (<article className={classes}>
-    <header>
-      <h2>{`${username}`}</h2>
+  componentWillMount() {
+    uiConfig().then((response) => {
+      this.setState({
+        showAvatar: response.avatar,
+      });
+    });
+    versions().then((response) => {
+      this.setState({
+        regex: response.regex,
+      });
+    });
+  }
 
-      <span className="blabbr-time">at <time dateTime={timestamp}>{timestamp}</time></span>
+  render() {
+    const {
+      username,
+      emailId,
+      timestamp,
+      comment,
+      currentUserIsOwner,
+      commentId,
+      handleEditUserComment,
+      handleDeleteUserComment,
+      edited,
+      lastUpdated,
+      version,
+      activeVersion,
+    } = this.props;
 
-      { version &&
-        <span className="blabbr-version">about {
-          (version === activeVersion) ? `v${version}` : <a href={versionLink(version)}>v{version}</a>
-        }</span>
-      }
+    const emailHash = createHash(emailId);
+    const output = marked(comment);
+    const { showAvatar, regex } = this.state;
 
-      { showAvatar &&
-        <img
-          className="avatar"
-          src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`}
-          alt={`${username}'s Gravatar`}
-        />
-      }
+    const classes = showAvatar ? 'blabbr-comment withAvatar' : 'blabbr-comment';
+    let url = '';
+    if (window && window.parent) {
+      url = window.parent.location;
+    }
 
-      <span className="controls">
-        { !!currentUserIsOwner &&
-          <button id={commentId} onClick={handleEditUserComment}>
-            Edit
-          </button>
+    return (<article className={classes}>
+      <header>
+        <h2>{`${username}`}</h2>
+
+        <span className="blabbr-time">at <time dateTime={timestamp}>{timestamp}</time></span>
+
+        { version &&
+          <span className="blabbr-version">about {
+            (version === activeVersion) ? `v${version}` : <a href={generateLink(url, regex, version)}>v{version}</a>
+          }</span>
         }
-        { !!currentUserIsOwner &&
-          <button
-            id={commentId}
-            onClick={handleDeleteUserComment}
-            className="remove"
-          >
-            Remove
-          </button>
+
+        { showAvatar &&
+          <img
+            className="avatar"
+            src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`}
+            alt={`${username}'s Gravatar`}
+          />
         }
-      </span>
-    </header>
-    <div dangerouslySetInnerHTML={{ __html: output }} />
-    {edited && <p><small>(edited - {lastUpdated})</small></p>}
-  </article>);
-};
+
+        <span className="controls">
+          { !!currentUserIsOwner &&
+            <button id={commentId} onClick={handleEditUserComment}>
+              Edit
+            </button>
+          }
+          { !!currentUserIsOwner &&
+            <button
+              id={commentId}
+              onClick={handleDeleteUserComment}
+              className="remove"
+            >
+              Remove
+            </button>
+          }
+        </span>
+      </header>
+      <div dangerouslySetInnerHTML={{ __html: output }} />
+      {edited && <p><small>(edited - {lastUpdated})</small></p>}
+    </article>);
+  }
+}
 
 Comment.propTypes = {
   emailId: PropTypes.string.isRequired,

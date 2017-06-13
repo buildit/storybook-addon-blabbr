@@ -19,9 +19,11 @@ db.createIndex({
   },
 });
 
-db.sync(`https://${dbConfig.user}:${dbConfig.pwd}@${dbConfig.host}`, {
-  live: true,
-  retry: true,
+dbConfig().then((response) => {
+  db.sync(`https://${response.user}:${response.pwd}@${response.host}`, {
+    live: true,
+    retry: true,
+  });
 });
 
 const dbEvents = {

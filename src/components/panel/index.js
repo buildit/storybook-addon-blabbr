@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AlertContainer from 'react-alert';
 import { getComments, postComment, deleteComment, updateComment } from '../api';
-import { hasStorage, cleanToken, getStorybookVersions } from '../../utils';
+import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
@@ -77,9 +77,6 @@ export default class Panel extends Component {
     storybook.onStory && storybook.onStory((kind, story) => this.onStoryChangeHandler(kind, story));
     dbEventManager.addOnlineListener();
     dbEventManager.subscribe('online', 'dbOnline', this.handleOnlineStatusChange);
-    getStorybookVersions()
-      .then(data => this.processServerVersions(data))
-      .catch();
   }
 
   componentWillUnmount() {
