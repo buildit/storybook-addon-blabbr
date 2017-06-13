@@ -9,16 +9,10 @@
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 9001 -s ./.storybook",
-<<<<<<< HEAD
     "build-storybook": "build-storybook",
-    "lint": "eslint src --ext .js",
-    "transpile": "babel ./src --out-dir dist --copy-files",
-    "test": "jest src",
-=======
     "lint": "eslint ./src --ext .js",
     "transpile": "babel ./src --out-dir dist --copy-files",
     "test": "jest ./src",
->>>>>>> master
     "build": "npm run lint && npm run test && npm run transpile",
     "prepublish": "rm -fr dist && npm run transpile"
   },
