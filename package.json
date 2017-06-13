@@ -3,9 +3,6 @@
   "version": "0.3.7",
   "description": "Component review and commenting for React Storybook",
   "main": "dist/index.js",
-  "bin": {
-    "blabbr-config": "./scripts/configure.js"
-  },
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 9001 -s ./.storybook",
