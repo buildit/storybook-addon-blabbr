@@ -1,38 +1,7 @@
-let configFile = null;
+import getConfig from './getConfig';
 
-const getConfig = () => {
-  const p = new Promise((resolve, reject) => {
-    if (configFile) {
-      resolve(configFile);
-    } else if (window && window.parent) {
-      const url = window.parent.location;
-      const location = `${url.protocol}//${url.hostname}:${url.port}/storybook-config.json`;
-
-      fetch(location).then((response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            if (data.storybook && data.storybook) {
-              configFile = data.storybook;
-              resolve(configFile);
-            } else {
-              reject('Invalid config');
-            }
-          });
-        } else {
-          reject('Error getting config');
-        }
-      }).catch(() => {
-        reject('Error getting config');
-      });
-    } else {
-      reject('Window not found');
-    }
-  });
-  return p;
-};
-
-const dbConfig = () => {
-  const p = new Promise((resolve, reject) => {
+const dbConfig = () => (
+  new Promise((resolve, reject) => {
     getConfig().then((response) => {
       if (response.blabbr && response.blabbr.db) {
         resolve(response.blabbr.db);
@@ -42,12 +11,11 @@ const dbConfig = () => {
     }).catch((response) => {
       reject(response);
     });
-  });
-  return p;
-};
+  })
+);
 
-const slack = () => {
-  const p = new Promise((resolve, reject) => {
+const slack = () => (
+  new Promise((resolve, reject) => {
     getConfig().then((response) => {
       if (response.blabbr && response.blabbr.slack) {
         resolve(response.blabbr.slack);
@@ -57,12 +25,11 @@ const slack = () => {
     }).catch((response) => {
       reject(response);
     });
-  });
-  return p;
-};
+  })
+);
 
-const ui = () => {
-  const p = new Promise((resolve, reject) => {
+const ui = () => (
+  new Promise((resolve, reject) => {
     getConfig().then((response) => {
       if (response.blabbr && response.blabbr.ui) {
         resolve(response.blabbr.ui);
@@ -72,12 +39,11 @@ const ui = () => {
     }).catch((response) => {
       reject(response);
     });
-  });
-  return p;
-};
+  })
+);
 
-const versions = () => {
-  const p = new Promise((resolve, reject) => {
+const versions = () => (
+  new Promise((resolve, reject) => {
     getConfig().then((response) => {
       if (response.versions) {
         resolve(response.versions);
@@ -87,8 +53,7 @@ const versions = () => {
     }).catch((response) => {
       reject(response);
     });
-  });
-  return p;
-};
+  })
+);
 
 export { dbConfig, slack, ui, versions };

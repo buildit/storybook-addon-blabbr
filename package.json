@@ -12,7 +12,7 @@
     "build-storybook": "build-storybook",
     "lint": "eslint src --ext .js",
     "transpile": "babel ./src --out-dir dist --copy-files",
-    "test": "jest",
+    "test": "jest src",
     "build": "npm run lint && npm run test && npm run transpile",
     "prepublish": "rm -fr dist && npm run transpile"
   },
@@ -87,7 +87,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
+      "getConfig": "<rootDir>/__mocks__/getConfig.js"
     }
   }
 }
