@@ -9,10 +9,16 @@
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 9001 -s ./.storybook",
+<<<<<<< HEAD
     "build-storybook": "build-storybook",
     "lint": "eslint src --ext .js",
     "transpile": "babel ./src --out-dir dist --copy-files",
     "test": "jest src",
+=======
+    "lint": "eslint ./src --ext .js",
+    "transpile": "babel ./src --out-dir dist --copy-files",
+    "test": "jest ./src",
+>>>>>>> master
     "build": "npm run lint && npm run test && npm run transpile",
     "prepublish": "rm -fr dist && npm run transpile"
   },
@@ -55,7 +61,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
-    "jest": "^20.0.3",
+    "jest": "^20.0.4",
     "json-loader": "^0.5.4",
     "prop-types": "^15",
     "react": "^15",

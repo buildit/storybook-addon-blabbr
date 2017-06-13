@@ -16,7 +16,7 @@ test('Comments render correctly', () => {
       handleDeleteUserComment={() => {}}
       handleShowAllComments={() => {}}
       isShowingAllComments
-      activeVersion="v1.2.3"
+      activeVersion=""
     />,
   ).toJSON();
   expect(tree).toMatchSnapshot();
