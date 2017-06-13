@@ -31,7 +31,7 @@ export default class Panel extends Component {
     this.state = {
       activeComponent: null,
       activeStory: null,
-      activeVersion: version || 'version_not_set',
+      activeVersion: version || '',
       eventName: null,
       user: {
         isUserAuthenticated: false,
