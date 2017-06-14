@@ -10,7 +10,7 @@ const months = [
   'Sep',
   'Oct',
   'Nov',
-  'Dec',
+  'Dec'
 ];
 
 export const getTimestamp = timestamp => {

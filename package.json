@@ -9,7 +9,8 @@
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 9001 -s ./.storybook",
-    "lint": "./node_modules/prettier/bin/prettier.js --single-quote --trailing-comma es5 --list-different '{src,__{tests,mocks}__}/**/*.js'",
+    "lint": "./node_modules/prettier/bin/prettier.js --single-quote --list-different '{src,__{tests,mocks}__}/**/*.js'",
+    "lint-fix": "./node_modules/prettier/bin/prettier.js --single-quote --write '{src,__{tests,mocks}__}/**/*.js'",
     "transpile": "babel ./src --out-dir dist --copy-files",
     "test": "jest ./src",
     "build": "npm run test && npm run transpile",

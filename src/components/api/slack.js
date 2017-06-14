@@ -8,7 +8,7 @@ const makeRequest = payload => {
   const requestConfig = {
     method: 'POST',
     headers: requestHeaders,
-    body: JSON.stringify(payload),
+    body: JSON.stringify(payload)
   };
 
   return fetch(slack.endPoint, requestConfig);
@@ -19,7 +19,7 @@ export const postComment = ({
   userEmail,
   comment,
   componentName,
-  componentUrl,
+  componentUrl
 }) => {
   const payload = {
     username: 'Blabbr',
@@ -31,9 +31,9 @@ export const postComment = ({
         title: `Added a new comment to ${componentName}`,
         title_link: componentUrl,
         text: comment,
-        ts: getTimestamp(),
-      },
-    ],
+        ts: getTimestamp()
+      }
+    ]
   };
 
   return makeRequest(payload);
@@ -44,7 +44,7 @@ export const editComment = ({
   userEmail,
   comment,
   componentName,
-  componentUrl,
+  componentUrl
 }) => {
   const payload = {
     username: 'Blabbr',
@@ -56,9 +56,9 @@ export const editComment = ({
         title: `Edited their comment on ${componentName}`,
         title_link: componentUrl,
         text: comment,
-        ts: getTimestamp(),
-      },
-    ],
+        ts: getTimestamp()
+      }
+    ]
   };
 
   return makeRequest(payload);

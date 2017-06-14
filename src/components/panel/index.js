@@ -36,7 +36,7 @@ export default class Panel extends Component {
       user: {
         isUserAuthenticated: false,
         userName: '',
-        userEmail: '',
+        userEmail: ''
       },
       userComment: '',
       comments: [],
@@ -45,7 +45,7 @@ export default class Panel extends Component {
       commentIdBeingEdited: null,
       isUserOnline: navigator.onLine,
       serverVersions: [],
-      versions: [],
+      versions: []
     };
 
     this.commentChannelListener = null;
@@ -55,13 +55,13 @@ export default class Panel extends Component {
       position: 'bottom right',
       theme: 'light',
       time: 3000,
-      transition: 'fade',
+      transition: 'fade'
     };
 
     this.userActions = {
       added: {},
       removed: {},
-      edited: {},
+      edited: {}
     };
     this.commentsThreshold = 5;
     this.filteredComments = [];
@@ -109,7 +109,7 @@ export default class Panel extends Component {
       activeStory,
       eventName: `${activeComponent}${activeStory}`,
       userComment: '',
-      comments: [],
+      comments: []
     });
     this.filteredComments = [];
     this.allComments = [];
@@ -121,7 +121,7 @@ export default class Panel extends Component {
     const { user } = this.state;
 
     this.setState({
-      user: Object.assign({}, user, { [key]: value }),
+      user: Object.assign({}, user, { [key]: value })
     });
   };
 
@@ -165,7 +165,7 @@ export default class Panel extends Component {
 
     this.setState({
       userCommentBeingUpdated: null,
-      commentIdBeingEdited: null,
+      commentIdBeingEdited: null
     });
   };
 
@@ -194,7 +194,7 @@ export default class Panel extends Component {
   handleShowAllComments = () => {
     this.setState({
       comments: this.allComments,
-      isShowingAllComments: true,
+      isShowingAllComments: true
     });
   };
 
@@ -241,7 +241,7 @@ export default class Panel extends Component {
     this.setState({
       comments: isShowingAllComments ? this.allComments : this.filteredComments,
       versions: [...extractVersions(comments)],
-      isShowingAllComments,
+      isShowingAllComments
     });
   };
 
@@ -290,7 +290,7 @@ export default class Panel extends Component {
     userName &&
       userEmail &&
       this.setState({
-        user: { userName, userEmail, isUserAuthenticated: true },
+        user: { userName, userEmail, isUserAuthenticated: true }
       });
   };
 
@@ -325,7 +325,7 @@ export default class Panel extends Component {
 
   handleOnlineStatusChange = data => {
     this.setState({
-      isUserOnline: data.isOnline,
+      isUserOnline: data.isOnline
     });
   };
 
@@ -335,7 +335,7 @@ export default class Panel extends Component {
       activeComponent,
       activeStory,
       activeVersion,
-      eventName,
+      eventName
     } = this.state;
     const timestampId = `${new Date().getTime()}`;
 
@@ -348,7 +348,7 @@ export default class Panel extends Component {
       component: activeComponent,
       story: activeStory,
       version: activeVersion,
-      eventName,
+      eventName
     })
       .then(data => {
         if (data.success) {
@@ -380,7 +380,7 @@ export default class Panel extends Component {
       component: activeComponent,
       userCommentText: editedComment,
       userEmail,
-      userName,
+      userName
     }).then(data => {
       if (data.success) {
         global.msg.success(data.msg);
@@ -400,7 +400,7 @@ export default class Panel extends Component {
       isShowingAllComments,
       isUserOnline,
       activeVersion,
-      versions,
+      versions
     } = this.state;
 
     const commentCount = this.allComments.length;
@@ -456,5 +456,5 @@ export default class Panel extends Component {
 
 Panel.propTypes = {
   // channel: PropTypes.object.isRequired,
-  storybook: PropTypes.object.isRequired,
+  storybook: PropTypes.object.isRequired
 };

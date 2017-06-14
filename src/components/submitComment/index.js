@@ -14,14 +14,14 @@ FormTitle.propTypes = {
   type: PropTypes.string,
   title: PropTypes.string,
   userName: PropTypes.string,
-  userEmail: PropTypes.string,
+  userEmail: PropTypes.string
 };
 
 FormTitle.defaultProps = {
   type: '',
   title: '',
   userName: '',
-  userEmail: '',
+  userEmail: ''
 };
 
 const UpdateOrCancelButtons = props => {
@@ -49,7 +49,7 @@ const UpdateOrCancelButtons = props => {
 UpdateOrCancelButtons.propTypes = {
   _id: PropTypes.string,
   handleSubmit: PropTypes.func,
-  handleCancel: PropTypes.func,
+  handleCancel: PropTypes.func
 };
 
 const SubmitButton = props =>
@@ -58,7 +58,7 @@ const SubmitButton = props =>
   </button>;
 
 SubmitButton.propTypes = {
-  handleSubmit: PropTypes.func,
+  handleSubmit: PropTypes.func
 };
 
 class SubmitCommentForm extends Component {
@@ -67,14 +67,14 @@ class SubmitCommentForm extends Component {
 
     this.state = {
       hasErrors: false,
-      userComment: '',
+      userComment: ''
     };
   }
 
   handleChange = event => {
     this.setState({
       hasErrors: false,
-      userComment: event.target.value,
+      userComment: event.target.value
     });
     this.props.handleChange(event.target.value);
   };
@@ -96,7 +96,7 @@ class SubmitCommentForm extends Component {
       title = 'Add a comment:',
       type = 'Add',
       onCommentCancel,
-      comment = {},
+      comment = {}
     } = this.props;
 
     const { _id = null, userEmail = '', userName = '' } = comment;
@@ -133,7 +133,7 @@ SubmitCommentForm.propTypes = {
   type: PropTypes.string,
   comment: PropTypes.object,
   onCommentCancel: PropTypes.func,
-  title: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default SubmitCommentForm;

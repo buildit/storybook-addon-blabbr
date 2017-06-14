@@ -6,7 +6,7 @@ class StoryWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      commentCount: 0,
+      commentCount: 0
     };
   }
 
@@ -22,7 +22,7 @@ class StoryWrapper extends React.Component {
 }
 
 StoryWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default StoryWrapper;

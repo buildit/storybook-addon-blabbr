@@ -27,11 +27,11 @@ const OnlineIndicator = ({ isOnline }) => {
 };
 
 OnlineIndicator.propTypes = {
-  isOnline: PropTypes.bool,
+  isOnline: PropTypes.bool
 };
 
 OnlineIndicator.defaultProps = {
-  isOnline: false,
+  isOnline: false
 };
 
 export default OnlineIndicator;

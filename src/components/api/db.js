@@ -15,24 +15,24 @@ const dbEmitter = new EventEmitter();
 
 db.createIndex({
   index: {
-    fields: ['componentId', 'timestamp', 'version'],
-  },
+    fields: ['componentId', 'timestamp', 'version']
+  }
 });
 
 db.sync(`https://${dbConfig.user}:${dbConfig.pwd}@${dbConfig.host}`, {
   live: true,
-  retry: true,
+  retry: true
 });
 
 const dbEvents = {
   change: [],
   online: [],
-  error: [],
+  error: []
 };
 
 const fireListeners = (eventType, data) => {
   let changedDoc = {
-    eventName: '',
+    eventName: ''
   };
   let eventData;
   const isStatusEvent = !!data.statusEvent;
@@ -59,7 +59,7 @@ function updateIndicator() {
   // Show a different icon based on offline/online
   const data = {
     isOnline: navigator.onLine,
-    statusEvent: true,
+    statusEvent: true
   };
   fireListeners('online', data);
 }
@@ -94,7 +94,7 @@ const subscribe = (eventType, eventName, listener) => {
         include_docs: true,
         filter(doc) {
           return doc.eventName === eventName;
-        },
+        }
       })
       .on('change', data => {
         dbEmitter.emit('change', data);
@@ -138,7 +138,7 @@ export const dbEventManager = {
   subscribe,
   unsubscribe,
   addOnlineListener,
-  removeOnlineListener,
+  removeOnlineListener
 };
 
 export default db;

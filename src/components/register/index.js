@@ -9,8 +9,8 @@ class Register extends Component {
     this.state = {
       validation: {
         userName: false,
-        userEmail: false,
-      },
+        userEmail: false
+      }
     };
   }
 
@@ -37,11 +37,11 @@ class Register extends Component {
   showInputError(name, validity) {
     if (!validity.valid) {
       this.setState({
-        validation: Object.assign({}, this.state.validation, { [name]: true }),
+        validation: Object.assign({}, this.state.validation, { [name]: true })
       });
     } else {
       this.setState({
-        validation: Object.assign({}, this.state.validation, { [name]: false }),
+        validation: Object.assign({}, this.state.validation, { [name]: false })
       });
     }
   }
@@ -97,7 +97,7 @@ Register.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   userName: PropTypes.string.isRequired,
-  userEmail: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired
 };
 
 export default Register;

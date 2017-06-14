@@ -18,7 +18,7 @@ const Comments = ({
   handleDeleteUserComment,
   handleShowAllComments,
   isShowingAllComments,
-  activeVersion,
+  activeVersion
 }) => {
   const commentsComponents = comments.map(comment => {
     const timestamp = getTimestamp(comment.timestamp);
@@ -100,11 +100,11 @@ Comments.propTypes = {
   handleDeleteUserComment: PropTypes.func.isRequired,
   handleShowAllComments: PropTypes.func.isRequired,
   isShowingAllComments: PropTypes.bool.isRequired,
-  activeVersion: PropTypes.string.isRequired,
+  activeVersion: PropTypes.string.isRequired
 };
 
 Comment.defaultProps = {
-  comments: [],
+  comments: []
 };
 
 export default Comments;

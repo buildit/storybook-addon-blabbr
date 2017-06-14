@@ -27,7 +27,7 @@ const Comment = ({
   edited,
   lastUpdated,
   version,
-  activeVersion,
+  activeVersion
 }) => {
   const emailHash = createHash(emailId);
   const output = marked(comment);
@@ -92,14 +92,14 @@ Comment.propTypes = {
   edited: PropTypes.bool,
   lastUpdated: PropTypes.string,
   version: PropTypes.string,
-  activeVersion: PropTypes.string,
+  activeVersion: PropTypes.string
 };
 
 Comment.defaultProps = {
   edited: false,
   lastUpdated: '',
   version: '',
-  activeVersion: '',
+  activeVersion: ''
 };
 
 export default Comment;
