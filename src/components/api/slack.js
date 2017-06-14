@@ -11,7 +11,9 @@ const makeRequest = payload => {
     body: JSON.stringify(payload)
   };
 
-  return fetch(slack.endPoint, requestConfig);
+  return slack().then((response) => {
+    fetch(response.endPoint, requestConfig);
+  });
 };
 
 export const postComment = ({
@@ -35,7 +37,6 @@ export const postComment = ({
       }
     ]
   };
-
   return makeRequest(payload);
 };
 
