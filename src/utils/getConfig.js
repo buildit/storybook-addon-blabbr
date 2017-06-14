@@ -11,7 +11,7 @@ const getConfig = () => (
       fetch(location).then((response) => {
         if (response.ok) {
           response.json().then((data) => {
-            if (data.storybook && data.storybook) {
+            if (data && data.storybook) {
               configFile = data.storybook;
               resolve(configFile);
             } else {
