@@ -17,6 +17,7 @@ test('Comments render correctly', () => {
         handleDeleteUserComment={() => {}}
         handleShowAllComments={() => {}}
         isShowingAllComments
+        activeVersion=""
       />
     )
     .toJSON();
