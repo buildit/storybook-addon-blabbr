@@ -3,20 +3,16 @@
   "version": "0.3.7",
   "description": "Component review and commenting for React Storybook",
   "main": "dist/index.js",
-  "bin": {
-    "blabbr-config": "./scripts/configure.js"
-  },
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 9001 -s ./.storybook",
+    "build-storybook": "build-storybook",
     "lint": "eslint ./src --ext .js",
     "transpile": "babel ./src --out-dir dist --copy-files",
     "test": "jest ./src",
     "build": "npm run lint && npm run test && npm run transpile",
     "prepush": "npm run lint && npm test",
-    "prepublish": "rm -fr dist && npm run transpile",
-    "configure": "node ./scripts/configure.js",
-    "postinstall": "node ./scripts/check-config.js"
+    "prepublish": "rm -fr dist && npm run transpile"
   },
   "repository": {
     "type": "git",
@@ -57,7 +53,6 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
-    "file-loader": "^0.11.1",
     "jest": "^20.0.4",
     "json-loader": "^0.5.4",
     "prop-types": "^15",
@@ -84,7 +79,6 @@
     "@kadira/storybook": "^2.35.2",
     "@kadira/storybook-addons": "^1.6.1",
     "css-loader": "^0.28.1",
-    "file-loader": "^0.11.1",
     "prop-types": "^15",
     "react": "^15",
     "react-dom": "^15",
@@ -92,9 +86,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
-      "blabbr-config": "<rootDir>/.storybook/blabbr-config.js"
+      "getConfig": "<rootDir>/__mocks__/getConfig.js"
     }
   }
 }

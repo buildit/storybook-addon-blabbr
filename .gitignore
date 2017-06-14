@@ -3,8 +3,6 @@ npm-debug.log
 dist
 .idea/
 .DS_Store
-blabbr-config.js
-.storybook/blabbr-config.sample.js
-.storybook/blabbr-config.js
 .vscode
-
+storybook-config.json
+storybook-static

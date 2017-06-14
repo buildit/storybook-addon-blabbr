@@ -8,21 +8,14 @@ module.exports = {
 
 		loaders: [
 			{ test: /\.(js)$/, exclude: [ /node_modules/ ], loader: 'babel' },
-			{ test: /\.(png|jpg|gif|svg)$/, loader: 'file-loader' },
       { test: /\.css$/, loader: 'style-loader!css-loader' }
 		]
 	},
 
 	resolve: {
 		root: path.resolve(__dirname),
-		extensions: ['', '.js'],
-    alias: {
-      'blabbr-config': path.join(path.resolve(__dirname), './blabbr-config.js')
-    }
+		extensions: ['', '.js']
 	},
-
-	plugins: [
-	],
 
 	devServer: {
 		stats: 'minimal'

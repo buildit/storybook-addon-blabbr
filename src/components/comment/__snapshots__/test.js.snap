@@ -2,7 +2,7 @@
 
 exports[`Comment renders correctly 1`] = `
 <article
-  className="blabbr-comment withAvatar"
+  className="blabbr-comment"
 >
   <header>
     <h2>
@@ -19,11 +19,6 @@ exports[`Comment renders correctly 1`] = `
       </time>
     </span>
     
-    <img
-      alt="username's Gravatar"
-      className="avatar"
-      src="https://gravatar.com/avatar/7b707d018e06cb8c85737c876034a655?s=40&r=pg&d=retro"
-    />
     <span
       className="controls"
     >
