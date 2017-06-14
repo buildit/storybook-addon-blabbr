@@ -25,19 +25,19 @@ class Comment extends React.Component {
 
     this.state = {
       showAvatar: false,
-      regex: '',
+      regex: ''
     };
   }
 
   componentWillMount() {
-    uiConfig().then((response) => {
+    uiConfig().then(response => {
       this.setState({
-        showAvatar: response.avatar,
+        showAvatar: response.avatar
       });
     });
-    versions().then((response) => {
+    versions().then(response => {
       this.setState({
-        regex: response.regex,
+        regex: response.regex
       });
     });
   }
@@ -55,7 +55,7 @@ class Comment extends React.Component {
       edited,
       lastUpdated,
       version,
-      activeVersion,
+      activeVersion
     } = this.props;
 
     const emailHash = createHash(emailId);
@@ -68,46 +68,49 @@ class Comment extends React.Component {
       url = window.parent.location;
     }
 
-    return (<article className={classes}>
-      <header>
-        <h2>{`${username}`}</h2>
+    return (
+      <article className={classes}>
+        <header>
+          <h2>{`${username}`}</h2>
 
-        <span className="blabbr-time">at <time dateTime={timestamp}>{timestamp}</time></span>
+          <span className="blabbr-time">
+            at <time dateTime={timestamp}>{timestamp}</time>
+          </span>
 
-        { version &&
-          <span className="blabbr-version">about {
-            (version === activeVersion) ? `v${version}` : <a href={generateLink(url, regex, version)}>v{version}</a>
-          }</span>
-        }
+          {version &&
+            <span className="blabbr-version">
+              about{' '}
+              {version === activeVersion
+                ? `v${version}`
+                : <a href={generateLink(url, regex, version)}>v{version}</a>}
+            </span>}
 
-        { showAvatar &&
-          <img
-            className="avatar"
-            src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`}
-            alt={`${username}'s Gravatar`}
-          />
-        }
+          {showAvatar &&
+            <img
+              className="avatar"
+              src={`https://gravatar.com/avatar/${emailHash}?s=40&r=pg&d=retro`}
+              alt={`${username}'s Gravatar`}
+            />}
 
-        <span className="controls">
-          { !!currentUserIsOwner &&
-            <button id={commentId} onClick={handleEditUserComment}>
-              Edit
-            </button>
-          }
-          { !!currentUserIsOwner &&
-            <button
-              id={commentId}
-              onClick={handleDeleteUserComment}
-              className="remove"
-            >
-              Remove
-            </button>
-          }
-        </span>
-      </header>
-      <div dangerouslySetInnerHTML={{ __html: output }} />
-      {edited && <p><small>(edited - {lastUpdated})</small></p>}
-    </article>);
+          <span className="controls">
+            {!!currentUserIsOwner &&
+              <button id={commentId} onClick={handleEditUserComment}>
+                Edit
+              </button>}
+            {!!currentUserIsOwner &&
+              <button
+                id={commentId}
+                onClick={handleDeleteUserComment}
+                className="remove"
+              >
+                Remove
+              </button>}
+          </span>
+        </header>
+        <div dangerouslySetInnerHTML={{ __html: output }} />
+        {edited && <p><small>(edited - {lastUpdated})</small></p>}
+      </article>
+    );
   }
 }
 

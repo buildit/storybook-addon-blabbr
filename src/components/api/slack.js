@@ -11,7 +11,7 @@ const makeRequest = payload => {
     body: JSON.stringify(payload)
   };
 
-  return slack().then((response) => {
+  return slack().then(response => {
     fetch(response.endPoint, requestConfig);
   });
 };

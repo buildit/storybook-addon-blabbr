@@ -19,10 +19,10 @@ db.createIndex({
   }
 });
 
-dbConfig().then((response) => {
+dbConfig().then(response => {
   db.sync(`https://${response.user}:${response.pwd}@${response.host}`, {
     live: true,
-    retry: true,
+    retry: true
   });
 });
 
