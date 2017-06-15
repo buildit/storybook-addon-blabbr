@@ -2,7 +2,7 @@
   "name": "@buildit/storybook-addon-blabbr",
   "version": "0.4.1",
   "description": "Component review and commenting for React Storybook",
-  "main": "dist/index.js",
+  "main": "dist/register.js",
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 9001 -s ./.storybook",

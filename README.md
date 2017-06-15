@@ -33,19 +33,9 @@ The `versions` part is the same as in the [versions addon](https://github.com/bu
 
 ## Storybook registration
 
-To use the plugin you need to register the plugin and add a decorator, like most Storybook plugins.
-
-First add the following to your `addons.js` file in the storybook configuration:
+To use the plugin you need to register it, like most Storybook plugins. Simply add the following to your `addons.js` file in the storybook configuration:
 
 `import '@buildit/storybook-addon-blabbr/register';`
-
-Then configure the decorator. Add the following to your `config.js` in the storybook configuration:
-
-```
-import { withComments } from '@buildit/storybook-addon-blabbr';
-
-addDecorator(withComments);
-```
 
 ## Comment formatting
 
