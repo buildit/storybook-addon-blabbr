@@ -4,7 +4,11 @@ Component reviewer and approver for React Storybook.
 
 ## Configuration
 
-blabbr expects to find a `storybook-config.json` configuration file at the root of your host, for static builds, or inside your storybook setup folder (generally `.storybook`). This should look like this:
+blabbr expects to find a `storybook-config.json` configuration file at the root of your host, for static builds, or inside your storybook setup folder (generally `.storybook`). 
+
+Fill out the template located at `.storybook/storybook-config.json.template` and rename it to `storybook-config.json`.
+
+This should look like this:
 
 ```
 {
