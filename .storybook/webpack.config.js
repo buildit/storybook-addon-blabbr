@@ -2,24 +2,28 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-	module: {
+  module: {
+    rules: [
+      {
+        test: /\.(js)$/,
+        exclude: [/node_modules/],
+        use: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
+  },
 
-		preLoaders: [],
+  resolve: {
+    extensions: ['*', '.js', '.jsx', '.css'],
+    modules: [path.resolve(__dirname), 'node_modules']
+  },
 
-		loaders: [
-			{ test: /\.(js)$/, exclude: [ /node_modules/ ], loader: 'babel' },
-      { test: /\.css$/, loader: 'style-loader!css-loader' }
-		]
-	},
+  devServer: {
+    stats: 'minimal'
+  },
 
-	resolve: {
-		root: path.resolve(__dirname),
-		extensions: ['', '.js']
-	},
-
-	devServer: {
-		stats: 'minimal'
-	},
-
-	devtool: 'source-map'
+  devtool: 'source-map'
 };
