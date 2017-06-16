@@ -12,11 +12,6 @@
       "ui": {
         "avatar": true
       }
-    },
-    // Using storybook-addon-versions
-    "versions": {
-      "availableVersions": ["0.0.1", "0.0.2"],
-      "regex": "\/([^\/]+?)\/?$"
     }
   }
 }
