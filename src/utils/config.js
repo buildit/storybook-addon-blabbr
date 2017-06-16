@@ -1,59 +1,63 @@
 import getConfig from './getConfig';
 
-const dbConfig = () => (
+const dbConfig = () =>
   new Promise((resolve, reject) => {
-    getConfig().then((response) => {
-      if (response.blabbr && response.blabbr.db) {
-        resolve(response.blabbr.db);
-      } else {
-        resolve(null);
-      }
-    }).catch((response) => {
-      reject(response);
-    });
-  })
-);
+    getConfig()
+      .then(response => {
+        if (response.blabbr && response.blabbr.db) {
+          resolve(response.blabbr.db);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(response => {
+        reject(response);
+      });
+  });
 
-const slack = () => (
+const slack = () =>
   new Promise((resolve, reject) => {
-    getConfig().then((response) => {
-      if (response.blabbr && response.blabbr.slack) {
-        resolve(response.blabbr.slack);
-      } else {
-        resolve(null);
-      }
-    }).catch((response) => {
-      reject(response);
-    });
-  })
-);
+    getConfig()
+      .then(response => {
+        if (response.blabbr && response.blabbr.slack) {
+          resolve(response.blabbr.slack);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(response => {
+        reject(response);
+      });
+  });
 
-const ui = () => (
+const ui = () =>
   new Promise((resolve, reject) => {
-    getConfig().then((response) => {
-      if (response.blabbr && response.blabbr.ui) {
-        resolve(response.blabbr.ui);
-      } else {
-        resolve(null);
-      }
-    }).catch((response) => {
-      reject(response);
-    });
-  })
-);
+    getConfig()
+      .then(response => {
+        if (response.blabbr && response.blabbr.ui) {
+          resolve(response.blabbr.ui);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(response => {
+        reject(response);
+      });
+  });
 
-const versions = () => (
+const versions = () =>
   new Promise((resolve, reject) => {
-    getConfig().then((response) => {
-      if (response.versions) {
-        resolve(response.versions);
-      } else {
-        resolve(null);
-      }
-    }).catch((response) => {
-      reject(response);
-    });
-  })
-);
+    getConfig()
+      .then(response => {
+        if (response.versions) {
+          resolve(response.versions);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch(response => {
+        reject(response);
+      });
+  });
 
 export { dbConfig, slack, ui, versions };

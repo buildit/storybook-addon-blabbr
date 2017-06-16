@@ -2,16 +2,16 @@ import { slack } from '../../utils/config';
 
 const getTimestamp = () => Math.floor(Date.now() / 1000);
 
-const makeRequest = (payload) => {
+const makeRequest = payload => {
   const requestHeaders = new Headers();
 
   const requestConfig = {
     method: 'POST',
     headers: requestHeaders,
-    body: JSON.stringify(payload),
+    body: JSON.stringify(payload)
   };
 
-  return slack().then((response) => {
+  return slack().then(response => {
     fetch(response.endPoint, requestConfig);
   });
 };
@@ -21,7 +21,7 @@ export const postComment = ({
   userEmail,
   comment,
   componentName,
-  componentUrl,
+  componentUrl
 }) => {
   const payload = {
     username: 'Blabbr',
@@ -33,7 +33,7 @@ export const postComment = ({
         title: `Added a new comment to ${componentName}`,
         title_link: componentUrl,
         text: comment,
-        ts: getTimestamp(),
+        ts: getTimestamp()
       }
     ]
   };
@@ -45,7 +45,7 @@ export const editComment = ({
   userEmail,
   comment,
   componentName,
-  componentUrl,
+  componentUrl
 }) => {
   const payload = {
     username: 'Blabbr',
@@ -57,7 +57,7 @@ export const editComment = ({
         title: `Edited their comment on ${componentName}`,
         title_link: componentUrl,
         text: comment,
-        ts: getTimestamp(),
+        ts: getTimestamp()
       }
     ]
   };

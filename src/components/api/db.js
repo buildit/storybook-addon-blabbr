@@ -15,26 +15,26 @@ const dbEmitter = new EventEmitter();
 
 db.createIndex({
   index: {
-    fields: ['componentId', 'timestamp', 'version'],
-  },
+    fields: ['componentId', 'timestamp', 'version']
+  }
 });
 
-dbConfig().then((response) => {
+dbConfig().then(response => {
   db.sync(`https://${response.user}:${response.pwd}@${response.host}`, {
     live: true,
-    retry: true,
+    retry: true
   });
 });
 
 const dbEvents = {
   change: [],
   online: [],
-  error: [],
+  error: []
 };
 
 const fireListeners = (eventType, data) => {
   let changedDoc = {
-    eventName: '',
+    eventName: ''
   };
   let eventData;
   const isStatusEvent = !!data.statusEvent;
@@ -47,9 +47,11 @@ const fireListeners = (eventType, data) => {
   for (let i = 0, l = dbEvents[eventType].length; i < l; i++) {
     eventData = dbEvents[eventType][i];
 
-    if ((eventData.eventName === changedDoc.eventName ||
-      isStatusEvent === true) &&
-      eventData.listener) {
+    if (
+      (eventData.eventName === changedDoc.eventName ||
+        isStatusEvent === true) &&
+      eventData.listener
+    ) {
       eventData.listener(data);
     }
   }
@@ -59,7 +61,7 @@ function updateIndicator() {
   // Show a different icon based on offline/online
   const data = {
     isOnline: navigator.onLine,
-    statusEvent: true,
+    statusEvent: true
   };
   fireListeners('online', data);
 }
@@ -75,7 +77,7 @@ function removeOnlineListener() {
   window.removeEventListener('offline', updateIndicator, false);
 }
 
-dbEmitter.on('change', (data) => {
+dbEmitter.on('change', data => {
   fireListeners('change', data);
 });
 
@@ -87,18 +89,21 @@ const subscribe = (eventType, eventName, listener) => {
   let eventListener = null;
 
   if (eventType === 'change') {
-    eventListener = db.changes({
-      since: 'now',
-      live: true,
-      include_docs: true,
-      filter(doc) {
-        return doc.eventName === eventName;
-      },
-    }).on('change', (data) => {
-      dbEmitter.emit('change', data);
-    }).on('error', (err) => {
-      dbEmitter.emit('error', err);
-    });
+    eventListener = db
+      .changes({
+        since: 'now',
+        live: true,
+        include_docs: true,
+        filter(doc) {
+          return doc.eventName === eventName;
+        }
+      })
+      .on('change', data => {
+        dbEmitter.emit('change', data);
+      })
+      .on('error', err => {
+        dbEmitter.emit('error', err);
+      });
   }
 
   dbEvents[eventType].push({ eventId, eventListener, eventName, listener });
@@ -135,7 +140,7 @@ export const dbEventManager = {
   subscribe,
   unsubscribe,
   addOnlineListener,
-  removeOnlineListener,
+  removeOnlineListener
 };
 
 export default db;
