@@ -7,7 +7,6 @@ const onChange = () => {
   action('register on change');
 };
 
-storiesOf('Register')
-  .add('User registration', () => (
-    <Register handleChange={onChange} />
-  ));
+storiesOf('Register').add('User registration', () =>
+  <Register handleChange={onChange} />
+);
