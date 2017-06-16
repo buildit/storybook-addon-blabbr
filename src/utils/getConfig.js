@@ -21,7 +21,7 @@ const getConfig = () =>
         } else {
           reject('Error getting config');
         }
-      );
+      });
     } else {
       reject('Window not found');
     }
