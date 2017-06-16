@@ -1,0 +1,17 @@
+{
+  "storybook": {
+    "blabbr": {
+      "db": {
+        "user": "<USER_KEY>",
+        "pwd": "<USER_PASSWORD>",
+        "host": "<CLOUDANT_HOST>"
+      },
+      "slack": {
+        "endPoint": "<SLACK_ENDPOINT>"
+      },
+      "ui": {
+        "avatar": true
+      }
+    }
+  }
+}
