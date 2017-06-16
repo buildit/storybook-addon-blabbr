@@ -8,9 +8,9 @@ const getConfig = () =>
       const url = window.parent.location;
       const location = `${url.protocol}//${url.hostname}:${url.port}/storybook-config.json`;
 
-      fetch(location).then((response) => {
+      fetch(location).then(response => {
         if (response.ok) {
-          response.json().then((data) => {
+          response.json().then(data => {
             if (data && data.storybook) {
               configFile = data.storybook;
               resolve(configFile);
