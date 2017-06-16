@@ -1,6 +1,6 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
-import { text } from '@kadira/storybook-addon-knobs'; // eslint-disable-line
+import { storiesOf } from '@storybook/react';
+import { text } from '@storybook/addon-knobs'; // eslint-disable-line
 import Comment from './';
 
 storiesOf('Comment')
