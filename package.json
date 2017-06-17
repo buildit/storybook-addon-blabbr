@@ -9,7 +9,7 @@
     "lint": "./node_modules/prettier/bin/prettier.js --single-quote --list-different '{src,__{tests,mocks}__}/**/*.js'",
     "lint-fix": "./node_modules/prettier/bin/prettier.js --single-quote --write '{src,__{tests,mocks}__}/**/*.js'",
     "build-storybook": "build-storybook",
-    "transpile": "babel ./src --out-dir dist --copy-files",
+    "transpile": "babel ./src --out-dir dist --copy-files --ignore __tests__,__mocks__,__snapshots__",
     "test": "jest ./src",
     "build": "npm run test && npm run transpile",
     "prepush": "npm run lint && npm test",
