@@ -10,10 +10,10 @@
     "lint-fix": "./node_modules/prettier/bin/prettier.js --single-quote --write '{src,__{tests,mocks}__}/**/*.js'",
     "build-storybook": "build-storybook",
     "transpile": "babel ./src --out-dir dist --copy-files",
-    "test": "jest ./src",
+    "test": "jest ./src --coverage",
     "build": "npm run test && npm run transpile",
     "prepush": "npm run lint && npm test",
-    "prepublish": "rm -fr dist && npm run transpile"
+    "prepublish": "npm run transpile"
   },
   "repository": {
     "type": "git",
@@ -80,6 +80,8 @@
     "style-loader": "^0.17.0"
   },
   "jest": {
+    "coverageDirectory": "reports",
+    "collectCoverageFrom" : ["src/**/*.{js,jsx}", "!src/register.js"],
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
       "getConfig": "<rootDir>/__mocks__/getConfig.js"
