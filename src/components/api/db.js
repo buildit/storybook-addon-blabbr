@@ -20,10 +20,18 @@ db.createIndex({
 });
 
 dbConfig().then(response => {
-  db.sync(`https://${response.user}:${response.pwd}@${response.host}`, {
-    live: true,
-    retry: true
-  });
+  if (response.host.includes('localhost')) {
+    db.sync(`http://${response.host}`, {
+      live: true,
+      retry: true
+    });
+  }
+  else {
+    db.sync(`https://${response.user}:${response.pwd}@${response.host}`, {
+      live: true,
+      retry: true
+    });
+  }
 });
 
 const dbEvents = {

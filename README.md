@@ -30,6 +30,8 @@ This should look like this:
 }
 ```
 
+The host for the blabbr db should be `localhost:5984/blabbr` if using local CouchDB (see below). User and pwd can be omitted in that case.
+
 ## Storybook registration
 
 To use the plugin you need to register it, like most Storybook plugins. Simply add the following to your `addons.js` file in the storybook configuration:
@@ -39,3 +41,13 @@ To use the plugin you need to register it, like most Storybook plugins. Simply a
 ## Comment formatting
 
 Comments are formatted using the [marked](https://www.npmjs.com/package/marked) package.
+
+## Local CouchDB setup
+
+[Install Apache CouchDB](http://couchdb.apache.org/) by downloading the respective installer for your OS.
+
+Once installation is done, navigate to [http://localhost:5984](http://localhost:5984). Create an admin username and password.
+
+Go to configuration and CORS and enable CORS.
+
+Add the correct values to the `storybook-config.json` as mentioned above.
