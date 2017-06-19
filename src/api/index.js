@@ -27,7 +27,6 @@ export const getComments = (
       ]
     })
     .then(data => {
-      console.log('data', data);
       return {
         success: true,
         ...data
