@@ -10,7 +10,6 @@ export const getComments = (
   component,
   story /* , version = 'version_not_set' */
 ) =>
-  // returns a promise
   db
     .find({
       selector: {

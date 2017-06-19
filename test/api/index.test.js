@@ -1,5 +1,7 @@
 import proxyquire from 'proxyquire';
 
+import * as slack from '../../src/api/slack';
+
 describe('API', () => {
   describe('Get Comment', () => {
     const fakeDbFindResponse = {
@@ -70,6 +72,68 @@ describe('API', () => {
       return api.getComments('', '').then(result => {
         expect(result.success).to.be.false;
         expect(result.msg).to.equal('No comments available.');
+      });
+    });
+  });
+
+  describe('Post Comment', () => {
+    let stubPostSlackComment;
+
+    const exampleComment = {
+      timestampId: 111,
+      userName: 'exampleUsername',
+      userEmail: 'exampleEmail',
+      userComment: 'Example comment.',
+      component: 'comments',
+      story: 'story name',
+      version: '0.0.1',
+      eventName: 'exampleEventName'
+    };
+
+    let stubDbPut;
+    let api;
+
+    beforeEach(() => {
+      stubPostSlackComment = sinon.stub(slack, 'postComment');
+
+      stubDbPut = sinon.stub().returns(Promise.resolve({ ok: true }));
+
+      api = proxyquire('../../src/api/index', {
+        './db': {
+          put: stubDbPut,
+          '@noCallThru': true
+        }
+      });
+    });
+
+    afterEach(() => {
+      stubPostSlackComment.restore();
+    });
+
+    it('should save the expected record shape to the DB', () => {
+      const expectedKeys = [
+        '_id',
+        'userName',
+        'userEmail',
+        'componentId',
+        'comment',
+        'timestamp',
+        'stateId',
+        'version',
+        'edited',
+        'lastUpdated',
+        'eventName'
+      ];
+
+      api.postComment(exampleComment).then(() => {
+        expect(stubDbPut.getCall(0).args[0]).to.have.all.keys(expectedKeys);
+      });
+    });
+
+    it('should mark the comment as new', () => {
+      return api.postComment(exampleComment).then(() => {
+        const putRecord = stubDbPut.getCall(0).args[0];
+        expect(putRecord.edited).to.be.false;
       });
     });
   });
