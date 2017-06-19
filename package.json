@@ -10,7 +10,7 @@
     "lint-fix": "./node_modules/prettier/bin/prettier.js --single-quote --write '{src,__{tests,mocks}__}/**/*.js'",
     "build-storybook": "build-storybook",
     "transpile": "babel ./src --out-dir dist --copy-files --ignore __tests__,__mocks__,__snapshots__",
-    "test": "jest ./src --coverage",
+    "test": "jest ./src/components --coverage && nyc mocha ./test",
     "build": "npm run test && npm run transpile",
     "prepush": "npm run lint && npm test",
     "prepublish": "npm run transpile"
@@ -58,6 +58,7 @@
     "jsdom-global": "^3.0.2",
     "json-loader": "^0.5.4",
     "mocha": "^3.4.2",
+    "nyc": "^11.0.2",
     "prettier": "^1.4.4",
     "prop-types": "^15",
     "proxyquire": "^1.8.0",
