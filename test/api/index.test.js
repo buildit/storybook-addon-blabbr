@@ -179,4 +179,6 @@ describe('API', () => {
       });
     });
   });
+
+  describe('Update Comment', () => {});
 });
