@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AlertContainer from 'react-alert';
-import { getComments, postComment, deleteComment, updateComment } from '../api';
+import {
+  getComments,
+  postComment,
+  deleteComment,
+  updateComment
+} from '../../api';
 import { hasStorage, cleanToken } from '../../utils';
 import Comments from '../comments';
 import Register from '../register';

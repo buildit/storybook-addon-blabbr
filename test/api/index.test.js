@@ -2,11 +2,15 @@ import proxyquire from 'proxyquire';
 
 describe('API', () => {
   describe('Get Comment', () => {
+    const fakeDbFindResponse = {
+      docs: [{}, {}]
+    };
+
     let stubDbFind;
     let api;
 
     beforeEach(() => {
-      stubDbFind = sinon.stub().returns(Promise.resolve());
+      stubDbFind = sinon.stub().returns(Promise.resolve(fakeDbFindResponse));
 
       api = proxyquire('../../src/api/index', {
         './db': {
@@ -46,10 +50,26 @@ describe('API', () => {
       });
     });
 
-    xit('should return expected data when DB query is successful', () => {
+    it('should return expected data when DB query is successful', () => {
       return api.getComments('', '').then(result => {
         expect(result.success).to.be.true;
-        expect();
+        expect(result.docs.length).to.equal(fakeDbFindResponse.docs.length);
+      });
+    });
+
+    it('should return expected message when DB query is unsuccessful', () => {
+      stubDbFind = sinon.stub().returns(Promise.reject());
+
+      api = proxyquire('../../src/api/index', {
+        './db': {
+          find: stubDbFind,
+          '@noCallThru': true
+        }
+      });
+
+      return api.getComments('', '').then(result => {
+        expect(result.success).to.be.false;
+        expect(result.msg).to.equal('No comments available.');
       });
     });
   });
