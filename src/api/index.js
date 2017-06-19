@@ -26,10 +26,13 @@ export const getComments = (
         }
       ]
     })
-    .then(data => ({
-      success: true,
-      ...data
-    }))
+    .then(data => {
+      console.log('data', data);
+      return {
+        success: true,
+        ...data
+      };
+    })
     .catch(() => ({
       success: false,
       msg: 'No comments available.'
