@@ -172,5 +172,11 @@ describe('API', () => {
         expect(result.success).to.be.false;
       });
     });
+
+    it('should post a comment to Slack', () => {
+      return api.postComment(exampleComment).then(result => {
+        expect(stubPostSlackComment).to.have.been.calledOnce;
+      });
+    });
   });
 });
