@@ -1,4 +1,4 @@
-import { slack } from '../../utils/config';
+import { slack } from '../utils/config';
 
 const getTimestamp = () => Math.floor(Date.now() / 1000);
 

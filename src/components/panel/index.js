@@ -7,7 +7,7 @@ import Comments from '../comments';
 import Register from '../register';
 import SubmitComment from '../submitComment';
 import OnlineIndicator from '../onlineIndicator';
-import { dbEventManager } from '../api/db';
+import { dbEventManager } from '../../api/db';
 import { version } from '../../utils/config'; // eslint-disable-line
 import './styles.css';
 
