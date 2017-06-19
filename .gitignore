@@ -7,3 +7,4 @@ dist
 storybook-config.json
 storybook-static
 reports
+.nyc_output/
