@@ -12,7 +12,7 @@ describe('API', () => {
     let api;
 
     beforeEach(() => {
-      stubDbFind = sinon.stub().returns(Promise.resolve(fakeDbFindResponse));
+      stubDbFind = sinon.stub().resolves(fakeDbFindResponse);
 
       api = proxyquire('../../src/api/index', {
         './db': {
@@ -134,6 +134,42 @@ describe('API', () => {
       return api.postComment(exampleComment).then(() => {
         const putRecord = stubDbPut.getCall(0).args[0];
         expect(putRecord.edited).to.be.false;
+      });
+    });
+
+    it('should return successfully if the comment is successfully posted', () => {
+      return api.postComment(exampleComment).then(result => {
+        expect(result.success).to.be.true;
+      });
+    });
+
+    it('should return a failure if the DB does not return an ok', () => {
+      stubDbPut = sinon.stub().resolves({ ok: false });
+
+      api = proxyquire('../../src/api/index', {
+        './db': {
+          put: stubDbPut,
+          '@noCallThru': true
+        }
+      });
+
+      return api.postComment(exampleComment).then(result => {
+        expect(result.success).to.be.false;
+      });
+    });
+
+    it('should return a failure if the DB request fails', () => {
+      stubDbPut = sinon.stub().rejects(new Error('DB error'));
+
+      api = proxyquire('../../src/api/index', {
+        './db': {
+          put: stubDbPut,
+          '@noCallThru': true
+        }
+      });
+
+      return api.postComment(exampleComment).then(result => {
+        expect(result.success).to.be.false;
       });
     });
   });
