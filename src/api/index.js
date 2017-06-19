@@ -76,10 +76,8 @@ export const postComment = ({
           ...record
         };
       }
-      return {
-        success: data.ok,
-        msg: 'There was a problem posting your comment.'
-      };
+
+      return Promise.reject(new Error('DB returned data not OK.'));
     })
     .catch(error => ({
       success: false,
