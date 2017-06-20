@@ -25,8 +25,7 @@ dbConfig().then(response => {
       live: true,
       retry: true
     });
-  }
-  else {
+  } else {
     db.sync(`https://${response.user}:${response.pwd}@${response.host}`, {
       live: true,
       retry: true
