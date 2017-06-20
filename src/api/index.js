@@ -77,7 +77,7 @@ export const postComment = ({
         };
       }
 
-      return Promise.reject(new Error('DB returned data not OK.'));
+      return Promise.reject(new Error('Request for data was unsuccessful.'));
     })
     .catch(error => ({
       success: false,
