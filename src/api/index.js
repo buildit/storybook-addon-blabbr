@@ -10,7 +10,6 @@ export const getComments = (
   component,
   story /* , version = 'version_not_set' */
 ) =>
-  // returns a promise
   db
     .find({
       selector: {
@@ -77,10 +76,8 @@ export const postComment = ({
           ...record
         };
       }
-      return {
-        success: data.ok,
-        msg: 'There was a problem posting your comment.'
-      };
+
+      return Promise.reject(new Error('Request for data was unsuccessful.'));
     })
     .catch(error => ({
       success: false,
