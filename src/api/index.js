@@ -95,6 +95,13 @@ export const updateComment = ({
   const timestampId = `${new Date().getTime()}`;
   const userComment = userCommentText && userCommentText.trim();
 
+  if (userComment === '' || userComment === null) {
+    return Promise.resolve({
+      success: false,
+      msg: 'Cannot update with empty comment.'
+    });
+  }
+
   editSlackComment({
     userName,
     userEmail,
@@ -112,12 +119,6 @@ export const updateComment = ({
     .then(data => {
       const record = data.docs[0];
 
-      if (userComment === '' || userComment === null) {
-        return {
-          success: false,
-          msg: 'Cannot update with empty comment'
-        };
-      }
       record.comment = userComment;
       record.edited = true;
       record.lastUpdated = timestampId;

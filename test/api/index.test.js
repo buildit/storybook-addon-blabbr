@@ -154,31 +154,55 @@ describe('API', () => {
     const fakeDbFindResponse = {
       docs: [
         {
-          comment: '',
+          comment: 'Example original comment.',
           edited: false,
-          lastUpdated: ''
+          lastUpdated: '1497955939598'
         }
       ]
     };
 
     let stubEditSlackComment;
 
-    // const exampleComment = {
-    //   timestampId: 111,
-    //   userName: 'exampleUsername',
-    //   userEmail: 'exampleEmail',
-    //   userComment: 'Example comment.',
-    //   component: 'comments',
-    //   story: 'story name',
-    //   version: '0.0.1',
-    //   eventName: 'exampleEventName'
-    // };
+    const exampleEditComment = {
+      commentId: 1,
+      component: 'comments',
+      userName: 'exampleUsername',
+      userEmail: 'exampleEmail',
+      userCommentText: 'Example edited comment.'
+    };
 
     beforeEach(() => {
       stubDb.find = sinon.stub().resolves(fakeDbFindResponse);
       stubDb.put = sinon.stub().resolves({ ok: true });
 
       stubEditSlackComment = sinon.stub(slack, 'editComment');
+    });
+
+    afterEach(() => {
+      stubEditSlackComment.restore();
+    });
+
+    it('should find the comment in the DB that matches the provided ID', () => {
+      return api.updateComment(exampleEditComment).then(() => {
+        const findCall = stubDb.find.getCall(0);
+        expect(findCall.args[0].selector).to.eql({
+          _id: exampleEditComment.commentId
+        });
+      });
+    });
+
+    xit(
+      'should do _something_ if the comment cannot be found in the DB',
+      () => {}
+    );
+
+    it('should return an error message if the comment is empty', () => {
+      exampleEditComment.userCommentText = '';
+
+      return api.updateComment(exampleEditComment).then(data => {
+        expect(data.success).to.be.false;
+        expect(data.msg).to.equal('Cannot update with empty comment.');
+      });
     });
 
     xit('should post an edited comment to Slack', () => {});
