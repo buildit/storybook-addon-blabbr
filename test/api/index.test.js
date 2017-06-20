@@ -1,5 +1,4 @@
 import proxyquire from 'proxyquire';
-
 import * as slack from '../../src/api/slack';
 
 describe('API', () => {
