@@ -55,7 +55,7 @@ describe('API', () => {
     });
 
     it('should return expected message when DB query is unsuccessful', () => {
-      stubDb.find = sinon.stub().returns(Promise.reject());
+      stubDb.find = sinon.stub().rejects(new Error());
 
       return api.getComments('', '').then(result => {
         expect(result.success).to.be.false;
@@ -65,12 +65,9 @@ describe('API', () => {
   });
 
   describe('Post Comment', () => {
-    let stubPostSlackComment;
-
     const api = proxyquire('../../src/api/index', {
       './db': stubDb
     });
-
     const exampleComment = {
       timestampId: 111,
       userName: 'exampleUsername',
@@ -82,10 +79,11 @@ describe('API', () => {
       eventName: 'exampleEventName'
     };
 
-    beforeEach(() => {
-      stubPostSlackComment = sinon.stub(slack, 'postComment');
+    let stubPostSlackComment;
 
-      stubDb.put = sinon.stub().returns(Promise.resolve({ ok: true }));
+    beforeEach(() => {
+      stubDb.put = sinon.stub().resolves({ ok: true });
+      stubPostSlackComment = sinon.stub(slack, 'postComment');
     });
 
     afterEach(() => {
@@ -144,9 +142,45 @@ describe('API', () => {
     it('should post a comment to Slack', () => {
       return api.postComment(exampleComment).then(result => {
         expect(stubPostSlackComment).to.have.been.calledOnce;
+        stubPostSlackComment.restore();
       });
     });
   });
 
-  describe('Update Comment', () => {});
+  describe('Update Comment', () => {
+    const api = proxyquire('../../src/api/index', {
+      './db': stubDb
+    });
+    const fakeDbFindResponse = {
+      docs: [
+        {
+          comment: '',
+          edited: false,
+          lastUpdated: ''
+        }
+      ]
+    };
+
+    let stubEditSlackComment;
+
+    // const exampleComment = {
+    //   timestampId: 111,
+    //   userName: 'exampleUsername',
+    //   userEmail: 'exampleEmail',
+    //   userComment: 'Example comment.',
+    //   component: 'comments',
+    //   story: 'story name',
+    //   version: '0.0.1',
+    //   eventName: 'exampleEventName'
+    // };
+
+    beforeEach(() => {
+      stubDb.find = sinon.stub().resolves(fakeDbFindResponse);
+      stubDb.put = sinon.stub().resolves({ ok: true });
+
+      stubEditSlackComment = sinon.stub(slack, 'editComment');
+    });
+
+    xit('should post an edited comment to Slack', () => {});
+  });
 });

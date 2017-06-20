@@ -11,6 +11,7 @@
     "build-storybook": "build-storybook",
     "transpile": "babel ./src --out-dir dist --copy-files --ignore __tests__,__mocks__,__snapshots__",
     "test": "jest ./src/components --coverage && nyc mocha ./test",
+    "test-unit": "mocha ./test",
     "build": "npm run test && npm run transpile",
     "prepush": "npm run lint && npm test",
     "prepublish": "npm run transpile"
@@ -91,8 +92,7 @@
   "jest": {
     "coverageDirectory": "reports",
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!src/register.js"
+      "src/components/**/*.{js,jsx}"
     ],
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
