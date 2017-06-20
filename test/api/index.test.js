@@ -3,28 +3,24 @@ import proxyquire from 'proxyquire';
 import * as slack from '../../src/api/slack';
 
 describe('API', () => {
+  const stubDb = { '@noCallThru': true };
+
   describe('Get Comment', () => {
     const fakeDbFindResponse = {
       docs: [{}, {}]
     };
 
-    let stubDbFind;
-    let api;
+    const api = proxyquire('../../src/api/index', {
+      './db': stubDb
+    });
 
     beforeEach(() => {
-      stubDbFind = sinon.stub().resolves(fakeDbFindResponse);
-
-      api = proxyquire('../../src/api/index', {
-        './db': {
-          find: stubDbFind,
-          '@noCallThru': true
-        }
-      });
+      stubDb.find = sinon.stub().resolves(fakeDbFindResponse);
     });
 
     it('should find comments from the DB', () => {
       return api.getComments('', '').then(() => {
-        expect(stubDbFind.calledOnce).to.be.true;
+        expect(stubDb.find.calledOnce).to.be.true;
       });
     });
 
@@ -35,7 +31,7 @@ describe('API', () => {
       return api
         .getComments(expectedComponentName, expectedStoryName)
         .then(() => {
-          const findArguments = stubDbFind.getCall(0).args;
+          const findArguments = stubDb.find.getCall(0).args;
           const selector = findArguments[0].selector['$and'];
 
           expect(selector[0].componentId).to.equal(expectedComponentName);
@@ -45,7 +41,7 @@ describe('API', () => {
 
     it('should request comments sorted by ID', () => {
       return api.getComments('', '').then(() => {
-        const findArguments = stubDbFind.getCall(0).args;
+        const findArguments = stubDb.find.getCall(0).args;
         const { sort } = findArguments[0];
 
         expect(sort[0]).to.include({ _id: 'desc' });
@@ -60,14 +56,7 @@ describe('API', () => {
     });
 
     it('should return expected message when DB query is unsuccessful', () => {
-      stubDbFind = sinon.stub().returns(Promise.reject());
-
-      api = proxyquire('../../src/api/index', {
-        './db': {
-          find: stubDbFind,
-          '@noCallThru': true
-        }
-      });
+      stubDb.find = sinon.stub().returns(Promise.reject());
 
       return api.getComments('', '').then(result => {
         expect(result.success).to.be.false;
@@ -78,6 +67,10 @@ describe('API', () => {
 
   describe('Post Comment', () => {
     let stubPostSlackComment;
+
+    const api = proxyquire('../../src/api/index', {
+      './db': stubDb
+    });
 
     const exampleComment = {
       timestampId: 111,
@@ -90,20 +83,10 @@ describe('API', () => {
       eventName: 'exampleEventName'
     };
 
-    let stubDbPut;
-    let api;
-
     beforeEach(() => {
       stubPostSlackComment = sinon.stub(slack, 'postComment');
 
-      stubDbPut = sinon.stub().returns(Promise.resolve({ ok: true }));
-
-      api = proxyquire('../../src/api/index', {
-        './db': {
-          put: stubDbPut,
-          '@noCallThru': true
-        }
-      });
+      stubDb.put = sinon.stub().returns(Promise.resolve({ ok: true }));
     });
 
     afterEach(() => {
@@ -126,13 +109,13 @@ describe('API', () => {
       ];
 
       api.postComment(exampleComment).then(() => {
-        expect(stubDbPut.getCall(0).args[0]).to.have.all.keys(expectedKeys);
+        expect(stubDb.put.getCall(0).args[0]).to.have.all.keys(expectedKeys);
       });
     });
 
     it('should mark the comment as new', () => {
       return api.postComment(exampleComment).then(() => {
-        const putRecord = stubDbPut.getCall(0).args[0];
+        const putRecord = stubDb.put.getCall(0).args[0];
         expect(putRecord.edited).to.be.false;
       });
     });
@@ -144,14 +127,7 @@ describe('API', () => {
     });
 
     it('should return a failure if the DB does not return an ok', () => {
-      stubDbPut = sinon.stub().resolves({ ok: false });
-
-      api = proxyquire('../../src/api/index', {
-        './db': {
-          put: stubDbPut,
-          '@noCallThru': true
-        }
-      });
+      stubDb.put = sinon.stub().resolves({ ok: false });
 
       return api.postComment(exampleComment).then(result => {
         expect(result.success).to.be.false;
@@ -159,14 +135,7 @@ describe('API', () => {
     });
 
     it('should return a failure if the DB request fails', () => {
-      stubDbPut = sinon.stub().rejects(new Error('DB error'));
-
-      api = proxyquire('../../src/api/index', {
-        './db': {
-          put: stubDbPut,
-          '@noCallThru': true
-        }
-      });
+      stubDb.put = sinon.stub().rejects(new Error('DB error'));
 
       return api.postComment(exampleComment).then(result => {
         expect(result.success).to.be.false;
