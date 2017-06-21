@@ -189,8 +189,9 @@ describe('API', () => {
 
     it('should find the comment in the DB that matches the provided ID', () => {
       return api.updateComment(exampleEditComment).then(() => {
-        const findCall = stubDb.find.getCall(0);
-        expect(findCall.args[0].selector).to.eql({
+        const { selector: findSelector } = stubDb.find.getCall(0).args[0];
+
+        expect(findSelector).to.eql({
           _id: exampleEditComment.commentId
         });
       });
@@ -261,6 +262,101 @@ describe('API', () => {
     it('should post an edited comment to Slack', () => {
       return api.updateComment(exampleEditComment).then(data => {
         expect(stubEditSlackComment.calledOnce).to.be.true;
+      });
+    });
+  });
+
+  describe('Delete Comment', () => {
+    const api = proxyquire('../../src/api/index', {
+      './db': stubDb
+    });
+    const exampleCommentId = '111';
+    const fakeDbFindResponse = {
+      docs: [
+        {
+          _id: exampleCommentId,
+          comment: 'Example original comment.',
+          edited: false,
+          lastUpdated: '1497955939598'
+        }
+      ]
+    };
+
+    beforeEach(() => {
+      stubDb.find = sinon.stub().resolves(fakeDbFindResponse);
+      stubDb.put = sinon.stub().resolves({ ok: true });
+    });
+
+    it('should find the comment in the DB that matches the provided ID', () => {
+      return api.deleteComment(exampleCommentId).then(() => {
+        const { selector: findSelector } = stubDb.find.getCall(0).args[0];
+
+        expect(findSelector).to.eql({
+          _id: exampleCommentId
+        });
+      });
+    });
+
+    it('should mark the comment as deleted', () => {
+      return api.deleteComment(exampleCommentId).then(() => {
+        const record = stubDb.put.getCall(0).args[0];
+
+        expect(record._deleted).to.be.true;
+      });
+    });
+
+    it('should return successfully if the comment was deleted', () => {
+      return api.deleteComment(exampleCommentId).then(data => {
+        expect(data.success).to.be.true;
+        expect(data.msg).to.equal('Your comment was removed successfully.');
+      });
+    });
+
+    it('should return a failure if there was a problem finding the comment', () => {
+      const errorMessage = '[DB ERROR MESSAGE]';
+
+      stubDb.find.rejects(new Error(`${errorMessage}`));
+
+      return api.deleteComment(exampleCommentId).then(data => {
+        expect(data.success).to.be.false;
+        expect(data.msg).to.equal(
+          `There was a problem deleting your comment. Not found. Error: ${errorMessage}`
+        );
+      });
+    });
+
+    it('should return a failure if no comment records are returned', () => {
+      stubDb.find.resolves({ docs: [] });
+
+      return api.deleteComment(exampleCommentId).then(data => {
+        expect(data.success).to.be.false;
+        expect(data.msg).to.equal(
+          'There was a problem deleting your comment. Not found. Error: No documents returned.'
+        );
+      });
+    });
+
+    it('should return a failure if there was a problem deleting the comment', () => {
+      const errorMessage = '[DB ERROR MESSAGE]';
+
+      stubDb.put.rejects(new Error(`${errorMessage}`));
+
+      return api.deleteComment(exampleCommentId).then(data => {
+        expect(data.success).to.be.false;
+        expect(data.msg).to.equal(
+          `There was a problem deleting your comment. Error: ${errorMessage}`
+        );
+      });
+    });
+
+    it('should return a failure if the DB does not return an ok when deleting the comment', () => {
+      stubDb.put.resolves({ ok: false });
+
+      return api.deleteComment(exampleCommentId).then(data => {
+        expect(data.success).to.be.false;
+        expect(data.msg).to.equal(
+          'There was a problem deleting your comment. Error: Deletion unsuccessful.'
+        );
       });
     });
   });

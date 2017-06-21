@@ -160,22 +160,17 @@ export const deleteComment = commentId =>
                 msg: 'Your comment was removed successfully.'
               };
             }
-            return {
-              success: 0,
-              msg: 'There was a problem deleting your comment.'
-            };
+
+            return Promise.reject(new Error('Deletion unsuccessful.'));
           })
           .catch(error => ({
-            success: 0,
+            success: false,
             msg: `There was a problem deleting your comment. Error: ${error.message}`
           }));
       }
-      return {
-        success: 0,
-        msg: 'There was a problem deleting your comment. Not found.'
-      };
+      return Promise.reject(new Error('No documents returned.'));
     })
     .catch(error => ({
-      success: 0,
+      success: false,
       msg: `There was a problem deleting your comment. Not found. Error: ${error.message}`
     }));
