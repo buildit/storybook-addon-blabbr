@@ -168,6 +168,7 @@ export const deleteComment = commentId =>
             msg: `There was a problem deleting your comment. Error: ${error.message}`
           }));
       }
+
       return Promise.reject(new Error('No documents returned.'));
     })
     .catch(error => ({

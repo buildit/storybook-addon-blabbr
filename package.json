@@ -61,6 +61,8 @@
     "jsdom-global": "^3.0.2",
     "json-loader": "^0.5.4",
     "mocha": "^3.4.2",
+    "nock": "^9.0.13",
+    "node-fetch": "^1.7.1",
     "nyc": "^11.0.2",
     "prettier": "^1.4.4",
     "prop-types": "^15",
