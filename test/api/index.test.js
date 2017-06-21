@@ -161,24 +161,29 @@ describe('API', () => {
       ]
     };
 
+    let clock;
+    let exampleEditComment;
     let stubEditSlackComment;
 
-    const exampleEditComment = {
-      commentId: 1,
-      component: 'comments',
-      userName: 'exampleUsername',
-      userEmail: 'exampleEmail',
-      userCommentText: 'Example edited comment.'
-    };
-
     beforeEach(() => {
+      clock = sinon.useFakeTimers(Date.now());
+
       stubDb.find = sinon.stub().resolves(fakeDbFindResponse);
       stubDb.put = sinon.stub().resolves({ ok: true });
 
       stubEditSlackComment = sinon.stub(slack, 'editComment');
+
+      exampleEditComment = {
+        commentId: 1,
+        component: 'comments',
+        userName: 'exampleUsername',
+        userEmail: 'exampleEmail',
+        userCommentText: 'Example edited comment.'
+      };
     });
 
     afterEach(() => {
+      clock.restore();
       stubEditSlackComment.restore();
     });
 
@@ -195,6 +200,35 @@ describe('API', () => {
       'should do _something_ if the comment cannot be found in the DB',
       () => {}
     );
+
+    it('should store the newly edited comment', () => {
+      return api.updateComment(exampleEditComment).then(data => {
+        const putCall = stubDb.put.getCall(0);
+        const record = putCall.args[0];
+
+        expect(record.comment).to.equal(exampleEditComment.userCommentText);
+      });
+    });
+
+    it('should mark the comment as edited', () => {
+      return api.updateComment(exampleEditComment).then(data => {
+        const putCall = stubDb.put.getCall(0);
+        const record = putCall.args[0];
+
+        expect(record.edited).to.be.true;
+      });
+    });
+
+    it('should update the comments last updated time with the time now', () => {
+      const expectedTime = new Date().getTime();
+
+      return api.updateComment(exampleEditComment).then(data => {
+        const putCall = stubDb.put.getCall(0);
+        const record = putCall.args[0];
+
+        expect(record.lastUpdated).to.equal(`${expectedTime}`);
+      });
+    });
 
     it('should return an error message if the comment is empty', () => {
       exampleEditComment.userCommentText = '';
