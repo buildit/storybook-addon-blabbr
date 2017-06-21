@@ -10,8 +10,10 @@
     "lint-fix": "./node_modules/prettier/bin/prettier.js --single-quote --write '{src,__{tests,mocks}__}/**/*.js'",
     "build-storybook": "build-storybook",
     "transpile": "babel ./src --out-dir dist --copy-files --ignore __tests__,__mocks__,__snapshots__",
-    "test": "jest ./src/components --coverage && nyc mocha ./test",
-    "test-unit": "mocha ./test",
+    "test": "npm run jest && npm run test:nyc",
+    "test:jest": "jest ./src/components --coverage ",
+    "test:mocha": "mocha ./test",
+    "test:nyc": "nyc npm run test:mocha",
     "build": "npm run test && npm run transpile",
     "prepush": "npm run lint && npm test",
     "prepublish": "npm run transpile"
