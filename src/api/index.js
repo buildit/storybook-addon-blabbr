@@ -131,9 +131,13 @@ export const updateComment = ({
         }))
         .catch(() => ({
           success: false,
-          msg: 'There was an error editing your comment.'
+          msg: 'There was an error saving your edited comment.'
         }));
-    });
+    })
+    .catch(() => ({
+      success: false,
+      msg: 'There was an error editing your comment.'
+    }));
 };
 
 export const deleteComment = commentId =>

@@ -196,24 +196,26 @@ describe('API', () => {
       });
     });
 
-    xit(
-      'should do _something_ if the comment cannot be found in the DB',
-      () => {}
-    );
+    it('should return a failure if there was a problem finding the existing comment', () => {
+      stubDb.find.rejects(new Error());
+
+      return api.updateComment(exampleEditComment).then(data => {
+        expect(data.success).to.be.false;
+        expect(data.msg).to.equal('There was an error editing your comment.');
+      });
+    });
 
     it('should store the newly edited comment', () => {
-      return api.updateComment(exampleEditComment).then(data => {
-        const putCall = stubDb.put.getCall(0);
-        const record = putCall.args[0];
+      return api.updateComment(exampleEditComment).then(() => {
+        const record = stubDb.put.getCall(0).args[0];
 
         expect(record.comment).to.equal(exampleEditComment.userCommentText);
       });
     });
 
     it('should mark the comment as edited', () => {
-      return api.updateComment(exampleEditComment).then(data => {
-        const putCall = stubDb.put.getCall(0);
-        const record = putCall.args[0];
+      return api.updateComment(exampleEditComment).then(() => {
+        const record = stubDb.put.getCall(0).args[0];
 
         expect(record.edited).to.be.true;
       });
@@ -222,11 +224,17 @@ describe('API', () => {
     it('should update the comments last updated time with the time now', () => {
       const expectedTime = new Date().getTime();
 
-      return api.updateComment(exampleEditComment).then(data => {
-        const putCall = stubDb.put.getCall(0);
-        const record = putCall.args[0];
+      return api.updateComment(exampleEditComment).then(() => {
+        const record = stubDb.put.getCall(0).args[0];
 
         expect(record.lastUpdated).to.equal(`${expectedTime}`);
+      });
+    });
+
+    it('should return successfully if the comment was edited', () => {
+      return api.updateComment(exampleEditComment).then(data => {
+        expect(data.success).to.be.true;
+        expect(data.msg).to.equal('Your comment was edited successfully.');
       });
     });
 
@@ -239,6 +247,21 @@ describe('API', () => {
       });
     });
 
-    xit('should post an edited comment to Slack', () => {});
+    it('should return a failure if there was a problem saving the edited comment', () => {
+      stubDb.put.rejects(new Error());
+
+      return api.updateComment(exampleEditComment).then(data => {
+        expect(data.success).to.be.false;
+        expect(data.msg).to.equal(
+          'There was an error saving your edited comment.'
+        );
+      });
+    });
+
+    it('should post an edited comment to Slack', () => {
+      return api.updateComment(exampleEditComment).then(data => {
+        expect(stubEditSlackComment.calledOnce).to.be.true;
+      });
+    });
   });
 });
