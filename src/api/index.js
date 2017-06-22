@@ -95,7 +95,7 @@ export const updateComment = ({
   const timestampId = `${new Date().getTime()}`;
   const userComment = userCommentText && userCommentText.trim();
 
-  if (userComment === '' || userComment === null) {
+  if (!userComment) {
     return Promise.resolve({
       success: false,
       msg: 'Cannot update with empty comment.'
