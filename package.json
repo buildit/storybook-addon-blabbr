@@ -10,7 +10,10 @@
     "lint-fix": "./node_modules/prettier/bin/prettier.js --single-quote --write '{src,__{tests,mocks}__}/**/*.js'",
     "build-storybook": "build-storybook",
     "transpile": "babel ./src --out-dir dist --copy-files --ignore __tests__,__mocks__,__snapshots__",
-    "test": "jest ./src/components --coverage && nyc mocha ./test",
+    "test": "npm run test:jest && npm run test:nyc",
+    "test:jest": "jest ./src/components --coverage ",
+    "test:mocha": "mocha ./test",
+    "test:nyc": "nyc npm run test:mocha",
     "build": "npm run test && npm run transpile",
     "prepush": "npm run lint && npm test",
     "prepublish": "npm run transpile"
@@ -58,6 +61,8 @@
     "jsdom-global": "^3.0.2",
     "json-loader": "^0.5.4",
     "mocha": "^3.4.2",
+    "nock": "^9.0.13",
+    "node-fetch": "^1.7.1",
     "nyc": "^11.0.2",
     "prettier": "^1.4.4",
     "prop-types": "^15",
@@ -91,8 +96,7 @@
   "jest": {
     "coverageDirectory": "reports",
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!src/register.js"
+      "src/components/**/*.{js,jsx}"
     ],
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",

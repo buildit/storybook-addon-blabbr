@@ -95,6 +95,13 @@ export const updateComment = ({
   const timestampId = `${new Date().getTime()}`;
   const userComment = userCommentText && userCommentText.trim();
 
+  if (!userComment) {
+    return Promise.resolve({
+      success: false,
+      msg: 'Cannot update with empty comment.'
+    });
+  }
+
   editSlackComment({
     userName,
     userEmail,
@@ -112,12 +119,6 @@ export const updateComment = ({
     .then(data => {
       const record = data.docs[0];
 
-      if (userComment === '' || userComment === null) {
-        return {
-          success: false,
-          msg: 'Cannot update with empty comment'
-        };
-      }
       record.comment = userComment;
       record.edited = true;
       record.lastUpdated = timestampId;
@@ -130,9 +131,13 @@ export const updateComment = ({
         }))
         .catch(() => ({
           success: false,
-          msg: 'There was an error editing your comment.'
+          msg: 'There was an error saving your edited comment.'
         }));
-    });
+    })
+    .catch(() => ({
+      success: false,
+      msg: 'There was an error editing your comment.'
+    }));
 };
 
 export const deleteComment = commentId =>
@@ -155,22 +160,18 @@ export const deleteComment = commentId =>
                 msg: 'Your comment was removed successfully.'
               };
             }
-            return {
-              success: 0,
-              msg: 'There was a problem deleting your comment.'
-            };
+
+            return Promise.reject(new Error('Deletion unsuccessful.'));
           })
           .catch(error => ({
-            success: 0,
+            success: false,
             msg: `There was a problem deleting your comment. Error: ${error.message}`
           }));
       }
-      return {
-        success: 0,
-        msg: 'There was a problem deleting your comment. Not found.'
-      };
+
+      return Promise.reject(new Error('No documents returned.'));
     })
     .catch(error => ({
-      success: 0,
+      success: false,
       msg: `There was a problem deleting your comment. Not found. Error: ${error.message}`
     }));
