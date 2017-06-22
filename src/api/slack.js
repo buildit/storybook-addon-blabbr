@@ -12,7 +12,9 @@ const makeRequest = payload => {
   };
 
   return slack().then(response => {
-    fetch(response.endPoint, requestConfig);
+    return fetch(response.endPoint, requestConfig).then(response => {
+      return { success: response.ok };
+    });
   });
 };
 
