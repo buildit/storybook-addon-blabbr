@@ -2,7 +2,7 @@ import nock from 'nock';
 import * as config from '../../src/utils/config';
 import * as slack from '../../src/api/slack';
 
-describe.only('Slack API', () => {
+describe('Slack API', () => {
   let stubConfigSlack;
 
   const exampleComment = {};
