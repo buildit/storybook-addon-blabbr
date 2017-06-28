@@ -1,63 +1,45 @@
 import getConfig from './getConfig';
 
-const dbConfig = () =>
-  new Promise((resolve, reject) => {
-    getConfig()
-      .then(response => {
-        if (response.blabbr && response.blabbr.db) {
-          resolve(response.blabbr.db);
-        } else {
-          resolve(null);
-        }
-      })
-      .catch(response => {
-        reject(response);
-      });
-  });
+const resolveValue = item => {
+  if (item) {
+    return Promise.resolve(item);
+  } else {
+    return Promise.resolve(null);
+  }
+};
 
-const slack = () =>
-  new Promise((resolve, reject) => {
-    getConfig()
-      .then(response => {
-        if (response.blabbr && response.blabbr.slack) {
-          resolve(response.blabbr.slack);
-        } else {
-          resolve(null);
-        }
-      })
-      .catch(response => {
-        reject(response);
-      });
-  });
+const db = () => {
+  try {
+    return getConfig().then(config => resolveValue(config.blabbr.db));
+  } catch (error) {
+    return Promise.reject(new Error('Could not find config value for DB.'));
+  }
+};
 
-const ui = () =>
-  new Promise((resolve, reject) => {
-    getConfig()
-      .then(response => {
-        if (response.blabbr && response.blabbr.ui) {
-          resolve(response.blabbr.ui);
-        } else {
-          resolve(null);
-        }
-      })
-      .catch(response => {
-        reject(response);
-      });
-  });
+const slack = () => {
+  try {
+    return getConfig().then(config => resolveValue(config.blabbr.slack));
+  } catch (error) {
+    return Promise.reject(new Error('Could not find config value for Slack.'));
+  }
+};
 
-const versions = () =>
-  new Promise((resolve, reject) => {
-    getConfig()
-      .then(response => {
-        if (response.versions) {
-          resolve(response.versions);
-        } else {
-          resolve(null);
-        }
-      })
-      .catch(response => {
-        reject(response);
-      });
-  });
+const ui = () => {
+  try {
+    return getConfig().then(config => resolveValue(config.blabbr.ui));
+  } catch (error) {
+    return Promise.reject(new Error('Could not find config value for UI.'));
+  }
+};
 
-export { dbConfig, slack, ui, versions };
+const versions = () => {
+  try {
+    return getConfig().then(config => resolveValue(config.versions));
+  } catch (error) {
+    return Promise.reject(
+      new Error('Could not find config value for Versions.')
+    );
+  }
+};
+
+export { db, slack, ui, versions };
