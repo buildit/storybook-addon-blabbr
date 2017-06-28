@@ -9,37 +9,35 @@ const resolveValue = item => {
 };
 
 const db = () => {
-  try {
-    return getConfig().then(config => resolveValue(config.blabbr.db));
-  } catch (error) {
-    return Promise.reject(new Error('Could not find config value for DB.'));
-  }
+  return getConfig()
+    .then(config => resolveValue(config.blabbr.db))
+    .catch(error =>
+      Promise.reject(new Error('Could not find config value for DB.'))
+    );
 };
 
 const slack = () => {
-  try {
-    return getConfig().then(config => resolveValue(config.blabbr.slack));
-  } catch (error) {
-    return Promise.reject(new Error('Could not find config value for Slack.'));
-  }
+  return getConfig()
+    .then(config => resolveValue(config.blabbr.slack))
+    .catch(error =>
+      Promise.reject(new Error('Could not find config value for Slack.'))
+    );
 };
 
 const ui = () => {
-  try {
-    return getConfig().then(config => resolveValue(config.blabbr.ui));
-  } catch (error) {
-    return Promise.reject(new Error('Could not find config value for UI.'));
-  }
+  return getConfig()
+    .then(config => resolveValue(config.blabbr.ui))
+    .catch(error =>
+      Promise.reject(new Error('Could not find config value for UI.'))
+    );
 };
 
 const versions = () => {
-  try {
-    return getConfig().then(config => resolveValue(config.versions));
-  } catch (error) {
-    return Promise.reject(
-      new Error('Could not find config value for Versions.')
+  return getConfig()
+    .then(config => resolveValue(config.versions))
+    .catch(error =>
+      Promise.reject(new Error('Could not find config value for Versions.'))
     );
-  }
 };
 
 export { db, slack, ui, versions };
