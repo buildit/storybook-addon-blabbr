@@ -1,12 +1,7 @@
 import getConfig from './getConfig';
 
-const resolveValue = item => {
-  if (item) {
-    return Promise.resolve(item);
-  } else {
-    return Promise.resolve(null);
-  }
-};
+const resolveValue = item =>
+  item ? Promise.resolve(item) : Promise.resolve(null);
 
 const db = () => {
   return getConfig()
