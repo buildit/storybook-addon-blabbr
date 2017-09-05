@@ -31,6 +31,9 @@ dbConfig().then(response => {
       retry: true
     });
   }
+})
+.catch(response => {
+  console.log(response);
 });
 
 const dbEvents = {

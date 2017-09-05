@@ -19,7 +19,7 @@ const getConfig = () =>
             }
           });
         } else {
-          reject('Error getting config');
+          reject(`Error getting config: ${response.status} ${response.statusText}`);
         }
       });
     } else {
