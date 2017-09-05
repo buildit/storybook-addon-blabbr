@@ -31,14 +31,14 @@ class Comment extends React.Component {
 
   componentWillMount() {
     uiConfig().then(response => {
-      if(response) {
+      if (response) {
         this.setState({
           showAvatar: response.avatar
         });
       }
     });
     versions().then(response => {
-      if(response) {
+      if (response) {
         this.setState({
           regex: response.regex
         });

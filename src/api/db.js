@@ -19,22 +19,23 @@ db.createIndex({
   }
 });
 
-dbConfig().then(response => {
-  if (response.host.includes('localhost')) {
-    db.sync(`http://${response.host}`, {
-      live: true,
-      retry: true
-    });
-  } else {
-    db.sync(`https://${response.user}:${response.pwd}@${response.host}`, {
-      live: true,
-      retry: true
-    });
-  }
-})
-.catch(response => {
-  console.log(response);
-});
+dbConfig()
+  .then(response => {
+    if (response.host.includes('localhost')) {
+      db.sync(`http://${response.host}`, {
+        live: true,
+        retry: true
+      });
+    } else {
+      db.sync(`https://${response.user}:${response.pwd}@${response.host}`, {
+        live: true,
+        retry: true
+      });
+    }
+  })
+  .catch(response => {
+    console.log(response);
+  });
 
 const dbEvents = {
   change: [],
