@@ -1,5 +1,5 @@
 {
-  "name": "@buildit/storybook-addon-blabbr",
+  "name": "@panosvoudouris/storybook-addon-blabbr",
   "version": "1.1.1",
   "description": "Component review and commenting for React Storybook",
   "main": "dist/register.js",
