@@ -14,6 +14,7 @@
     "test:mocha": "mocha ./test",
     "test:nyc": "nyc npm run test:mocha",
     "build": "webpack --config webpack.config.js",
+    "build:prod": "webpack -p --config webpack.config.js",
     "prepush": "npm run lint && npm test",
     "prepublish": "npm run build"
   },
@@ -74,7 +75,7 @@
     "sinon": "^2.3.4",
     "sinon-chai": "^2.11.0",
     "style-loader": "^0.17.0",
-    "webpack": "3"
+    "webpack": "^3.0.0"
   },
   "dependencies": {
     "events": "^1.1.1",
