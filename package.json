@@ -1,5 +1,5 @@
 {
-  "name": "@buildit/storybook-addon-blabbr",
+  "name": "@panosvoudouris/storybook-addon-blabbr",
   "version": "1.1.2",
   "description": "Component review and commenting for React Storybook",
   "main": "dist/register.js",
@@ -15,7 +15,7 @@
     "test:nyc": "nyc npm run test:mocha",
     "build": "webpack --config webpack.config.js",
     "build:prod": "webpack -p --config webpack.config.js",
-    "prepush": "npm run lint && npm test",
+    "prepush": "npm run lint && npm run test:jest",
     "prepublish": "npm run build"
   },
   "repository": {
