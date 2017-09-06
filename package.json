@@ -16,7 +16,7 @@
     "build": "webpack --config webpack.config.js",
     "build:prod": "webpack -p --config webpack.config.js",
     "prepush": "npm run lint && npm run test:jest",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build:prod"
   },
   "repository": {
     "type": "git",
