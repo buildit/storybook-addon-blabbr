@@ -1,6 +1,6 @@
 {
   "name": "@panosvoudouris/storybook-addon-blabbr",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Component review and commenting for React Storybook",
   "main": "dist/register.js",
   "scripts": {
