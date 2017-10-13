@@ -1,6 +1,6 @@
 {
   "name": "@buildit/storybook-addon-blabbr",
-  "version": "1.1.0",
+  "version": "1.1.4",
   "description": "Component review and commenting for React Storybook",
   "main": "dist/register.js",
   "scripts": {
@@ -9,14 +9,14 @@
     "lint": "./node_modules/prettier/bin/prettier.js --single-quote --list-different '{src,__{tests,mocks}__}/**/*.js'",
     "lint-fix": "./node_modules/prettier/bin/prettier.js --single-quote --write '{src,__{tests,mocks}__}/**/*.js'",
     "build-storybook": "build-storybook",
-    "transpile": "babel ./src --out-dir dist --copy-files --ignore __tests__,__mocks__,__snapshots__",
     "test": "npm run test:jest && npm run test:nyc",
     "test:jest": "jest ./src/components --coverage ",
     "test:mocha": "mocha ./test",
     "test:nyc": "nyc npm run test:mocha",
-    "build": "npm run test && npm run transpile",
-    "prepush": "npm run lint && npm test",
-    "prepublish": "npm run transpile"
+    "build": "webpack --config webpack.config.js",
+    "build:prod": "webpack -p --config webpack.config.js",
+    "prepush": "npm run lint && npm run test:jest",
+    "prepublish": "npm run build:prod"
   },
   "repository": {
     "type": "git",
@@ -64,6 +64,8 @@
     "nock": "^9.0.13",
     "node-fetch": "^1.7.1",
     "nyc": "^11.0.2",
+    "pouchdb-browser": "^6.1.1",
+    "pouchdb-find": "^6.2.0",
     "prettier": "^1.4.4",
     "prop-types": "^15",
     "proxyquire": "^1.8.0",
@@ -73,13 +75,12 @@
     "sinon": "^2.3.4",
     "sinon-chai": "^2.11.0",
     "style-loader": "^0.17.0",
-    "webpack": "^2.5.1"
+    "webpack": "^3.0.0"
   },
   "dependencies": {
     "events": "^1.1.1",
+    "extract-text-webpack-plugin": "^3.0.0",
     "marked": "^0.3.6",
-    "pouchdb-browser": "^6.1.1",
-    "pouchdb-find": "^6.2.0",
     "react-addons-css-transition-group": "^15.4.2",
     "react-alert": "^2.0.1",
     "react-tooltip": "^3.2.7"
